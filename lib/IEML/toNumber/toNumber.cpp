@@ -1,4 +1,4 @@
-#include "toValue.hpp"
+#include "toNumber.hpp"
 #include <string>
 
 namespace ieml {
@@ -103,9 +103,5 @@ namespace ieml {
 		} else {
 			return toDoubleFromDecimal(string);
 		}
-	}
-	
-	bool toBool(std::string_view string) {
-		return string == "yes" || string == "true";
 	}
 }

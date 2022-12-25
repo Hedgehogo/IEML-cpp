@@ -1,0 +1,3 @@
+[submodule "modules/template_regex"]
+	path = modules/template_regex
+	url = https://github.com/NTSFka/template_regex
