@@ -1,5 +1,5 @@
 #include "isValue.hpp"
-#include "../template_regex/template_regex.hpp"
+#include "../regex/regex.hpp"
 
 namespace ieml {
 	bool isEnter(std::string::const_iterator first, std::string::const_iterator last) {
