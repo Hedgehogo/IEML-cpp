@@ -1,0 +1,12 @@
+#s\n
+map: v
+map = type: v
+- v
+- type: v
+< s
+> s
+"s"
+[s, s]
+&s v
+*s
+s

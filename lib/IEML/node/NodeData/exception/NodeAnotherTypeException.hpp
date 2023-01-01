@@ -4,18 +4,18 @@
 
 namespace ieml {
 	/// @brief Exception thrown when a node has been asked for a value that is not a node
-	class NotRequestedTypeException : public BaseException {
+	class NodeAnotherTypeException : public BaseException {
 	private:
-		std::string type;
+		NodeType requestedType;
 		NodeType nodeType;
 		
 	public:
-		NotRequestedTypeException(std::string type, NodeType nodeType);
+		NodeAnotherTypeException(NodeType requestedType, NodeType nodeType);
 		
-		/// @brief Gets the type of data that was queried as a string.
+		/// @brief Gets the type of data that was queried.
 		///
-		/// @return The type of data that was queried as a string.
-		std::string getType();
+		/// @return The type of data that was queried.
+		NodeType getRequestedType();
 		
 		/// @brief Gets the type of node whose data was requested.
 		///

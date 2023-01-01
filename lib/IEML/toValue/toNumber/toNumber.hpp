@@ -14,61 +14,66 @@ namespace ieml {
 	/// @return int Number derived from the character:
 	///   - [0-9] -> [0-9]
 	///   - [A-Z] -> [10-36]
-	///   - [a-z] -> [10-36]
 	/// @note Does not check for correct input.
 	int toDigit(char symbol);
 	
 	/// @brief Converts a string with a number with a specific number base to a number.
 	///
-	/// @param std::string_view String containing a number in the format (0[a-z][0-9A-Pa-p]+).
+	/// @param first Beginning of a string containing an integer in the format (0[a-z][0-9A-P]+).
+	/// @param last End of a string containing an integer in the format (0[a-z][0-9A-P]+).
 	///
 	/// @return long long The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	llint toIntFromBasis(std::string_view string);
+	llint toIntFromBasis(std::string_view::const_iterator first, std::string_view::const_iterator last);
 	
 	/// @brief Converts a string with a number in decimal notation to a number.
 	///
-	/// @param std::string_view String containing a number in decimal notation.
+	/// @param first Beginning of a string containing an integer in decimal notation.
+	/// @param last End of a string containing an integer in decimal notation.
 	///
 	/// @return long long The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	llint toIntFromDecimal(std::string_view string);
+	llint toIntFromDecimal(std::string_view::const_iterator first, std::string_view::const_iterator last);
 	
 	/// @brief Converts a string with a number.
 	///
-	/// @param std::string_view String containing a number.
+	/// @param first Beginning of a string containing an integer.
+	/// @param last End of a string containing an integer.
 	///
 	/// @return long long The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	llint toInt(std::string_view string);
+	llint toInt(std::string_view::const_iterator first, std::string_view::const_iterator last);
 	
 	/// @brief Converts a string with a number with a specific number base to a number.
 	///
-	/// @param std::string_view String containing a number in the format (0[a-z][0-9A-Pa-p]+\.[0-9A-Pa-p]*).
+	/// @param first Beginning of a string containing a number in the format (0[a-z][0-9A-P]+\.[0-9A-P]*).
+	/// @param last End of a string containing a number in the format (0[a-z][0-9A-P]+\.[0-9A-P]*).
 	///
 	/// @return double The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	double toDoubleFromBasis(std::string_view string);
+	double toDoubleFromBasis(std::string_view::const_iterator first, std::string_view::const_iterator last);
 	
 	/// @brief Converts a string with a number in decimal notation to a number.
 	///
-	/// @param std::string_view String containing a number in decimal notation.
+	/// @param first Beginning of a string containing a number in decimal notation.
+	/// @param last End of a string containing a number in decimal notation.
 	///
 	/// @return double The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	double toDoubleFromDecimal(std::string_view string);
+	double toDoubleFromDecimal(std::string_view::const_iterator first, std::string_view::const_iterator last);
 	
 	/// @brief Converts a string with a number.
 	///
-	/// @param std::string_view String containing a number.
+	/// @param first Beginning of a string containing a number.
+	/// @param last End of a string containing a number.
 	///
 	/// @return double The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	double toDouble(std::string_view string);
+	double toDouble(std::string_view::const_iterator first, std::string_view::const_iterator last);
 }

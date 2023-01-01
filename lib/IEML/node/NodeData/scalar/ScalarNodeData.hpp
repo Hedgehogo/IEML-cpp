@@ -3,15 +3,19 @@
 
 namespace ieml {
 	/// @breef Base class for scalar node data.
-	class ValueNodeData : public INodeData {
+	class ScalarNodeData : public INodeData {
 	private:
 		std::string string;
 		
 	public:
-		ValueNodeData(std::string string);
+		ScalarNodeData(std::string string);
+		
+		NodeType getNodeType() override;
+		
+		bool isScalar() override;
 		
 		std::string getString() override;
 		
-		~ValueNodeData() = default;
+		~ScalarNodeData() = default;
 	};
 }

@@ -5,14 +5,10 @@ namespace ieml {
 	/// @brief  Enum, storing the type of node
 	enum class NodeType {
 		Null,
-		Bool,
-		Int,
-		Double,
-		String,
+		Scalar,
 		List,
 		Map,
-		File,
-		Typed,
+		File
 	};
 	
 	/// @brief Creates a string from a node type.

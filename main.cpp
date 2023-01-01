@@ -1,9 +1,8 @@
-#include "lib/IEML/toNumber/toNumber.hpp"
-#include "lib/IEML/isValue/isValue.hpp"
 #include <iostream>
+#include "lib/IEML/preprocess/preprocess.hpp"
 
 int main() {
-	std::string str{"1.0"};
-	std::cout << std::boolalpha << ieml::isDouble(str.begin(), str.end()) << std::endl;
-	std::cout << std::to_string(ieml::toDouble(str)) << std::endl;
+	std::string string{"ahsgdjbs #asfh \n > asfasas \n \"asfasf\" #agsdj "};
+	std::cout << string << "\n";
+	std::cout << ieml::preprocess(string);
 }
