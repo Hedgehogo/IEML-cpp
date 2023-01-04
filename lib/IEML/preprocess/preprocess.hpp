@@ -2,5 +2,10 @@
 #include <string>
 
 namespace ieml {
-	std::string preprocess(std::string string);
+	/// @brief Prepares the file for further processing, including deleting comments.
+	///
+	/// @param str String to be processed.
+	///
+	/// @return Processed string.
+	std::string preprocess(const std::string &str);
 }

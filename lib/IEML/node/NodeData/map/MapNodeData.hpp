@@ -14,6 +14,10 @@ namespace ieml {
 		
 		NodeType getNodeType() override;
 		
+		std::size_t getSize() override;
+		
+		std::map<std::string, Node> &getMap() override;
+		
 		Node &at(std::string key) override;
 	};
 }

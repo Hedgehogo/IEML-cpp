@@ -7,6 +7,10 @@ namespace ieml {
 		return NodeType::List;
 	}
 	
+	std::size_t ListNodeData::getSize() {
+		return list.size();
+	}
+	
 	Node &ListNodeData::at(std::size_t index) {
 		return list.at(index);
 	}

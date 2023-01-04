@@ -1,8 +1,10 @@
 #pragma once
+#include <map>
 
 namespace ieml {
 	class Node;
 	
+	/// @brief Structure to implement the conversion functions from a node to T
 	template<typename T>
 	struct Decode;
 	

@@ -15,11 +15,19 @@ namespace ieml {
 		
 		NodeType getNodeType() override;
 		
+		bool isFile() override;
+		
+		std::string getFilePath() override;
+		
 		bool isWithTag() override;
 		
 		std::string getTag() override;
 		
+		std::size_t getSize() override;
+		
 		std::string getString() override;
+		
+		std::map<std::string, Node> &getMap() override;
 		
 		Node &at(std::size_t index) override;
 		

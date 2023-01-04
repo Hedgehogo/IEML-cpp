@@ -4,7 +4,7 @@
 namespace ieml {
 	static constexpr auto toBoolValue = ctll::fixed_string{ R"((yes|true) *)" };
 	
-	bool toBool(std::string_view::const_iterator first, std::string_view::const_iterator last) {
+	bool toBool(std::string::const_iterator first, std::string::const_iterator last) {
 		return ctre::match<toBoolValue>(first, last);
 	}
 }

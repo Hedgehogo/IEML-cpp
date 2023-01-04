@@ -1,5 +1,5 @@
 #pragma once
-#include <string_view>
+#include <string>
 
 namespace ieml {
 	using llint = long long;
@@ -14,6 +14,7 @@ namespace ieml {
 	/// @return int Number derived from the character:
 	///   - [0-9] -> [0-9]
 	///   - [A-Z] -> [10-36]
+	///
 	/// @note Does not check for correct input.
 	int toDigit(char symbol);
 	
@@ -25,7 +26,7 @@ namespace ieml {
 	/// @return long long The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	llint toIntFromBasis(std::string_view::const_iterator first, std::string_view::const_iterator last);
+	llint toIntFromBasis(std::string::const_iterator first, std::string::const_iterator last);
 	
 	/// @brief Converts a string with a number in decimal notation to a number.
 	///
@@ -35,7 +36,7 @@ namespace ieml {
 	/// @return long long The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	llint toIntFromDecimal(std::string_view::const_iterator first, std::string_view::const_iterator last);
+	llint toIntFromDecimal(std::string::const_iterator first, std::string::const_iterator last);
 	
 	/// @brief Converts a string with a number.
 	///
@@ -45,7 +46,7 @@ namespace ieml {
 	/// @return long long The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	llint toInt(std::string_view::const_iterator first, std::string_view::const_iterator last);
+	llint toInt(std::string::const_iterator first, std::string::const_iterator last);
 	
 	/// @brief Converts a string with a number with a specific number base to a number.
 	///
@@ -55,7 +56,7 @@ namespace ieml {
 	/// @return double The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	double toDoubleFromBasis(std::string_view::const_iterator first, std::string_view::const_iterator last);
+	double toDoubleFromBasis(std::string::const_iterator first, std::string::const_iterator last);
 	
 	/// @brief Converts a string with a number in decimal notation to a number.
 	///
@@ -65,7 +66,7 @@ namespace ieml {
 	/// @return double The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	double toDoubleFromDecimal(std::string_view::const_iterator first, std::string_view::const_iterator last);
+	double toDoubleFromDecimal(std::string::const_iterator first, std::string::const_iterator last);
 	
 	/// @brief Converts a string with a number.
 	///
@@ -75,5 +76,5 @@ namespace ieml {
 	/// @return double The number obtained from the string.
 	///
 	/// @note Does not check for correct input.
-	double toDouble(std::string_view::const_iterator first, std::string_view::const_iterator last);
+	double toDouble(std::string::const_iterator first, std::string::const_iterator last);
 }

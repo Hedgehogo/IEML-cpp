@@ -3,5 +3,13 @@
 #include <string>
 
 namespace ieml {
-	bool toBool(std::string_view::const_iterator first, std::string_view::const_iterator last);
+	/// @brief Converts a letter into the bool.
+	///
+	/// @param first Beginning of a string containing a bool.
+	/// @param last End of a string containing a bool.
+	///
+	/// @return bool The bool obtained from the string.
+	///
+	/// @note Does not check for correct input.
+	bool toBool(std::string::const_iterator first, std::string::const_iterator last);
 }

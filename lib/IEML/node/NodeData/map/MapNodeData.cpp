@@ -7,6 +7,14 @@ namespace ieml {
 		return NodeType::Map;
 	}
 	
+	std::size_t MapNodeData::getSize() {
+		return map.size();
+	}
+	
+	std::map<std::string, Node> &MapNodeData::getMap() {
+		return map;
+	}
+	
 	Node &MapNodeData::at(std::string key) {
 		map.at(key);
 		return map.at(key);

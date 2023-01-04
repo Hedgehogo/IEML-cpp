@@ -8,8 +8,6 @@ namespace ieml {
 			return "List";
 		} else if(nodeType == NodeType::Map) {
 			return "Map";
-		} else if(nodeType == NodeType::File) {
-			return "File";
 		} else {
 			return "Null";
 		}

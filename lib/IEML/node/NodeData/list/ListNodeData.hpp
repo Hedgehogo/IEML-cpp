@@ -13,6 +13,8 @@ namespace ieml {
 		
 		NodeType getNodeType() override;
 		
+		std::size_t getSize() override;
+		
 		Node &at(std::size_t index) override;
 	};
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "../NodeType/NodeType.hpp"
 #include <string>
+#include <map>
 
 namespace ieml {
 	using llint = long long;
@@ -40,10 +41,20 @@ namespace ieml {
 		/// @return A tag or throws an exception NotRequestedTypeException.
 		virtual std::string getFilePath();
 		
+		/// @brief Gets the size.
+		///
+		/// @return A size or throws an exception NotRequestedTypeException.
+		virtual std::size_t getSize();
+		
 		/// @brief Gets the string value.
 		///
 		/// @return A string value or throws an exception NotRequestedTypeException.
 		virtual std::string getString();
+		
+		/// @brief Gets the node map.
+		///
+		/// @return A node map or throws an exception NotRequestedTypeException.
+		virtual std::map<std::string, Node> &getMap();
 		
 		/// @brief Gets a node from the list by index.
 		///

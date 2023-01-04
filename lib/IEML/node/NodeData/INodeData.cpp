@@ -19,11 +19,19 @@ namespace ieml {
 	}
 	
 	std::string INodeData::getFilePath() {
-		throw NodeAnotherTypeException{NodeType::File, getNodeType()};;
+		throw NodeAnotherTypeException{NodeType::Null, getNodeType()};
+	}
+	
+	std::size_t INodeData::getSize() {
+		throw NodeAnotherTypeException{NodeType::List, getNodeType()};
 	}
 	
 	std::string INodeData::getString() {
 		throw NodeAnotherTypeException{NodeType::Scalar, getNodeType()};
+	}
+	
+	std::map<std::string, Node> &INodeData::getMap() {
+		throw NodeAnotherTypeException{NodeType::Map, getNodeType()};
 	}
 	
 	Node &INodeData::at(std::size_t index) {

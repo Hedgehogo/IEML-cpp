@@ -1,8 +1,8 @@
 #include <iostream>
-#include "lib/IEML/preprocess/preprocess.hpp"
+#include "lib/IEML/node/Node/Node.hpp"
+#include "lib/IEML/print/print.hpp"
 
 int main() {
-	std::string string{"ahsgdjbs #asfh \n > asfasas \n \"asfasf\" #agsdj "};
-	std::cout << string << "\n";
-	std::cout << ieml::preprocess(string);
+	ieml::Node node{ieml::file("../exampleSrc/test.ieml")};
+	std::cout << node;
 }

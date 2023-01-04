@@ -8,7 +8,6 @@ namespace ieml {
 		Scalar,
 		List,
 		Map,
-		File
 	};
 	
 	/// @brief Creates a string from a node type.

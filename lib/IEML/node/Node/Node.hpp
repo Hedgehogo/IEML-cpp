@@ -17,9 +17,9 @@ namespace ieml {
 		Mark mark;
 		
 	public:
-		Node(std::string config);
+		Node(const std::string &config);
 		
-		Node(PData data, Mark mark);
+		Node(PData data, Mark mark = {0, 0});
 		
 		/// @brief Gets the node mark.
 		///
@@ -29,7 +29,7 @@ namespace ieml {
 		/// @brief Gets the node type.
 		///
 		/// @return The node type.
-		NodeType getNodeType();
+		NodeType getType();
 		
 		/// @brief Asks if a node has a tag.
 		///
@@ -50,6 +50,16 @@ namespace ieml {
 		///
 		/// @return A tag or throws an exception NotRequestedTypeException.
 		std::string getFilePath();
+		
+		/// @brief Gets the size.
+		///
+		/// @return A size or throws an exception NotRequestedTypeException.
+		std::size_t getSize();
+		
+		/// @brief Gets the node map.
+		///
+		/// @return A node map or throws an exception NotRequestedTypeException.
+		std::map<std::string, Node> &getMap();
 		
 		/// @brief Gets the T value.
 		///
@@ -73,7 +83,7 @@ namespace ieml {
 		Node &at(std::string key);
 	};
 	
-	INodeData* parse(std::string_view config);
+	Node file(const std::string& filePath);
 }
 
 #include "Node.inl"

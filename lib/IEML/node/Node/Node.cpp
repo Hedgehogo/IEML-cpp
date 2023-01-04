@@ -1,16 +1,12 @@
 #include <algorithm>
 #include "Node.hpp"
-#include "../NodeData/scalar/ScalarNodeData.hpp"
-#include "../NodeData/null/NullNodeData.hpp"
-#include "../NodeData/list/ListNodeData.hpp"
-#include "../NodeData/map/MapNodeData.hpp"
 #include "../NodeData/file/FileNodeData.hpp"
-#include "../NodeData/tag/TagNodeData.hpp"
-#include "../../isValue/isValue.hpp"
-#include "../../toValue/toValue.hpp"
+#include "../../readFile/readFile.hpp"
+#include "../../preprocess/preprocess.hpp"
+#include "../../parse/parse.hpp"
 
 namespace ieml {
-	Node::Node(std::string config) : data(parse(config)), mark({0, 0}) {}
+	Node::Node(const std::string &config) : data(parse(preprocess(config), mark)), mark({0, 0}) {}
 	
 	Node::Node(Node::PData data, Mark mark) : data(std::move(data)), mark(mark) {}
 	
@@ -18,7 +14,7 @@ namespace ieml {
 		return mark;
 	}
 	
-	NodeType Node::getNodeType() {
+	NodeType Node::getType() {
 		return data->getNodeType();
 	}
 	
@@ -38,6 +34,10 @@ namespace ieml {
 		return data->getFilePath();
 	}
 	
+	std::size_t Node::getSize() {
+		return data->getSize();
+	}
+	
 	Node &Node::at(std::size_t index) {
 		return data->at(index);
 	}
@@ -46,30 +46,19 @@ namespace ieml {
 		return data->at(key);
 	}
 	
-	INodeData* parse(std::string_view config) {
-		auto first{config.begin()};
-		auto last{config.end()};
-		auto line{std::find(first, last, '\n')};
-		
-		
-		
-		if(isEnter(config.begin(), config.end())) {
-		
-		} else if(isShortList(config.begin(), config.end())) {
-		
-		} else if(isFile(config.begin(), config.end())) {
-		
-		} else if(isNull(config.begin(), config.end())) {
-			return new NullNodeData{{config.begin(), config.end()}};
-		} else {
-			return new ScalarNodeData{{config.begin(), config.end()}};
-		}
-		return new NullNodeData(std::string{});
+	std::map<std::string, Node> &Node::getMap() {
+		return data->getMap();
 	}
 	
 	AsIf<std::string>::AsIf(const Node &node) : node(&node) {}
 	
 	std::string AsIf<std::string>::operator()() {
 		return node->data->getString();
+	}
+	
+	Node file(const std::string &filePath) {
+		Mark mark{0, 0};
+		INodeData *data{parse(preprocess(readFile<char>(filePath)), mark)};
+		return Node{std::make_unique<FileNodeData>(std::unique_ptr<INodeData>{data}, filePath), mark};
 	}
 }
