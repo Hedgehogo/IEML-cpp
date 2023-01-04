@@ -1,8 +1,8 @@
 #pragma once
+#include <memory>
 #include "../NodeData/INodeData.hpp"
 #include "../Mark/Mark.hpp"
 #include "as/as.hpp"
-#include <memory>
 
 namespace ieml {
 	class Node {
@@ -20,6 +20,8 @@ namespace ieml {
 		Node(const std::string &config);
 		
 		Node(PData data, Mark mark = {0, 0});
+		
+		Node(const Node& node);
 		
 		/// @brief Gets the node mark.
 		///
@@ -49,7 +51,7 @@ namespace ieml {
 		/// @brief Gets the tag.
 		///
 		/// @return A tag or throws an exception NotRequestedTypeException.
-		std::string getFilePath();
+		fs::path getFilePath();
 		
 		/// @brief Gets the size.
 		///
@@ -83,7 +85,7 @@ namespace ieml {
 		Node &at(std::string key);
 	};
 	
-	Node file(const std::string& filePath);
+	Node file(const fs::path &filePath);
 }
 
 #include "Node.inl"

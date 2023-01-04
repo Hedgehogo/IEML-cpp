@@ -3,7 +3,7 @@
 
 namespace ieml {
 	template<typename T>
-	std::basic_string<T> readFile(std::string filePath);
+	std::basic_string<T> readFile(fs::path filePath);
 }
 
 #include "readFile.inl"

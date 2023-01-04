@@ -14,4 +14,8 @@ namespace ieml {
 	Node &ListNodeData::at(std::size_t index) {
 		return list.at(index);
 	}
+	
+	ListNodeData *ListNodeData::copy() {
+		return new ListNodeData{list};
+	}
 }

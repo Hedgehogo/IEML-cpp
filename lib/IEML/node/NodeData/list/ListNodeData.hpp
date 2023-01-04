@@ -16,5 +16,7 @@ namespace ieml {
 		std::size_t getSize() override;
 		
 		Node &at(std::size_t index) override;
+		
+		ListNodeData *copy() override;
 	};
 }

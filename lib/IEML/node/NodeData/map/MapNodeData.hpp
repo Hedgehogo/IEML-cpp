@@ -19,5 +19,7 @@ namespace ieml {
 		std::map<std::string, Node> &getMap() override;
 		
 		Node &at(std::string key) override;
+		
+		MapNodeData *copy() override;
 	};
 }

@@ -8,7 +8,9 @@
 namespace ieml {
 	Node::Node(const std::string &config) : data(parse(preprocess(config), mark)), mark({0, 0}) {}
 	
-	Node::Node(Node::PData data, Mark mark) : data(std::move(data)), mark(mark) {}
+	Node::Node(PData data, Mark mark) : data(std::move(data)), mark(mark) {}
+	
+	Node::Node(const Node &node) : data(node.data->copy()), mark(node.mark) {}
 	
 	Mark Node::getMark() {
 		return mark;
@@ -30,7 +32,7 @@ namespace ieml {
 		return data->isFile();
 	}
 	
-	std::string Node::getFilePath() {
+	fs::path Node::getFilePath() {
 		return data->getFilePath();
 	}
 	
@@ -56,7 +58,7 @@ namespace ieml {
 		return node->data->getString();
 	}
 	
-	Node file(const std::string &filePath) {
+	Node file(const fs::path &filePath) {
 		Mark mark{0, 0};
 		INodeData *data{parse(preprocess(readFile<char>(filePath)), mark)};
 		return Node{std::make_unique<FileNodeData>(std::unique_ptr<INodeData>{data}, filePath), mark};

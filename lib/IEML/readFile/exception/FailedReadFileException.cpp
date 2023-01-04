@@ -1,10 +1,10 @@
 #include "FailedReadFileException.hpp"
 
 namespace ieml {
-	FailedReadFileException::FailedReadFileException(std::string filePath) :
-		BaseException(std::string("Failed to read the file in the '") + filePath + std::string("' path")) {}
+	FailedReadFileException::FailedReadFileException(fs::path filePath) :
+		BaseException(std::string("Failed to read the file in the '") + filePath.string() + std::string("' path")) {}
 	
-	std::string FailedReadFileException::getFilePath() {
+	fs::path FailedReadFileException::getFilePath() {
 		return filePath;
 	}
 }

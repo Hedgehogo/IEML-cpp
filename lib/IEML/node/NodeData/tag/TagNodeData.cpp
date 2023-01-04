@@ -1,3 +1,4 @@
+#include <filesystem>
 #include "TagNodeData.hpp"
 
 namespace ieml {
@@ -11,7 +12,7 @@ namespace ieml {
 		return nodeData->isFile();
 	}
 	
-	std::string TagNodeData::getFilePath() {
+	fs::path TagNodeData::getFilePath() {
 		return nodeData->getFilePath();
 	}
 	
@@ -41,5 +42,9 @@ namespace ieml {
 	
 	Node &TagNodeData::at(std::string key) {
 		return nodeData->at(key);
+	}
+	
+	TagNodeData *TagNodeData::copy() {
+		return new TagNodeData{PNodeData{nodeData->copy()}, tag};
 	}
 }

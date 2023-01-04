@@ -5,10 +5,10 @@ namespace ieml {
 	/// @breef Base class for scalar node data.
 	class ScalarNodeData : public INodeData {
 	private:
-		std::string string;
+		std::string str;
 		
 	public:
-		ScalarNodeData(std::string string);
+		ScalarNodeData(std::string str);
 		
 		NodeType getNodeType() override;
 		
@@ -16,6 +16,6 @@ namespace ieml {
 		
 		std::string getString() override;
 		
-		~ScalarNodeData() = default;
+		ScalarNodeData *copy() override;
 	};
 }

@@ -1,3 +1,4 @@
+#include <filesystem>
 #include "INodeData.hpp"
 #include "exception/NodeAnotherTypeException.hpp"
 
@@ -18,7 +19,7 @@ namespace ieml {
 		return false;
 	}
 	
-	std::string INodeData::getFilePath() {
+	fs::path INodeData::getFilePath() {
 		throw NodeAnotherTypeException{NodeType::Null, getNodeType()};
 	}
 	

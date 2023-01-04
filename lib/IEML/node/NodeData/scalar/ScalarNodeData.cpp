@@ -1,7 +1,7 @@
 #include "ScalarNodeData.hpp"
 
 namespace ieml {
-	ScalarNodeData::ScalarNodeData(std::string string) : string(string) {}
+	ScalarNodeData::ScalarNodeData(std::string str) : str(str) {}
 	
 	NodeType ScalarNodeData::getNodeType() {
 		return NodeType::Scalar;
@@ -9,5 +9,9 @@ namespace ieml {
 	
 	bool ScalarNodeData::isScalar() { return true; }
 	
-	std::string ScalarNodeData::getString() { return string; }
+	std::string ScalarNodeData::getString() { return str; }
+	
+	ScalarNodeData *ScalarNodeData::copy() {
+		return new ScalarNodeData{str};
+	}
 }

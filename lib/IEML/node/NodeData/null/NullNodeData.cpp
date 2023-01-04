@@ -1,9 +1,11 @@
 #include "NullNodeData.hpp"
 
 namespace ieml {
-	NullNodeData::NullNodeData(std::string string) : ScalarNodeData(string) {}
-	
 	NodeType NullNodeData::getNodeType() {
 		return NodeType::Null;
+	}
+	
+	NullNodeData *NullNodeData::copy() {
+		return new NullNodeData{};
 	}
 }

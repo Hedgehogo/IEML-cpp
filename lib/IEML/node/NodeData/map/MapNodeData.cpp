@@ -19,4 +19,8 @@ namespace ieml {
 		map.at(key);
 		return map.at(key);
 	}
+	
+	MapNodeData *MapNodeData::copy() {
+		return new MapNodeData{map};
+	}
 }

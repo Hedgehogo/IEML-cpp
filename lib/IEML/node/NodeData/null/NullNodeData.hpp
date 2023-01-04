@@ -1,11 +1,13 @@
 #pragma once
-#include "../scalar/ScalarNodeData.hpp"
+#include "../INodeData.hpp"
 
 namespace ieml {
-	class NullNodeData : public ScalarNodeData {
+	class NullNodeData : public INodeData {
 	public:
-		NullNodeData(std::string string);
+		NullNodeData() = default;
 		
 		NodeType getNodeType() override;
+		
+		NullNodeData *copy() override;
 	};
 }

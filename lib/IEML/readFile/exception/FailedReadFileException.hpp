@@ -1,17 +1,18 @@
 #pragma once
 #include "../../exceptions/BaseException.hpp"
+#include "../../fileSystem/fileSystem.hpp"
 
 namespace ieml {
 	class FailedReadFileException : public BaseException {
 	private:
-		std::string filePath;
+		fs::path filePath;
 	
 	public:
-		FailedReadFileException(std::string filePath);
+		FailedReadFileException(fs::path filePath);
 		
 		/// @brief Gets the path to the file.
 		///
 		/// @return Path to the file.
-		std::string getFilePath();
+		fs::path getFilePath();
 	};
 }

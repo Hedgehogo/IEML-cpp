@@ -1,1 +1,2 @@
-: asadshb
+key: &ref > 10
+ref-key: *ref

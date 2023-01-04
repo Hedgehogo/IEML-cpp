@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <ctre/functions.hpp>
 #include "../node/NodeData/tag/TagNodeData.hpp"
+#include "../reference/RefKeeper/RefKeeper.hpp"
 #include "emptyLines/emptyLines.hpp"
 #include "parseNode/parseNode.hpp"
 #include "parseTag/parseTag.hpp"
@@ -14,6 +15,7 @@ namespace ieml {
 	INodeData *parse(const std::string &config, Mark &mark) {
 		std::string::const_iterator pos{config.cbegin()};
 		std::string::const_iterator end{config.cend()};
+		RefKeeper refKeeper{};
 		
 		skipEmptyLines(mark, pos, end);
 		
@@ -21,7 +23,7 @@ namespace ieml {
 		mark.symbol = indent;
 		
 		Mark beginMark{mark};
-		INodeData* nodeData{parseTag(true, mark, indent, pos, end)};
+		INodeData* nodeData{parseTag(pos, end, refKeeper, mark, indent, true)};
 		mark = beginMark;
 		return nodeData;
 	}

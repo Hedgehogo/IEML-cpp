@@ -1,6 +1,7 @@
 #pragma once
 #include "../INodeData.hpp"
 #include <memory>
+#include <filesystem>
 
 namespace ieml {
 	class TagNodeData : public INodeData {
@@ -17,7 +18,7 @@ namespace ieml {
 		
 		bool isFile() override;
 		
-		std::string getFilePath() override;
+		fs::path getFilePath() override;
 		
 		bool isWithTag() override;
 		
@@ -32,5 +33,7 @@ namespace ieml {
 		Node &at(std::size_t index) override;
 		
 		Node &at(std::string key) override;
+		
+		TagNodeData *copy() override;
 	};
 }

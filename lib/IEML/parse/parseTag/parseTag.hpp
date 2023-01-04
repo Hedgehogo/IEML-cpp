@@ -2,10 +2,11 @@
 #include <ctre/functions.hpp>
 #include "../../node/Mark/Mark.hpp"
 #include "../../node/NodeData/INodeData.hpp"
+#include "../../reference/RefKeeper/RefKeeper.hpp"
 
 namespace ieml {
 	static constexpr auto tagSpecial = ctll::fixed_string{ R"( ?= )" };
 	static constexpr auto tag = ctll::fixed_string{ R"( ?= [^\"\n>]*?: ?)" };
 	
-	INodeData *parseTag(bool lineBegin, Mark &mark, size_t indent, std::string::const_iterator& pos, std::string::const_iterator end);
+	INodeData *parseTag(std::string::const_iterator &pos, std::string::const_iterator end, RefKeeper &refKeeper, Mark &mark, size_t indent, bool lineBegin);
 }

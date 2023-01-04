@@ -1,7 +1,8 @@
 #pragma once
-#include "../NodeType/NodeType.hpp"
 #include <string>
 #include <map>
+#include "../../fileSystem/fileSystem.hpp"
+#include "../NodeType/NodeType.hpp"
 
 namespace ieml {
 	using llint = long long;
@@ -39,7 +40,7 @@ namespace ieml {
 		/// @brief Gets the tag.
 		///
 		/// @return A tag or throws an exception NotRequestedTypeException.
-		virtual std::string getFilePath();
+		virtual fs::path getFilePath();
 		
 		/// @brief Gets the size.
 		///
@@ -69,6 +70,11 @@ namespace ieml {
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
 		virtual Node &at(std::string key);
+		
+		/// @brief Gets a copy of the node data.
+		///
+		/// @return A node data.
+		virtual INodeData *copy() = 0;
 		
 		virtual ~INodeData() = default;
 	};

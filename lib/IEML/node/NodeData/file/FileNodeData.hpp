@@ -1,6 +1,6 @@
 #pragma once
-#include "../INodeData.hpp"
 #include <memory>
+#include "../INodeData.hpp"
 
 namespace ieml {
 	class FileNodeData : public INodeData {
@@ -8,16 +8,16 @@ namespace ieml {
 		using PNodeData = std::unique_ptr<INodeData>;
 		
 		PNodeData nodeData;
-		std::string filePath;
+		fs::path filePath;
 		
 	public:
-		FileNodeData(PNodeData nodeData, std::string filePath);
+		FileNodeData(PNodeData nodeData, fs::path filePath);
 		
 		NodeType getNodeType() override;
 		
 		bool isFile() override;
 		
-		std::string getFilePath() override;
+		fs::path getFilePath() override;
 		
 		bool isWithTag() override;
 		
@@ -32,5 +32,7 @@ namespace ieml {
 		Node &at(std::size_t index) override;
 		
 		Node &at(std::string key) override;
+		
+		FileNodeData *copy() override;
 	};
 }

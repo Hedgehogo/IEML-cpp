@@ -1,7 +1,7 @@
 #include "FileNodeData.hpp"
 
 namespace ieml {
-	FileNodeData::FileNodeData(FileNodeData::PNodeData nodeData, std::string filePath) : nodeData(std::move(nodeData)), filePath(filePath) {}
+	FileNodeData::FileNodeData(PNodeData nodeData, fs::path filePath) : nodeData(std::move(nodeData)), filePath(filePath) {}
 	
 	NodeType FileNodeData::getNodeType() {
 		return nodeData->getNodeType();
@@ -11,7 +11,7 @@ namespace ieml {
 		return true;
 	}
 	
-	std::string FileNodeData::getFilePath() {
+	fs::path FileNodeData::getFilePath() {
 		return filePath;
 	}
 	
@@ -41,5 +41,9 @@ namespace ieml {
 	
 	Node &FileNodeData::at(std::string key) {
 		return nodeData->at(key);
+	}
+	
+	FileNodeData *FileNodeData::copy() {
+		return new FileNodeData{PNodeData{nodeData->copy()}, filePath};
 	}
 }
