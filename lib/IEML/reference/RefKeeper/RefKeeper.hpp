@@ -18,8 +18,6 @@ namespace ieml {
 		
 		void add(const std::string &key, INodeData* value);
 		
-		NodeDataMap::iterator find(const std::string &key);
-		
-		NodeDataMap::iterator end();
+		INodeData *get(const std::string &key);
 	};
 }

@@ -3,13 +3,13 @@
 #include "../../../../node/NodeData/map/MapNodeData.hpp"
 #include "../../../parseTag/parseTag.hpp"
 #include "../../../emptyLines/emptyLines.hpp"
-#include "../../../matchAndMove/matchAndMove.hpp"
+#include "../../../match/match.hpp"
 #include "../../../exceptions/FailedParseException.hpp"
-#include "../../parseNode.hpp"
+#include "../../../parseRef/parseRef.hpp"
 #include "../FindResult/FindResult.hpp"
 
 namespace ieml {
-	INodeData *parseMap(std::string::const_iterator &pos, std::string::const_iterator end, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+	INodeData *parseMap(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
 		FindResult currentIndentFind;
 		std::map<std::string, Node> nodes{};
 		do {
@@ -21,10 +21,10 @@ namespace ieml {
 				if(auto tagFind{ctre::search<tagSpecial>(find.begin(), find.end())}; tagFind) {
 					str = {find.begin(), tagFind.begin()};
 					std::string tagStr{tagFind.end(), find.end() - endIndent};
-					nodeData = new TagNodeData{std::unique_ptr<INodeData>(parseRef(pos, end, refKeeper, mark, indent + 1, false)), tagStr};
+					nodeData = new TagNodeData{std::unique_ptr<INodeData>(parseRef(pos, end, filePath, refKeeper, mark, indent + 1)), tagStr};
 				} else {
 					str = {find.begin(), find.end() - endIndent};
-					nodeData = parseRef(pos, end, refKeeper, mark, indent + 1, false);
+					nodeData = parseRef(pos, end, filePath, refKeeper, mark, indent + 1);
 				}
 				nodes.emplace(str, Node{std::unique_ptr<INodeData>{nodeData}, nodeMark});
 				currentIndentFind = matchAndMove<tabs>(mark, pos, end);

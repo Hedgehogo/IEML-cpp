@@ -7,5 +7,5 @@
 namespace ieml {
 	static constexpr auto listSpecial = ctll::fixed_string{ R"(- ?)" };
 	
-	INodeData *parseList(std::string::const_iterator &pos, std::string::const_iterator end, RefKeeper &refKeeper, Mark &mark, size_t indent);
+	INodeData *parseList(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent);
 }

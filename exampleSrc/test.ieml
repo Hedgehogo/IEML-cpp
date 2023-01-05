@@ -1,2 +1,4 @@
-key: &ref > 10
-ref-key: *ref
+a0:
+	- &str a1
+	- < ../exampleSrc/subtest.ieml
+b0: 15

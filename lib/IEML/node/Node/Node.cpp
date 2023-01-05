@@ -60,7 +60,7 @@ namespace ieml {
 	
 	Node file(const fs::path &filePath) {
 		Mark mark{0, 0};
-		INodeData *data{parse(preprocess(readFile<char>(filePath)), mark)};
+		INodeData *data{parse(preprocess(readFile<char>(filePath)), mark, filePath)};
 		return Node{std::make_unique<FileNodeData>(std::unique_ptr<INodeData>{data}, filePath), mark};
 	}
 }

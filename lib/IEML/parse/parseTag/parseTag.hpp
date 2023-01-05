@@ -8,5 +8,5 @@ namespace ieml {
 	static constexpr auto tagSpecial = ctll::fixed_string{ R"( ?= )" };
 	static constexpr auto tag = ctll::fixed_string{ R"( ?= [^\"\n>]*?: ?)" };
 	
-	INodeData *parseTag(std::string::const_iterator &pos, std::string::const_iterator end, RefKeeper &refKeeper, Mark &mark, size_t indent, bool lineBegin);
+	INodeData *parseTag(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent, bool lineBegin);
 }

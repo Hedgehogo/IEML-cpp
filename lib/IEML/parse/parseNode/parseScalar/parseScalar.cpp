@@ -4,7 +4,7 @@
 #include "../../../node/NodeData/null/NullNodeData.hpp"
 #include "../../../node/NodeData/scalar/ScalarNodeData.hpp"
 #include "../../emptyLines/emptyLines.hpp"
-#include "../../matchAndMove/matchAndMove.hpp"
+#include "../../match/match.hpp"
 #include "../../exceptions/FailedParseException.hpp"
 
 namespace ieml {
@@ -34,7 +34,7 @@ namespace ieml {
 		return str;
 	}
 	
-	INodeData *parseScalar(std::string::const_iterator &pos, std::string::const_iterator end, Mark &mark, size_t indent) {
+	INodeData *parseScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, Mark &mark, size_t indent) {
 		if(auto null = matchAndMove<nullScalar>(mark, pos, end); null) {
 			matchAndEnter<emptyLine>(mark, pos, end);
 			return new NullNodeData{};
@@ -59,6 +59,6 @@ namespace ieml {
 		if(auto general = matchAndEnter<stringScalar>(mark, pos, end); general) {
 			return new ScalarNodeData{{general.begin(), general.end() - 1}};
 		}
-		throw FailedParseException{{}, mark};
+		throw FailedParseException{filePath, mark};
 	}
 }

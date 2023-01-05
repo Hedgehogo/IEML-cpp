@@ -4,5 +4,5 @@
 #include "../../reference/RefKeeper/RefKeeper.hpp"
 
 namespace ieml {
-	INodeData *parseNode(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent);
+	INodeData *parseRef(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent);
 }
