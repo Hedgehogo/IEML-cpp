@@ -1,37 +1,42 @@
 #include "FileNodeData.hpp"
+#include "../../Node/Node.hpp"
 
 namespace ieml {
 	FileNodeData::FileNodeData(PNodeData nodeData, fs::path filePath) : nodeData(std::move(nodeData)), filePath(filePath) {}
 	
-	NodeType FileNodeData::getNodeType() {
+	NodeType FileNodeData::getNodeType() const {
 		return nodeData->getNodeType();
 	}
 	
-	bool FileNodeData::isFile() {
+	bool FileNodeData::isFile() const {
 		return true;
 	}
 	
-	fs::path FileNodeData::getFilePath() {
+	fs::path FileNodeData::getFilePath() const {
 		return filePath;
 	}
 	
-	bool FileNodeData::isWithTag() {
+	bool FileNodeData::isWithTag() const {
 		return nodeData->isWithTag();
 	}
 	
-	std::string FileNodeData::getTag() {
+	std::string FileNodeData::getTag() const {
 		return nodeData->getTag();
 	}
 	
-	std::size_t FileNodeData::getSize() {
+	std::size_t FileNodeData::getSize() const {
 		return nodeData->getSize();
 	}
 	
-	std::string FileNodeData::getString() {
+	std::string FileNodeData::getString() const {
 		return nodeData->getString();
 	}
 	
-	std::map<std::string, Node> &FileNodeData::getMap() {
+	std::vector<Node> FileNodeData::getList() const {
+		return nodeData->getList();
+	}
+	
+	std::map<std::string, Node> FileNodeData::getMap() const {
 		return nodeData->getMap();
 	}
 	
@@ -43,7 +48,7 @@ namespace ieml {
 		return nodeData->at(key);
 	}
 	
-	FileNodeData *FileNodeData::copy() {
+	FileNodeData *FileNodeData::copy() const {
 		return new FileNodeData{PNodeData{nodeData->copy()}, filePath};
 	}
 }

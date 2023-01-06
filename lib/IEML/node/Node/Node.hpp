@@ -8,12 +8,14 @@ namespace ieml {
 	class Node {
 	public:
 		template <typename T>
-		friend struct AsIf;
+		friend struct detail::DecodeImpl;
 		friend class RefKeeper;
 		
 		using PData = std::unique_ptr<INodeData>;
 		
 	private:
+		static Node undefined;
+		
 		PData data;
 		Mark mark;
 		
@@ -24,6 +26,16 @@ namespace ieml {
 		
 		Node(const Node& node);
 		
+		/// @brief Gets the undefined node.
+		///
+		/// @return The undefined node.
+		static Node &getUndefined();
+		
+		/// @brief Gets the node defined.
+		///
+		/// @return The node defined.
+		bool isDefined() const;
+		
 		/// @brief Gets the node mark.
 		///
 		/// @return The node mark.
@@ -32,7 +44,27 @@ namespace ieml {
 		/// @brief Gets the node type.
 		///
 		/// @return The node type.
-		NodeType getType();
+		NodeType getType() const;
+		
+		/// @brief Asks if the node is null.
+		///
+		/// @return Value whether a node is null.
+		bool isNull() const;
+		
+		/// @brief Asks if the node is scalar.
+		///
+		/// @return Value whether a node is scalar.
+		bool isScalar() const;
+		
+		/// @brief Asks if the node is list.
+		///
+		/// @return Value whether a node is list.
+		bool isList() const;
+		
+		/// @brief Asks if the node is map.
+		///
+		/// @return Value whether a node is map.
+		bool isMap() const;
 		
 		/// @brief Asks if a node has a tag.
 		///
@@ -62,14 +94,36 @@ namespace ieml {
 		/// @brief Gets the node map.
 		///
 		/// @return A node map or throws an exception NotRequestedTypeException.
-		std::map<std::string, Node> &getMap();
+		std::map<std::string, Node> getMap();
 		
 		/// @brief Gets the T value.
 		///
 		/// @tparam T Value type.
 		///
 		/// @return A T value or throws an exception NotRequestedTypeException.
-		template<typename T> T as();
+		template<typename T>
+		T as() const;
+		
+		/// @brief Gets the T value.
+		///
+		/// @tparam T Value type.
+		///
+		/// @param defaultValue Default value.
+		///
+		/// @return A T value or default T value.
+		template<typename T>
+		T asDefault(T&& defaultValue) const;
+		
+		/// @brief Gets the T pointer value.
+		///
+		/// @tparam Type Value pointer type.
+		/// @tparam ArgsTypes Types of arguments for constructor call.
+		///
+		/// @param args Arguments to call the constructor.
+		///
+		/// @return Pointer to an object or to an object created using the default constructors.
+		template<typename Type, typename... ArgsTypes>
+		Type *asDefaultPtr(ArgsTypes... args) const;
 		
 		/// @brief Gets a node from the list by index.
 		///
@@ -84,6 +138,25 @@ namespace ieml {
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
 		Node &at(std::string key);
+		
+		/// @brief Gets the node defined.
+		///
+		/// @return The node defined.
+		explicit operator bool() const;
+		
+		/// @brief Gets a node from the list by index.
+		///
+		/// @param index Index of the requested node.
+		///
+		/// @return A node or throws an exception NotRequestedTypeException.
+		Node &operator[](std::size_t index);
+		
+		/// @brief Gets a node from the map by key.
+		///
+		/// @param key Key of the requested node.
+		///
+		/// @return A node or throws an exception NotRequestedTypeException.
+		Node &operator[](std::string key);
 	};
 	
 	Node file(const fs::path &filePath);

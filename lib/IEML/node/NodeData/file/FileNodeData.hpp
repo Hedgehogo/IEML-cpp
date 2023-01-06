@@ -13,26 +13,28 @@ namespace ieml {
 	public:
 		FileNodeData(PNodeData nodeData, fs::path filePath);
 		
-		NodeType getNodeType() override;
+		NodeType getNodeType() const override;
 		
-		bool isFile() override;
+		bool isFile() const override;
 		
-		fs::path getFilePath() override;
+		fs::path getFilePath() const override;
 		
-		bool isWithTag() override;
+		bool isWithTag() const override;
 		
-		std::string getTag() override;
+		std::string getTag() const override;
 		
-		std::size_t getSize() override;
+		std::size_t getSize() const override;
 		
-		std::string getString() override;
+		std::string getString() const override;
 		
-		std::map<std::string, Node> &getMap() override;
+		std::vector<Node> getList() const override;
+		
+		std::map<std::string, Node> getMap() const override;
 		
 		Node &at(std::size_t index) override;
 		
 		Node &at(std::string key) override;
 		
-		FileNodeData *copy() override;
+		FileNodeData *copy() const override;
 	};
 }

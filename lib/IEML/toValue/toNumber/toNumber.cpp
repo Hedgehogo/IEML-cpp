@@ -36,7 +36,7 @@ namespace ieml {
 		if(last > start + 1 && start[0] == '0' && start[1] >= 'a') {
 			return toIntFromBasis(first, last);
 		} else {
-			return toIntFromBasis(first, last);
+			return toIntFromDecimal(first, last);
 		}
 	}
 	

@@ -8,25 +8,29 @@ namespace ieml {
 	template<typename T>
 	struct Decode;
 	
-	template<typename T>
-	struct AsIf {
-	private:
-		const Node* node;
+	namespace detail {
+		/// @brief Help structure to implement the conversion functions from a node to T
+		template<typename T>
+		struct DecodeImpl {
+			static bool func(const Node &node, T &object);
+		};
 		
-	public:
-		AsIf(const Node& node);
+		/// @brief Help structure to implement the conversion functions from a node to string
+		template<>
+		struct DecodeImpl<std::string> {
+			static bool func(const Node &node, std::string &object);
+		};
 		
-		T operator()();
-	};
-	
-	template<>
-	struct AsIf<std::string> {
-	private:
-		const Node* node;
+		/// @brief Help structure to implement the conversion functions from a node to list
+		template<>
+		struct DecodeImpl<std::vector<Node>> {
+			static bool func(const Node &node, std::vector<Node> &object);
+		};
 		
-	public:
-		AsIf(const Node& node);
-		
-		std::string operator()();
-	};
+		/// @brief Help structure to implement the conversion functions from a node to map
+		template<>
+		struct DecodeImpl<std::map<std::string, Node>> {
+			static bool func(const Node &node, std::map<std::string, Node> &object);
+		};
+	}
 }

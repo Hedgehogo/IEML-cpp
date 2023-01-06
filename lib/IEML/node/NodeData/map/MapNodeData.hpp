@@ -12,14 +12,14 @@ namespace ieml {
 	public:
 		MapNodeData(std::map<std::string, Node> map);
 		
-		NodeType getNodeType() override;
+		NodeType getNodeType() const override;
 		
-		std::size_t getSize() override;
+		std::size_t getSize() const override;
 		
-		std::map<std::string, Node> &getMap() override;
+		std::map<std::string, Node> getMap() const override;
 		
 		Node &at(std::string key) override;
 		
-		MapNodeData *copy() override;
+		MapNodeData *copy() const override;
 	};
 }

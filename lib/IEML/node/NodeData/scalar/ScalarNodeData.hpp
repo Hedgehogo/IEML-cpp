@@ -10,12 +10,12 @@ namespace ieml {
 	public:
 		ScalarNodeData(std::string str);
 		
-		NodeType getNodeType() override;
+		NodeType getNodeType() const override;
 		
-		bool isScalar() override;
+		bool isScalar() const override;
 		
-		std::string getString() override;
+		std::string getString() const override;
 		
-		ScalarNodeData *copy() override;
+		ScalarNodeData *copy() const override;
 	};
 }

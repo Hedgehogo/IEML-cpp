@@ -6,8 +6,8 @@ namespace ieml {
 	public:
 		NullNodeData() = default;
 		
-		NodeType getNodeType() override;
+		NodeType getNodeType() const override;
 		
-		NullNodeData *copy() override;
+		NullNodeData *copy() const override;
 	};
 }

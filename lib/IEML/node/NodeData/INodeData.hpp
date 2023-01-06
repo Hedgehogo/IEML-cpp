@@ -15,47 +15,52 @@ namespace ieml {
 		/// @brief Gets the node type.
 		///
 		/// @return Returns the node type.
-		virtual NodeType getNodeType() = 0;
+		virtual NodeType getNodeType() const = 0;
 		
 		/// @brief Asks if a node is a scalar.
 		///
 		/// @return Value if a node is a scalar.
-		virtual bool isScalar();
+		virtual bool isScalar() const;
 		
 		/// @brief Asks if a node has a tag.
 		///
 		/// @return Value if a node has a tag.
-		virtual bool isWithTag();
+		virtual bool isWithTag() const;
 		
 		/// @brief Gets the tag.
 		///
 		/// @return A tag or throws an exception NotRequestedTypeException.
-		virtual std::string getTag();
+		virtual std::string getTag() const;
 		
 		/// @brief Asks if a node has a tag.
 		///
 		/// @return Value if a node has a tag.
-		virtual bool isFile();
+		virtual bool isFile() const;
 		
 		/// @brief Gets the tag.
 		///
 		/// @return A tag or throws an exception NotRequestedTypeException.
-		virtual fs::path getFilePath();
+		virtual fs::path getFilePath() const;
 		
 		/// @brief Gets the size.
 		///
 		/// @return A size or throws an exception NotRequestedTypeException.
-		virtual std::size_t getSize();
+		virtual std::size_t getSize() const;
 		
 		/// @brief Gets the string value.
 		///
 		/// @return A string value or throws an exception NotRequestedTypeException.
-		virtual std::string getString();
+		virtual std::string getString() const;
+		
+		/// @brief Gets the node list.
+		///
+		/// @return A node list or throws an exception NotRequestedTypeException.
+		virtual std::vector<Node> getList() const;
 		
 		/// @brief Gets the node map.
 		///
 		/// @return A node map or throws an exception NotRequestedTypeException.
-		virtual std::map<std::string, Node> &getMap();
+		virtual std::map<std::string, Node> getMap() const;
 		
 		/// @brief Gets a node from the list by index.
 		///
@@ -74,7 +79,7 @@ namespace ieml {
 		/// @brief Gets a copy of the node data.
 		///
 		/// @return A node data.
-		virtual INodeData *copy() = 0;
+		virtual INodeData *copy() const = 0;
 		
 		virtual ~INodeData() = default;
 	};
