@@ -8,11 +8,11 @@
 #include "../../exceptions/FailedParseException.hpp"
 
 namespace ieml {
-	static constexpr auto nullScalar = ctll::fixed_string{R"(null ?)" };
-	static constexpr auto stringScalar = ctll::fixed_string{R"([^\"\n>]*?\n)" };
-	static constexpr auto classicScalar = ctll::fixed_string{R"(\"([^\"]|\\.)*?\")" };
-	static constexpr auto unshieldedScalar = ctll::fixed_string{R"(> .*?\n)" };
-	static constexpr auto whitespace = ctll::fixed_string{ R"([\t ]*)" };
+	static constexpr auto reNull = ctll::fixed_string{R"(null ?)" };
+	static constexpr auto reString = ctll::fixed_string{R"([^\"\n<>]*?\n)" };
+	static constexpr auto reClassicString = ctll::fixed_string{R"(\"([^\"]|\\.)*?\")" };
+	static constexpr auto reUnshieldedString = ctll::fixed_string{R"(> .*?\n)" };
+	static constexpr auto reWhitespace = ctll::fixed_string{R"([\t ]*)" };
 	
 	std::string handleClassicString(std::string::const_iterator pos, std::string::const_iterator end) {
 		std::string str{};
@@ -35,28 +35,28 @@ namespace ieml {
 	}
 	
 	INodeData *parseScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, Mark &mark, size_t indent) {
-		if(auto null = matchAndMove<nullScalar>(mark, pos, end); null) {
-			matchAndEnter<emptyLine>(mark, pos, end);
+		if(auto null = matchAndMove<reNull>(mark, pos, end); null) {
+			matchAndEnter<reEmptyLine>(mark, pos, end);
 			return new NullNodeData{};
 		}
-		if(auto classic = ctre::starts_with<classicScalar>(pos, end); classic) {
-			pos = ctre::starts_with<emptyLine>(classic.end(), end).end();
+		if(auto classic = ctre::starts_with<reClassicString>(pos, end); classic) {
+			pos = ctre::starts_with<reEmptyLine>(classic.end(), end).end();
 			mark.line += std::count(classic.begin(), classic.end(), '\n') + 1;
 			mark.symbol = 0;
 			return new ScalarNodeData{handleClassicString(classic.begin() + 1, classic.end() - 1)};
 		}
-		if(auto unshielded = matchAndEnter<unshieldedScalar>(mark, pos, end); unshielded) {
+		if(auto unshielded = matchAndEnter<reUnshieldedString>(mark, pos, end); unshielded) {
 			std::string str{};
 			while(unshielded) {
 				str.append(unshielded.begin() + 2, unshielded.end());
 				
-				unshielded = ctre::starts_with<whitespace>(pos, end);
-				unshielded = matchAndEnter<unshieldedScalar>(mark, unshielded.end(), pos, end);
+				unshielded = ctre::starts_with<reWhitespace>(pos, end);
+				unshielded = matchAndEnter<reUnshieldedString>(mark, unshielded.end(), pos, end);
 			}
 			str.pop_back();
 			return new ScalarNodeData{str};
 		}
-		if(auto general = matchAndEnter<stringScalar>(mark, pos, end); general) {
+		if(auto general = matchAndEnter<reString>(mark, pos, end); general) {
 			return new ScalarNodeData{{general.begin(), general.end() - 1}};
 		}
 		throw FailedParseException{filePath, mark};

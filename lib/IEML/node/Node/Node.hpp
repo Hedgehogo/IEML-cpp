@@ -9,6 +9,7 @@ namespace ieml {
 	public:
 		template <typename T>
 		friend struct AsIf;
+		friend class RefKeeper;
 		
 		using PData = std::unique_ptr<INodeData>;
 		

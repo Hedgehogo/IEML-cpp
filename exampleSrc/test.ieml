@@ -1,4 +1,5 @@
-a0:
-	- &str a1
+first:
+	- &str Hello, World!
 	- < ../exampleSrc/subtest.ieml
-b0: 15
+			str: Hello, IEML!
+second: Hello!

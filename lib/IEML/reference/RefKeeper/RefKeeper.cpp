@@ -1,4 +1,5 @@
 #include "RefKeeper.hpp"
+#include "../../node/Node/Node.hpp"
 
 namespace ieml {
 	RefKeeper::RefKeeper() : parent(nullptr) {}
@@ -7,6 +8,10 @@ namespace ieml {
 	
 	void RefKeeper::add(const std::string &key, INodeData *value) {
 		refs.emplace(key, PNodeData{value->copy()});
+	}
+	
+	void RefKeeper::add(const std::string &key, Node value) {
+		refs.emplace(key, PNodeData{value.data->copy()});
 	}
 	
 	INodeData *RefKeeper::get(const std::string &key) {

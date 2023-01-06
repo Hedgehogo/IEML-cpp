@@ -11,12 +11,12 @@ namespace ieml {
 		FindResult currentIndentFind;
 		std::vector<Node> nodes{};
 		do {
-			if(auto find{matchAndMove<listSpecial>(mark, pos, end)}; find) {
+			if(auto find{matchAndMove<reListSpecial>(mark, pos, end)}; find) {
 				Mark nodeMark{mark};
 				INodeData* nodeData{parseTag(pos, end, filePath, refKeeper, mark, indent, false)};
 				nodes.emplace_back(std::unique_ptr<INodeData>{nodeData}, nodeMark);
 				
-				currentIndentFind = matchAndMove<tabs>(mark, pos, end);
+				currentIndentFind = matchAndMove<reTabs>(mark, pos, end);
 			} else {
 				break;
 			}

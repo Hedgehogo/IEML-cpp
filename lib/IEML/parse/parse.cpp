@@ -6,13 +6,12 @@
 
 namespace ieml {
 	std::size_t determineIndent(std::string::const_iterator& pos, std::string::const_iterator end) {
-		return ctre::starts_with<tabs>(pos, end).end() - pos;
+		return ctre::starts_with<reTabs>(pos, end).end() - pos;
 	}
 	
 	INodeData *parse(const std::string &config, Mark &mark, RefKeeper &refKeeper, const fs::path &filePath) {
 		std::string::const_iterator pos{config.cbegin()};
 		std::string::const_iterator end{config.cend()};
-		RefKeeper subRefKeeper{refKeeper};
 		
 		skipEmptyLines(mark, pos, end);
 		
@@ -20,7 +19,7 @@ namespace ieml {
 		mark.symbol = indent;
 		
 		Mark beginMark{mark};
-		INodeData* nodeData{parseTag(pos, end, filePath, subRefKeeper, mark, indent, true)};
+		INodeData* nodeData{parseTag(pos, end, filePath, refKeeper, mark, indent, true)};
 		mark = beginMark;
 		return nodeData;
 	}

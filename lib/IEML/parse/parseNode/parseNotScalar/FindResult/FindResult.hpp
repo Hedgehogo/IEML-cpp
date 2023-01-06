@@ -3,7 +3,7 @@
 
 namespace ieml {
 	namespace detail {
-		static constexpr auto findResultRegex = ctll::fixed_string{ R"()" };
+		static constexpr auto reFindResult = ctll::fixed_string{R"()" };
 	}
-	using FindResult = decltype(ctre::starts_with<detail::findResultRegex>(std::declval<std::string::const_iterator>(), std::declval<std::string::const_iterator>()));
+	using FindResult = decltype(ctre::starts_with<detail::reFindResult>(std::declval<std::string::const_iterator>(), std::declval<std::string::const_iterator>()));
 }

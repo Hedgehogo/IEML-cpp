@@ -12,12 +12,12 @@ namespace ieml {
 	
 	INodeData *parseNode(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
 		if(ctre::starts_with<fileSpecial>(pos, end))
-			return parseFile(pos, end, filePath, refKeeper, mark);
-		if(ctre::starts_with<listSpecial>(pos, end))
+			return parseFile(pos, end, filePath, refKeeper, mark, indent);
+		if(ctre::starts_with<reListSpecial>(pos, end))
 			return parseList(pos, end, filePath, refKeeper, mark, indent);
-		if(ctre::starts_with<mapKey>(pos, end))
+		if(ctre::starts_with<reMapKey>(pos, end))
 			return parseMap(pos, end, filePath, refKeeper, mark, indent);
-		if(matchAndEnter<emptyLine>(mark, pos, end))
+		if(matchAndEnter<reEmptyLine>(mark, pos, end))
 			return parseNotScalar(pos, end, filePath, refKeeper, mark, indent);
 		return parseScalar(pos, end, filePath, mark, indent);
 	}

@@ -6,10 +6,10 @@
 
 namespace ieml {
 	INodeData *parseNotScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
-		auto currentIndentFind{matchAndMove<tabs>(mark, pos, end)};
+		auto currentIndentFind{matchAndMove<reTabs>(mark, pos, end)};
 		std::size_t currentIndent{static_cast<std::size_t>(currentIndentFind.size())};
 		if(currentIndent == indent) {
-			bool isList{ctre::starts_with<listSpecial>(pos, end)};
+			bool isList{ctre::starts_with<reListSpecial>(pos, end)};
 			if(isList) {
 				return parseList(pos, end, filePath, refKeeper, mark, indent);
 			} else {
