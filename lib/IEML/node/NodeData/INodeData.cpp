@@ -3,10 +3,6 @@
 #include "exception/NodeAnotherTypeException.hpp"
 
 namespace ieml {
-	bool INodeData::isScalar() const {
-		return false;
-	}
-	
 	bool INodeData::isWithTag() const {
 		return false;
 	}

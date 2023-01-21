@@ -1,4 +1,4 @@
-//included into getTypeName.hpp
+//included into Node.hpp
 #include "../../toValue/toValue.hpp"
 #include "../../isValue/isValue.hpp"
 #include "../../getTypeName/getTypeName.hpp"

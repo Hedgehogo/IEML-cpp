@@ -12,8 +12,6 @@ namespace ieml {
 		
 		NodeType getNodeType() const override;
 		
-		bool isScalar() const override;
-		
 		std::string getString() const override;
 		
 		ScalarNodeData *copy() const override;

@@ -17,11 +17,6 @@ namespace ieml {
 		/// @return Returns the node type.
 		virtual NodeType getNodeType() const = 0;
 		
-		/// @brief Asks if a node is a scalar.
-		///
-		/// @return Value if a node is a scalar.
-		virtual bool isScalar() const;
-		
 		/// @brief Asks if a node has a tag.
 		///
 		/// @return Value if a node has a tag.

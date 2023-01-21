@@ -24,6 +24,7 @@ namespace ieml {
 					case '"': str.push_back('\"'); break;
 					case 'n': str.push_back('\n'); break;
 					case 't': str.push_back('\t'); break;
+					case '\\': str.push_back('\\'); break;
 				}
 				pos = find + 2;
 			} else {
