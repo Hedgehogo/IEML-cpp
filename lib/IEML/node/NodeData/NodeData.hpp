@@ -1,6 +1,7 @@
 #pragma once
-#include <string>
 #include <map>
+#include <vector>
+#include <string>
 #include <variant>
 #include "../../fileSystem/fileSystem.hpp"
 #include "../NodeType/NodeType.hpp"
