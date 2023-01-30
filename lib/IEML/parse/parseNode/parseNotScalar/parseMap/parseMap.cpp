@@ -1,6 +1,5 @@
 #include "parseMap.hpp"
-#include "../../../../node/NodeData/tag/TagNodeData.hpp"
-#include "../../../../node/NodeData/map/MapNodeData.hpp"
+#include "../../../../node/Node/Node.hpp"
 #include "../../../parseTag/parseTag.hpp"
 #include "../../../emptyLines/emptyLines.hpp"
 #include "../../../match/match.hpp"
@@ -9,24 +8,24 @@
 #include "../FindResult/FindResult.hpp"
 
 namespace ieml {
-	INodeData *parseMap(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+	NodeData parseMap(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
 		FindResult currentIndentFind;
-		std::map<std::string, Node> nodes{};
+		MapNodeData nodes{};
 		do {
 			if(auto find{matchAndMove<reMapKey>(mark, pos, end)}; find) {
 				std::string str;
 				Mark nodeMark{mark};
-				INodeData* nodeData{nullptr};
+				NodeData nodeData;
 				int endIndent{*(find.end() - 1) == ' ' ? 2 : 1};
 				if(auto tagFind{ctre::search<reTagSpecial>(find.begin(), find.end())}; tagFind) {
 					str = {find.begin(), tagFind.begin()};
 					std::string tagStr{tagFind.end(), find.end() - endIndent};
-					nodeData = new TagNodeData{std::unique_ptr<INodeData>(parseRef(pos, end, filePath, refKeeper, mark, indent + 1)), tagStr};
+					nodeData = TagNodeData{new NodeData{parseRef(pos, end, filePath, refKeeper, mark, indent + 1)}, tagStr};
 				} else {
 					str = {find.begin(), find.end() - endIndent};
 					nodeData = parseRef(pos, end, filePath, refKeeper, mark, indent + 1);
 				}
-				nodes.emplace(str, Node{std::unique_ptr<INodeData>{nodeData}, nodeMark});
+				nodes.emplace(str, Node{nodeData, nodeMark});
 				currentIndentFind = matchAndMove<reTabs>(mark, pos, end);
 			} else {
 				break;
@@ -34,6 +33,6 @@ namespace ieml {
 		} while(currentIndentFind.size() == indent);
 		pos = currentIndentFind.begin();
 		mark.symbol = 0;
-		return new MapNodeData{std::move(nodes)};
+		return nodes;
 	}
 }

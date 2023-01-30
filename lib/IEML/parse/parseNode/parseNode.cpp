@@ -10,7 +10,7 @@
 namespace ieml {
 	static constexpr auto fileSpecial = ctll::fixed_string{ R"(< )" };
 	
-	INodeData *parseNode(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+	NodeData parseNode(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
 		if(ctre::starts_with<fileSpecial>(pos, end))
 			return parseFile(pos, end, filePath, refKeeper, mark, indent);
 		if(ctre::starts_with<reListSpecial>(pos, end))

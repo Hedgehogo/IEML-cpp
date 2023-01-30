@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "../NodeData/INodeData.hpp"
+#include "../NodeData/NodeData.hpp"
 #include "../Mark/Mark.hpp"
 #include "as/as.hpp"
 
@@ -11,25 +11,47 @@ namespace ieml {
 		friend struct detail::DecodeImpl;
 		friend class RefKeeper;
 		
-		using PData = std::unique_ptr<INodeData>;
-		
 	private:
 		static Node undefined;
 		
-		PData data;
+		NodeData data;
 		Mark mark;
+		
+		static const NodeData& getDataFrom(const NodeData& data);
+		
+		static NodeData& getDataFrom(NodeData& data);
+		
+		static const FileNodeData* getFileFrom(const NodeData& data);
+		
+		static FileNodeData* getFileFrom(NodeData& data);
+		
+		static const TagNodeData* getTagFrom(const NodeData& data);
+		
+		static TagNodeData* getTagFrom(NodeData& data);
+		
+		template <typename T, typename E>
+		const T& getT(E e) const;
+		
+		template <typename T, typename E>
+		T& getT(E e);
 		
 	public:
 		Node(const std::string &config);
 		
-		Node(PData data, Mark mark = {0, 0});
+		Node(NodeData data, Mark mark = {0, 0});
 		
-		Node(const Node& node);
+		template <typename T>
+		Node(T data, Mark mark = {0, 0});
 		
-		/// @brief Gets the undefined node.
+		template <typename T>
+		Node(T data, FilePath filePath, Mark mark = {0, 0});
+		
+		/// @brief Gets the node defined.
 		///
-		/// @return The undefined node.
-		static Node &getUndefined();
+		/// @param Node Node to check.
+		///
+		/// @return The node defined.
+		static bool isDefined(const Node &node);
 		
 		/// @brief Gets the node defined.
 		///
@@ -74,7 +96,7 @@ namespace ieml {
 		/// @brief Gets the tag.
 		///
 		/// @return A tag or throws an exception NotRequestedTypeException.
-		std::string getTag();
+		Tag getTag();
 		
 		/// @brief Asks if a node has a tag.
 		///
@@ -84,17 +106,22 @@ namespace ieml {
 		/// @brief Gets the tag.
 		///
 		/// @return A tag or throws an exception NotRequestedTypeException.
-		fs::path getFilePath();
+		FilePath getFilePath();
 		
 		/// @brief Gets the size.
 		///
 		/// @return A size or throws an exception NotRequestedTypeException.
 		std::size_t getSize();
 		
+		/// @brief Gets the node list.
+		///
+		/// @return A node list or throws an exception NotRequestedTypeException.
+		ListNodeData getList() const;
+		
 		/// @brief Gets the node map.
 		///
 		/// @return A node map or throws an exception NotRequestedTypeException.
-		std::map<std::string, Node> getMap();
+		MapNodeData getMap();
 		
 		/// @brief Gets the T value.
 		///

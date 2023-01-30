@@ -1,12 +1,11 @@
 #pragma once
 #include <map>
-#include "../../node/NodeData/INodeData.hpp"
+#include "../../node/NodeData/NodeData.hpp"
 
 namespace ieml {
 	class RefKeeper {
 	private:
-		using PNodeData = std::unique_ptr<INodeData>;
-		using NodeDataMap = std::map<std::string, PNodeData>;
+		using NodeDataMap = std::map<std::string, NodeData>;
 		
 		NodeDataMap refs;
 		RefKeeper* parent;
@@ -16,10 +15,10 @@ namespace ieml {
 		
 		RefKeeper(RefKeeper& parent);
 		
-		void add(const std::string &key, INodeData* value);
+		void add(const std::string &key, NodeData value);
 		
 		void add(const std::string &key, Node value);
 		
-		INodeData *get(const std::string &key);
+		NodeData *get(const std::string &key);
 	};
 }

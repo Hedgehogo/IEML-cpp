@@ -6,6 +6,30 @@
 #include "exception/FailedConvertDataException.hpp"
 
 namespace ieml {
+	template <typename T>
+	Node::Node(T data, Mark mark) :
+		data(std::move(data)), mark(mark) {}
+		
+	template <typename T>
+	Node::Node(T data, FilePath filePath, Mark mark) :
+		data(FileNodeData{new NodeData{std::move(data)}, filePath}), mark(mark) {}
+	
+	template <typename T, typename E>
+	const T& Node::getT(E e) const {
+		auto& clearData = getDataFrom(data);
+		if(auto typeData = std::get_if<T>(&clearData))
+			return *typeData;
+		throw e;
+	}
+	
+	template <typename T, typename E>
+	T &Node::getT(E e) {
+		auto& clearData = getDataFrom(data);
+		if(auto typeData = std::get_if<T>(&clearData))
+			return *typeData;
+		throw e;
+	}
+	
 	namespace detail {
 		template<typename T>
 		std::enable_if_t<!std::is_arithmetic_v<T>, bool> decode(const Node &node, T &object) {

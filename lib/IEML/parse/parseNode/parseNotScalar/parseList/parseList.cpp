@@ -1,5 +1,5 @@
 #include "parseList.hpp"
-#include "../../../../node/NodeData/list/ListNodeData.hpp"
+#include "../../../../node/Node/Node.hpp"
 #include "../../../parseTag/parseTag.hpp"
 #include "../../../emptyLines/emptyLines.hpp"
 #include "../../../match/match.hpp"
@@ -7,14 +7,14 @@
 #include "../FindResult/FindResult.hpp"
 
 namespace ieml {
-	INodeData *parseList(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+	NodeData parseList(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
 		FindResult currentIndentFind;
-		std::vector<Node> nodes{};
+		ListNodeData nodes{};
 		do {
 			if(auto find{matchAndMove<reListSpecial>(mark, pos, end)}; find) {
 				Mark nodeMark{mark};
-				INodeData* nodeData{parseTag(pos, end, filePath, refKeeper, mark, indent, false)};
-				nodes.emplace_back(std::unique_ptr<INodeData>{nodeData}, nodeMark);
+				NodeData nodeData{parseTag(pos, end, filePath, refKeeper, mark, indent, false)};
+				nodes.emplace_back(nodeData, nodeMark);
 				
 				currentIndentFind = matchAndMove<reTabs>(mark, pos, end);
 			} else {
@@ -23,6 +23,6 @@ namespace ieml {
 		} while(currentIndentFind.size() == indent);
 		pos = currentIndentFind.begin();
 		mark.symbol = 0;
-		return new ListNodeData{std::move(nodes)};
+		return nodes;
 	}
 }

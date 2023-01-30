@@ -1,8 +1,6 @@
 #include "parseScalar.hpp"
 #include <algorithm>
 #include <ctre/functions.hpp>
-#include "../../../node/NodeData/null/NullNodeData.hpp"
-#include "../../../node/NodeData/scalar/ScalarNodeData.hpp"
 #include "../../emptyLines/emptyLines.hpp"
 #include "../../match/match.hpp"
 #include "../../exceptions/FailedParseException.hpp"
@@ -35,16 +33,16 @@ namespace ieml {
 		return str;
 	}
 	
-	INodeData *parseScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, Mark &mark, size_t indent) {
+	NodeData parseScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, Mark &mark, size_t indent) {
 		if(auto null = matchAndMove<reNull>(mark, pos, end); null) {
 			matchAndEnter<reEmptyLine>(mark, pos, end);
-			return new NullNodeData{};
+			return NullNodeData{};
 		}
 		if(auto classic = ctre::starts_with<reClassicString>(pos, end); classic) {
 			pos = ctre::starts_with<reEmptyLine>(classic.end(), end).end();
 			mark.line += std::count(classic.begin(), classic.end(), '\n') + 1;
 			mark.symbol = 0;
-			return new ScalarNodeData{handleClassicString(classic.begin() + 1, classic.end() - 1)};
+			return ScalarNodeData{handleClassicString(classic.begin() + 1, classic.end() - 1)};
 		}
 		if(auto unshielded = matchAndEnter<reUnshieldedString>(mark, pos, end); unshielded) {
 			std::string str{};
@@ -55,10 +53,10 @@ namespace ieml {
 				unshielded = matchAndEnter<reUnshieldedString>(mark, unshielded.end(), pos, end);
 			}
 			str.pop_back();
-			return new ScalarNodeData{str};
+			return ScalarNodeData{str};
 		}
 		if(auto general = matchAndEnter<reString>(mark, pos, end); general) {
-			return new ScalarNodeData{{general.begin(), general.end() - 1}};
+			return ScalarNodeData{std::string{general.begin(), general.end() - 1}};
 		}
 		throw FailedParseException{filePath, mark};
 	}

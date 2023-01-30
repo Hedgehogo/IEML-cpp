@@ -5,7 +5,7 @@
 #include "../../exceptions/FailedParseException.hpp"
 
 namespace ieml {
-	INodeData *parseNotScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+	NodeData parseNotScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
 		auto currentIndentFind{matchAndMove<reTabs>(mark, pos, end)};
 		std::size_t currentIndent{static_cast<std::size_t>(currentIndentFind.size())};
 		if(currentIndent == indent) {
