@@ -7,7 +7,7 @@
 
 namespace ieml {
 	static constexpr auto reNull = ctll::fixed_string{R"(null ?)" };
-	static constexpr auto reString = ctll::fixed_string{R"([^\"\n<>]*?\n)" };
+	static constexpr auto reRaw = ctll::fixed_string{R"([^\"\n<>]*?\n)" };
 	static constexpr auto reClassicString = ctll::fixed_string{R"(\"([^\"]|\\.)*?\")" };
 	static constexpr auto reUnshieldedString = ctll::fixed_string{R"(> .*?\n)" };
 	static constexpr auto reWhitespace = ctll::fixed_string{R"([\t ]*)" };
@@ -23,6 +23,7 @@ namespace ieml {
 					case 'n': str.push_back('\n'); break;
 					case 't': str.push_back('\t'); break;
 					case '\\': str.push_back('\\'); break;
+					default: str.append(pos, pos + 2); break;
 				}
 				pos = find + 2;
 			} else {
@@ -42,7 +43,7 @@ namespace ieml {
 			pos = ctre::starts_with<reEmptyLine>(classic.end(), end).end();
 			mark.line += std::count(classic.begin(), classic.end(), '\n') + 1;
 			mark.symbol = 0;
-			return ScalarNodeData{handleClassicString(classic.begin() + 1, classic.end() - 1)};
+			return StringNodeData{handleClassicString(classic.begin() + 1, classic.end() - 1)};
 		}
 		if(auto unshielded = matchAndEnter<reUnshieldedString>(mark, pos, end); unshielded) {
 			std::string str{};
@@ -53,10 +54,10 @@ namespace ieml {
 				unshielded = matchAndEnter<reUnshieldedString>(mark, unshielded.end(), pos, end);
 			}
 			str.pop_back();
-			return ScalarNodeData{str};
+			return StringNodeData{str};
 		}
-		if(auto general = matchAndEnter<reString>(mark, pos, end); general) {
-			return ScalarNodeData{std::string{general.begin(), general.end() - 1}};
+		if(auto general = matchAndEnter<reRaw>(mark, pos, end); general) {
+			return RawNodeData{std::string{general.begin(), general.end() - 1}};
 		}
 		throw FailedParseException{filePath, mark};
 	}

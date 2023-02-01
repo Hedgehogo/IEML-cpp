@@ -73,10 +73,15 @@ namespace ieml {
 		/// @return Value whether a node is null.
 		bool isNull() const;
 		
+		/// @brief Asks if the node is raw.
+		///
+		/// @return Value whether a node is raw.
+		bool isRaw() const;
+		
 		/// @brief Asks if the node is scalar.
 		///
 		/// @return Value whether a node is scalar.
-		bool isScalar() const;
+		bool isString() const;
 		
 		/// @brief Asks if the node is list.
 		///

@@ -1,5 +1,5 @@
 first:
 	- &str 10
 	- < ../exampleSrc/subtest.ieml
-			str: Hello, IEML!
-second: Hello!
+			str: > Hello, IEML!
+second: > Hello!

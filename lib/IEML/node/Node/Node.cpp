@@ -85,13 +85,7 @@ namespace ieml {
 	
 	NodeType Node::getType() const {
 		auto& clearData = getDataFrom(data);
-		if(std::holds_alternative<ScalarNodeData>(clearData))
-			return NodeType::Scalar;
-		if(std::holds_alternative<ListNodeData>(clearData))
-			return NodeType::List;
-		if(std::holds_alternative<MapNodeData>(clearData))
-			return NodeType::Map;
-		return NodeType::Null;
+		return getNodeTypeFromIndex(clearData.index());
 	}
 	
 	bool Node::isNull() const {
@@ -99,9 +93,14 @@ namespace ieml {
 		return std::holds_alternative<NullNodeData>(clearData);
 	}
 	
-	bool Node::isScalar() const {
+	bool Node::isRaw() const {
 		auto& clearData = getDataFrom(data);
-		return std::holds_alternative<ScalarNodeData>(clearData);
+		return std::holds_alternative<RawNodeData>(clearData);
+	}
+	
+	bool Node::isString() const {
+		auto& clearData = getDataFrom(data);
+		return std::holds_alternative<StringNodeData>(clearData);
 	}
 	
 	bool Node::isList() const {
@@ -178,9 +177,18 @@ namespace ieml {
 	}
 	
 	namespace detail {
+		bool DecodeImpl<RawNodeData>::func(const Node &node, RawNodeData &object) {
+			auto& clearData = Node::getDataFrom(node.data);
+			if(auto strData = std::get_if<RawNodeData>(&clearData)) {
+				object = *strData;
+				return true;
+			}
+			return false;
+		}
+		
 		bool DecodeImpl<std::string>::func(const Node &node, std::string &object) {
 			auto& clearData = Node::getDataFrom(node.data);
-			if(auto strData = std::get_if<ScalarNodeData>(&clearData)) {
+			if(auto strData = std::get_if<StringNodeData>(&clearData)) {
 				object = *strData;
 				return true;
 			}

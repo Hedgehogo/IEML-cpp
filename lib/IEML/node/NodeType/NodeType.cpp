@@ -2,8 +2,10 @@
 
 namespace ieml {
 	std::string getNodeTypeString(NodeType nodeType) {
-		if(nodeType == NodeType::Scalar) {
-			return "Scalar";
+		if(nodeType == NodeType::String) {
+			return "String";
+		} else if(nodeType == NodeType::Raw) {
+			return "Raw";
 		} else if(nodeType == NodeType::List) {
 			return "List";
 		} else if(nodeType == NodeType::Map) {

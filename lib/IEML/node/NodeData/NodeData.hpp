@@ -24,7 +24,7 @@ namespace ieml {
 	struct FileNodeData;
 	
 	/// @brief Node data storing scalar
-	using ScalarNodeData = std::string;
+	using StringNodeData = std::string;
 	
 	/// @brief Node data storing a list of other nodes
 	using ListNodeData = std::vector<Node>;
@@ -32,8 +32,15 @@ namespace ieml {
 	/// @brief Node data storing a map of named other nodes
 	using MapNodeData = std::map<std::string, Node>;
 	
+	/// @brief Node data storing the raw string
+	struct RawNodeData {
+		std::string str;
+		
+		operator std::string() const;
+	};
+	
 	/// @brief Variant for storing different node data
-	using NodeData = std::variant<NullNodeData, ScalarNodeData, ListNodeData, MapNodeData, TagNodeData, FileNodeData>;
+	using NodeData = std::variant<NullNodeData, RawNodeData, StringNodeData, ListNodeData, MapNodeData, TagNodeData, FileNodeData>;
 	using PNodeData = NodeData*;
 	
 	struct TagNodeData {
