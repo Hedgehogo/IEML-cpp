@@ -22,7 +22,7 @@ namespace ieml {
 		
 		switch(type) {
 			case NodeType::Null: stream << indent << "null\n"; break;
-			case NodeType::Raw: stream << indent << "\"" << node.as<RawNodeData>().str << "\"\n"; break;
+			case NodeType::Raw: stream << indent << "\"" << node.as<RawData>().str << "\"\n"; break;
 			case NodeType::String: stream << indent << "\"" << node.as<std::string>() << "\"\n"; break;
 			case NodeType::List:
 				for(std::size_t i{0}; i < node.getSize(); ++i) {

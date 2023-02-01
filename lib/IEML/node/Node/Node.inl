@@ -12,7 +12,7 @@ namespace ieml {
 		
 	template <typename T>
 	Node::Node(T data, FilePath filePath, Mark mark) :
-		data(FileNodeData{new NodeData{std::move(data)}, filePath}), mark(mark) {}
+		data(FileData{new NodeData{std::move(data)}, filePath}), mark(mark) {}
 	
 	template <typename T, typename E>
 	const T& Node::getT(E e) const {
@@ -38,8 +38,8 @@ namespace ieml {
 		
 		template<typename T>
 		std::enable_if_t<std::is_integral_v<T>, bool> decode(const Node &node, T &object) {
-			if(node.isString()) {
-				std::string str{node.as<RawNodeData>()};
+			if(node.isRaw()) {
+				std::string str{node.as<RawData>()};
 				if(isInt(str.cbegin(), str.cend())) {
 					object = static_cast<T>(toInt(str.cbegin(), str.cend()));
 					return true;
@@ -50,8 +50,8 @@ namespace ieml {
 		
 		template<typename T>
 		std::enable_if_t<std::is_floating_point_v<T>, bool> decode(const Node &node, T &object) {
-			if(node.isString()) {
-				std::string str{node.as<RawNodeData>()};
+			if(node.isRaw()) {
+				std::string str{node.as<RawData>()};
 				if(isDouble(str.cbegin(), str.cend()) || isInt(str.cbegin(), str.cend())) {
 					object = static_cast<T>(toDouble(str.cbegin(), str.cend()));
 					return true;

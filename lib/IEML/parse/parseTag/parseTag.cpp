@@ -7,7 +7,7 @@ namespace ieml {
 		if(auto tagFind{matchAndMove<reTag>(mark, pos + (lineBegin ? indent : 0), pos, end)}; tagFind) {
 			int endIndent{*(tagFind.end() - 1) == ' ' ? 2 : 1};
 			std::string tagStr{tagFind.begin() + 2, tagFind.end() - endIndent};
-			return TagNodeData{new NodeData{parseRef(pos, end, filePath, refKeeper, mark, indent + 1)}, tagStr};
+			return TagData{new NodeData{parseRef(pos, end, filePath, refKeeper, mark, indent + 1)}, tagStr};
 		} else {
 			return parseRef(pos, end, filePath, refKeeper, mark, indent + (lineBegin ? 0 : 1));
 		}

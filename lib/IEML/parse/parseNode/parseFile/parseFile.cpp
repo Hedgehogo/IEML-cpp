@@ -22,7 +22,7 @@ namespace ieml {
 	}
 	
 	void fillOutRefMap(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
-		MapNodeData refMap{std::get<MapNodeData>(parseMap(pos, end, filePath, refKeeper, mark, indent))};
+		MapData refMap{std::get<MapData>(parseMap(pos, end, filePath, refKeeper, mark, indent))};
 		for(auto& [key, value] : refMap) {
 			refKeeper.add(key, value);
 		}
@@ -35,7 +35,7 @@ namespace ieml {
 			FilePath loadedFilePath{fs::u8path(find.begin() + 2, find.end() - 1)};
 			if(hasRefMapAndMove(pos, end, mark, indent + 1)) fillOutRefMap(pos, end, filePath, loadedRefKeeper, mark, indent + 1);
 			NodeData loadedData{parse(preprocess(readFile<char>(loadedFilePath)), loadedMark, loadedRefKeeper, loadedFilePath)};
-			return FileNodeData{new NodeData{loadedData}, loadedFilePath};
+			return FileData{new NodeData{loadedData}, loadedFilePath};
 		}
 		throw FailedParseException{filePath, mark};
 	}

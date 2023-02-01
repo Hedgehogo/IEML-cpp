@@ -9,7 +9,7 @@
 namespace ieml {
 	NodeData parseList(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
 		FindResult currentIndentFind;
-		ListNodeData nodes{};
+		ListData nodes{};
 		do {
 			if(auto find{matchAndMove<reListSpecial>(mark, pos, end)}; find) {
 				Mark nodeMark{mark};

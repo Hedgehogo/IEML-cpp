@@ -10,7 +10,7 @@
 namespace ieml {
 	NodeData parseMap(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
 		FindResult currentIndentFind;
-		MapNodeData nodes{};
+		MapData nodes{};
 		do {
 			if(auto find{matchAndMove<reMapKey>(mark, pos, end)}; find) {
 				std::string str;
@@ -20,7 +20,7 @@ namespace ieml {
 				if(auto tagFind{ctre::search<reTagSpecial>(find.begin(), find.end())}; tagFind) {
 					str = {find.begin(), tagFind.begin()};
 					std::string tagStr{tagFind.end(), find.end() - endIndent};
-					nodeData = TagNodeData{new NodeData{parseRef(pos, end, filePath, refKeeper, mark, indent + 1)}, tagStr};
+					nodeData = TagData{new NodeData{parseRef(pos, end, filePath, refKeeper, mark, indent + 1)}, tagStr};
 				} else {
 					str = {find.begin(), find.end() - endIndent};
 					nodeData = parseRef(pos, end, filePath, refKeeper, mark, indent + 1);

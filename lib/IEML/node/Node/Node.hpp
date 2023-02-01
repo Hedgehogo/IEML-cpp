@@ -21,13 +21,13 @@ namespace ieml {
 		
 		static NodeData& getDataFrom(NodeData& data);
 		
-		static const FileNodeData* getFileFrom(const NodeData& data);
+		static const FileData* getFileFrom(const NodeData& data);
 		
-		static FileNodeData* getFileFrom(NodeData& data);
+		static FileData* getFileFrom(NodeData& data);
 		
-		static const TagNodeData* getTagFrom(const NodeData& data);
+		static const TagData* getTagFrom(const NodeData& data);
 		
-		static TagNodeData* getTagFrom(NodeData& data);
+		static TagData* getTagFrom(NodeData& data);
 		
 		template <typename T, typename E>
 		const T& getT(E e) const;
@@ -121,12 +121,12 @@ namespace ieml {
 		/// @brief Gets the node list.
 		///
 		/// @return A node list or throws an exception NotRequestedTypeException.
-		ListNodeData getList() const;
+		ListData getList() const;
 		
 		/// @brief Gets the node map.
 		///
 		/// @return A node map or throws an exception NotRequestedTypeException.
-		MapNodeData getMap();
+		MapData getMap();
 		
 		/// @brief Gets the T value.
 		///

@@ -17,8 +17,8 @@ namespace ieml {
 		
 		/// @brief Help structure to implement the conversion functions from a node to raw data
 		template<>
-		struct DecodeImpl<RawNodeData> {
-			static bool func(const Node &node, RawNodeData &object);
+		struct DecodeImpl<RawData> {
+			static bool func(const Node &node, RawData &object);
 		};
 		
 		/// @brief Help structure to implement the conversion functions from a node to string

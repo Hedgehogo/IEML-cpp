@@ -15,53 +15,55 @@ namespace ieml {
 	using FilePath = ieml::fs::path;
 	
 	/// @brief Node data storing null
-	struct NullNodeData {};
-	
-	/// @brief Node data storing tag and other data
-	struct TagNodeData;
-	
-	/// @brief Node data storing the file path and other data
-	struct FileNodeData;
-	
-	/// @brief Node data storing scalar
-	using StringNodeData = std::string;
-	
-	/// @brief Node data storing a list of other nodes
-	using ListNodeData = std::vector<Node>;
-	
-	/// @brief Node data storing a map of named other nodes
-	using MapNodeData = std::map<std::string, Node>;
+	struct NullData {};
 	
 	/// @brief Node data storing the raw string
-	struct RawNodeData {
+	struct RawData;
+	
+	/// @brief Node data storing scalar
+	using StringData = std::string;
+	
+	/// @brief Node data storing a list of other nodes
+	using ListData = std::vector<Node>;
+	
+	/// @brief Node data storing a map of named other nodes
+	using MapData = std::map<std::string, Node>;
+	
+	/// @brief Node data storing tag and other data
+	struct TagData;
+	
+	/// @brief Node data storing the file path and other data
+	struct FileData;
+	
+	/// @brief Variant for storing different node data
+	using NodeData = std::variant<NullData, RawData, StringData, ListData, MapData, TagData, FileData>;
+	using PNodeData = NodeData*;
+	
+	struct RawData {
 		std::string str;
 		
 		operator std::string() const;
 	};
 	
-	/// @brief Variant for storing different node data
-	using NodeData = std::variant<NullNodeData, RawNodeData, StringNodeData, ListNodeData, MapNodeData, TagNodeData, FileNodeData>;
-	using PNodeData = NodeData*;
-	
-	struct TagNodeData {
+	struct TagData {
 		PNodeData data;
 		Tag tag;
 		
-		TagNodeData(PNodeData data, Tag tag);
+		TagData(PNodeData data, Tag tag);
 		
-		TagNodeData(const TagNodeData& other);
+		TagData(const TagData& other);
 		
-		~TagNodeData();
+		~TagData();
 	};
 	
-	struct FileNodeData {
+	struct FileData {
 		PNodeData data;
 		FilePath filePath;
 		
-		FileNodeData(PNodeData data, FilePath filePath);
+		FileData(PNodeData data, FilePath filePath);
 		
-		FileNodeData(const FileNodeData& other);
+		FileData(const FileData& other);
 		
-		~FileNodeData();
+		~FileData();
 	};
 }

@@ -5,5 +5,5 @@
 
 int main() {
 	ieml::Node node{ieml::file("../exampleSrc/test.ieml")};
-	std::cout << node;
+	std::cout << node["first"][0].as<int>();
 }

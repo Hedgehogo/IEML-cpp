@@ -37,13 +37,13 @@ namespace ieml {
 	NodeData parseScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, Mark &mark, size_t indent) {
 		if(auto null = matchAndMove<reNull>(mark, pos, end); null) {
 			matchAndEnter<reEmptyLine>(mark, pos, end);
-			return NullNodeData{};
+			return NullData{};
 		}
 		if(auto classic = ctre::starts_with<reClassicString>(pos, end); classic) {
 			pos = ctre::starts_with<reEmptyLine>(classic.end(), end).end();
 			mark.line += std::count(classic.begin(), classic.end(), '\n') + 1;
 			mark.symbol = 0;
-			return StringNodeData{handleClassicString(classic.begin() + 1, classic.end() - 1)};
+			return StringData{handleClassicString(classic.begin() + 1, classic.end() - 1)};
 		}
 		if(auto unshielded = matchAndEnter<reUnshieldedString>(mark, pos, end); unshielded) {
 			std::string str{};
@@ -54,7 +54,7 @@ namespace ieml {
 				unshielded = matchAndEnter<reUnshieldedString>(mark, unshielded.end(), pos, end);
 			}
 			str.pop_back();
-			return StringNodeData{str};
+			return StringData{str};
 		}
 		if(auto general = matchAndEnter<reRaw>(mark, pos, end); general) {
 			return RawNodeData{std::string{general.begin(), general.end() - 1}};
