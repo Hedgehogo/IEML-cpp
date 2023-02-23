@@ -5,17 +5,20 @@
 #include "../../exceptions/FailedParseException.hpp"
 
 namespace ieml {
-	NodeData parseNotScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
-		auto currentIndentFind{matchAndMove<reTabs>(mark, pos, end)};
-		std::size_t currentIndent{static_cast<std::size_t>(currentIndentFind.size())};
-		if(currentIndent == indent) {
-			bool isList{ctre::starts_with<reListSpecial>(pos, end)};
-			if(isList) {
-				return parseList(pos, end, filePath, refKeeper, mark, indent);
-			} else {
-				return parseMap(pos, end, filePath, refKeeper, mark, indent);
+	Option<NodeData> parseNotScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+		if(matchAndEnter<reEmptyLine>(mark, pos, end)) {
+			skipEmptyLines(mark, pos, end);
+			std::size_t currentIndent{matchAndMove<reTabs>(mark, pos, end)};
+			if(currentIndent == indent) {
+				if(auto list{parseList(pos, end, filePath, refKeeper, mark, indent)}) {
+					return list.value();
+				}
+				if(auto map{parseMap(pos, end, filePath, refKeeper, mark, indent)}) {
+					return map.value();
+				}
 			}
+			throw FailedParseException{filePath, mark};
 		}
-		throw FailedParseException{filePath, mark};
+		return {};
 	}
 }

@@ -68,6 +68,14 @@ namespace ieml {
 		/// @return The node type.
 		NodeType getType() const;
 		
+		/// @brief Asks if the node is type.
+		///
+		/// @tparam Type Node type.
+		///
+		/// @return Value whether a node is type.
+		template <NodeType Type>
+		bool is() const;
+		
 		/// @brief Asks if the node is null.
 		///
 		/// @return Value whether a node is null.

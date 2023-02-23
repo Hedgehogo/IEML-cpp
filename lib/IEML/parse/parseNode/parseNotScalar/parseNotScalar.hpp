@@ -6,5 +6,5 @@
 #include "../../../reference/RefKeeper/RefKeeper.hpp"
 
 namespace ieml {
-	NodeData parseNotScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent);
+	Option<NodeData> parseNotScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent);
 }

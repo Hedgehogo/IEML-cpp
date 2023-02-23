@@ -88,34 +88,17 @@ namespace ieml {
 		return getNodeTypeFromIndex(clearData.index());
 	}
 	
-	bool Node::isNull() const {
-		auto& clearData = getDataFrom(data);
-		return std::holds_alternative<NullData>(clearData);
-	}
+	bool Node::isNull() const { return this->is<NodeType::Null>(); }
 	
-	bool Node::isRaw() const {
-		auto& clearData = getDataFrom(data);
-		return std::holds_alternative<RawData>(clearData);
-	}
+	bool Node::isRaw() const { return this->is<NodeType::Raw>(); }
 	
-	bool Node::isString() const {
-		auto& clearData = getDataFrom(data);
-		return std::holds_alternative<StringData>(clearData);
-	}
+	bool Node::isString() const { return this->is<NodeType::String>(); }
 	
-	bool Node::isList() const {
-		auto& clearData = getDataFrom(data);
-		return std::holds_alternative<ListData>(clearData);
-	}
+	bool Node::isList() const { return this->is<NodeType::List>(); }
 	
-	bool Node::isMap() const {
-		auto& clearData = getDataFrom(data);
-		return std::holds_alternative<MapData>(clearData);
-	}
+	bool Node::isMap() const { return this->is<NodeType::Map>(); }
 	
-	bool Node::isWithTag() {
-		return getTagFrom(data) != nullptr;
-	}
+	bool Node::isWithTag() { return getTagFrom(data) != nullptr; }
 	
 	std::string Node::getTag() {
 		if(auto tagData = getTagFrom(data))
@@ -123,9 +106,7 @@ namespace ieml {
 		throw NodeAnotherTypeException{NodeType::Null, getType()};
 	}
 	
-	bool Node::isFile() {
-		return getFileFrom(data) != nullptr;
-	}
+	bool Node::isFile() { return getFileFrom(data) != nullptr; }
 	
 	fs::path Node::getFilePath() {
 		if(auto fileData = getFileFrom(data))

@@ -3,26 +3,36 @@
 #include "../../../parseTag/parseTag.hpp"
 #include "../../../emptyLines/emptyLines.hpp"
 #include "../../../match/match.hpp"
-#include "../../../exceptions/FailedParseException.hpp"
 #include "../FindResult/FindResult.hpp"
 
 namespace ieml {
-	NodeData parseList(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
-		FindResult currentIndentFind;
-		ListData nodes{};
-		do {
-			if(auto find{matchAndMove<reListSpecial>(mark, pos, end)}; find) {
-				Mark nodeMark{mark};
-				NodeData nodeData{parseTag(pos, end, filePath, refKeeper, mark, indent, false)};
+	static constexpr auto reListSpecial = ctll::fixed_string{R"(-[ \n])" };
+	
+	bool findListSpecial(std::string::const_iterator &pos, std::string::const_iterator end, Mark &mark) {
+		bool find{matchAndMove<reListSpecial>(mark, pos, end)};
+		if(*(pos - 1) == '\n') { --pos; --mark.symbol; }
+		return find;
+	}
+	
+	Option<ListData> parseList(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+		if(ctre::starts_with<reListSpecial>(pos, end)) {
+			ListData nodes{};
+			Mark currentMark{mark};
+			std::size_t currentIndent{indent};
+			std::string::const_iterator currentPos{pos};
+			while(currentIndent == indent && findListSpecial(currentPos, end, currentMark)) {
+				Mark nodeMark{currentMark};
+				NodeData nodeData{parseTag(currentPos, end, filePath, refKeeper, currentMark, indent, false)};
 				nodes.emplace_back(nodeData, nodeMark);
 				
-				currentIndentFind = matchAndMove<reTabs>(mark, pos, end);
-			} else {
-				break;
+				pos = currentPos;
+				mark = currentMark;
+				
+				skipEmptyLines(currentMark, currentPos, end);
+				currentIndent = matchAndMove<reTabs>(currentMark, currentPos, end);
 			}
-		} while(currentIndentFind.size() == indent);
-		pos = currentIndentFind.begin();
-		mark.symbol = 0;
-		return nodes;
+			return nodes;
+		}
+		return {};
 	}
 }

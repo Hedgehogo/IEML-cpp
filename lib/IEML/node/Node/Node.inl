@@ -30,6 +30,12 @@ namespace ieml {
 		throw e;
 	}
 	
+	template <NodeType Type>
+	bool Node::is() const {
+		auto& clearData = getDataFrom(data);
+		return clearData.index() == getNodeTypeIndex(Type);
+	}
+	
 	namespace detail {
 		template<typename T>
 		std::enable_if_t<!std::is_arithmetic_v<T>, bool> decode(const Node &node, T &object) {

@@ -1,5 +1,10 @@
+# File begin
 first:
-	- &str 10
-	- < ../exampleSrc/subtest.ieml
-			str: > Hello, IEML!
-second: > Hello!
+	- &str -10
+	# File loading
+	- = File: < ../exampleSrc/subtest.ieml
+			str: "Hello
+\"IEML\"!"
+second:
+	- > Hello
+		> "IEML"!

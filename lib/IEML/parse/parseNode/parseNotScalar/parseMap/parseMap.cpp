@@ -3,36 +3,43 @@
 #include "../../../parseTag/parseTag.hpp"
 #include "../../../emptyLines/emptyLines.hpp"
 #include "../../../match/match.hpp"
-#include "../../../exceptions/FailedParseException.hpp"
 #include "../../../parseRef/parseRef.hpp"
 #include "../FindResult/FindResult.hpp"
 
 namespace ieml {
-	NodeData parseMap(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
-		FindResult currentIndentFind;
-		MapData nodes{};
-		do {
-			if(auto find{matchAndMove<reMapKey>(mark, pos, end)}; find) {
-				std::string str;
-				Mark nodeMark{mark};
-				NodeData nodeData;
-				int endIndent{*(find.end() - 1) == ' ' ? 2 : 1};
-				if(auto tagFind{ctre::search<reTagSpecial>(find.begin(), find.end())}; tagFind) {
-					str = {find.begin(), tagFind.begin()};
-					std::string tagStr{tagFind.end(), find.end() - endIndent};
-					nodeData = TagData{new NodeData{parseRef(pos, end, filePath, refKeeper, mark, indent + 1)}, tagStr};
-				} else {
-					str = {find.begin(), find.end() - endIndent};
-					nodeData = parseRef(pos, end, filePath, refKeeper, mark, indent + 1);
-				}
-				nodes.emplace(str, Node{nodeData, nodeMark});
-				currentIndentFind = matchAndMove<reTabs>(mark, pos, end);
-			} else {
-				break;
+	static constexpr auto reMapKey = ctll::fixed_string{R"([^\"\n<>]*?: ?)" };
+	
+	Option<MapData> parseMap(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+		if(ctre::starts_with<reMapKey>(pos, end)) {
+			MapData nodes{};
+			Mark currentMark{mark};
+			std::size_t currentIndent{indent};
+			std::string::const_iterator currentPos{pos};
+			while(currentIndent == indent) {
+				if(auto find{matchAndMove<reMapKey>(currentMark, currentPos, end)}) {
+					std::string::const_iterator findEnd{find.end() - (*(find.end() - 1) == ' ' ? 2 : 1)};
+					std::string str;
+					Mark nodeMark{currentMark};
+					NodeData nodeData;
+					if(auto tagFind{ctre::search<reTagSpecial>(find.begin(), find.end())}) {
+						str = {find.begin(), tagFind.begin()};
+						std::string tagStr{tagFind.end(), findEnd};
+						nodeData = TagData{new NodeData{parseRef(currentPos, end, filePath, refKeeper, currentMark, indent + 1)}, tagStr};
+					} else {
+						str = {find.begin(), findEnd};
+						nodeData = parseRef(currentPos, end, filePath, refKeeper, currentMark, indent + 1);
+					}
+					nodes.emplace(str, Node{nodeData, nodeMark});
+					
+					pos = currentPos;
+					mark = currentMark;
+					
+					skipEmptyLines(currentMark, currentPos, end);
+					currentIndent = matchAndMove<reTabs>(currentMark, currentPos, end).size();
+				} else { break; }
 			}
-		} while(currentIndentFind.size() == indent);
-		pos = currentIndentFind.begin();
-		mark.symbol = 0;
-		return nodes;
+			return nodes;
+		}
+		return {};
 	}
 }

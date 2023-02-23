@@ -4,7 +4,10 @@
 
 namespace ieml {
 	static constexpr auto reEmptyLine = ctll::fixed_string{R"([\t ]*\n)" };
+	static constexpr auto reCommentLine = ctll::fixed_string{R"([\t ]*([\t ]#[^\n]*)?)" };
 	static constexpr auto reTabs = ctll::fixed_string{R"(\t*)" };
 	
-	void skipEmptyLines(Mark &mark, std::string::const_iterator &pos, std::string::const_iterator end);
+	bool skipEmptyLines(Mark &mark, std::string::const_iterator &pos, std::string::const_iterator end);
+	
+	bool skipEmptyLines(Mark &mark, std::string::const_iterator &pos, std::string::const_iterator end);
 }

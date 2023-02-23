@@ -33,6 +33,7 @@ namespace ieml {
 	///
 	/// @return The node type.
 	constexpr NodeType getNodeTypeFromIndex(std::size_t index) {
-		return static_cast<NodeType>(index);
+		if(index < 5) return static_cast<NodeType>(index);
+		return NodeType::Null;
 	}
 }
