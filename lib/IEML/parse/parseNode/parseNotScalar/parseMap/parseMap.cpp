@@ -4,7 +4,7 @@
 #include "../../../emptyLines/emptyLines.hpp"
 #include "../../../match/match.hpp"
 #include "../../../parseRef/parseRef.hpp"
-#include "../FindResult/FindResult.hpp"
+#include "../../../exceptions/FailedParseException.hpp"
 
 namespace ieml {
 	static constexpr auto reMapKey = ctll::fixed_string{R"([^\"\n<>]*?: ?)"};
@@ -34,6 +34,8 @@ namespace ieml {
 					pos = currentPos;
 					mark = currentMark;
 					
+					if(pos != end && *pos != '\n')
+						throw FailedParseException{filePath, mark};
 					skipEmptyLines(currentPos, end, currentMark);
 					currentIndent = matchAndMove<reTabs>(currentMark, currentPos, end).size();
 				} else {
