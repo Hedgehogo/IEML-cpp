@@ -1,9 +1,10 @@
 #pragma once
+
 #include <string>
 
 namespace ieml {
 	namespace detail {
-		std::string demangle(const char *name);
+		std::string demangle(const char* name);
 	}
 	
 	template <class T>

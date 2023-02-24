@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../../NodeType/NodeType.hpp"
 #include "../../../exceptions/BaseException.hpp"
 
@@ -8,9 +9,11 @@ namespace ieml {
 	private:
 		NodeType requestedType;
 		NodeType nodeType;
-		
+	
 	public:
 		NodeAnotherTypeException(NodeType requestedType, NodeType nodeType);
+		
+		std::string getDescription() const override;
 		
 		/// @brief Gets the type of data that was queried.
 		///

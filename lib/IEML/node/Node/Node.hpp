@@ -1,4 +1,5 @@
 #pragma once
+
 #include <memory>
 #include "../NodeData/NodeData.hpp"
 #include "../Mark/Mark.hpp"
@@ -8,9 +9,11 @@ namespace ieml {
 	class Node {
 	public:
 		template <typename T>
-		friend struct detail::DecodeImpl;
-		friend class RefKeeper;
+		friend
+		struct detail::DecodeImpl;
 		
+		friend class RefKeeper;
+	
 	private:
 		static Node undefined;
 		
@@ -34,9 +37,9 @@ namespace ieml {
 		
 		template <typename T, typename E>
 		T& getT(E e);
-		
+	
 	public:
-		Node(const std::string &config);
+		Node(const std::string& config);
 		
 		Node(NodeData data, Mark mark = {0, 0});
 		
@@ -51,7 +54,7 @@ namespace ieml {
 		/// @param Node Node to check.
 		///
 		/// @return The node defined.
-		static bool isDefined(const Node &node);
+		static bool isDefined(const Node& node);
 		
 		/// @brief Gets the node defined.
 		///
@@ -141,7 +144,7 @@ namespace ieml {
 		/// @tparam T Value type.
 		///
 		/// @return A T value or throws an exception NotRequestedTypeException.
-		template<typename T>
+		template <typename T>
 		T as() const;
 		
 		/// @brief Gets the T value.
@@ -151,7 +154,7 @@ namespace ieml {
 		/// @param defaultValue Default value.
 		///
 		/// @return A T value or default T value.
-		template<typename T>
+		template <typename T>
 		T asDefault(T&& defaultValue) const;
 		
 		/// @brief Gets the T pointer value.
@@ -162,22 +165,22 @@ namespace ieml {
 		/// @param args Arguments to call the constructor.
 		///
 		/// @return Pointer to an object or to an object created using the default constructors.
-		template<typename Type, typename... ArgsTypes>
-		Type *asDefaultPtr(ArgsTypes... args) const;
+		template <typename Type, typename... ArgsTypes>
+		Type* asDefaultPtr(ArgsTypes... args) const;
 		
 		/// @brief Gets a node from the list by index.
 		///
 		/// @param index Index of the requested node.
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
-		Node &at(std::size_t index);
+		Node& at(std::size_t index);
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
-		Node &at(std::string key);
+		Node& at(std::string key);
 		
 		/// @brief Gets the node defined.
 		///
@@ -189,17 +192,17 @@ namespace ieml {
 		/// @param index Index of the requested node.
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
-		Node &operator[](std::size_t index);
+		Node& operator[](std::size_t index);
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
-		Node &operator[](std::string key);
+		Node& operator[](std::string key);
 	};
 	
-	Node file(const fs::path &filePath);
+	Node file(const fs::path& filePath);
 }
 
 #include "Node.inl"

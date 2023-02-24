@@ -3,7 +3,7 @@
 #include "../match/match.hpp"
 
 namespace ieml {
-	NodeData parseTag(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent, bool lineBegin) {
+	NodeData parseTag(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent, bool lineBegin) {
 		if(auto tagFind{matchAndMove<reTag>(mark, pos + (lineBegin ? indent : 0), pos, end)}; tagFind) {
 			int endIndent{*(tagFind.end() - 1) == ' ' ? 2 : 1};
 			std::string tagStr{tagFind.begin() + 2, tagFind.end() - endIndent};

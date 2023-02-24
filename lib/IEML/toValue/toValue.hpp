@@ -1,4 +1,5 @@
 #pragma once
+
 #include "toNumber/toNumber.hpp"
 #include <string>
 

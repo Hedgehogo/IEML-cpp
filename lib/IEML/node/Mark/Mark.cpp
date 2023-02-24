@@ -6,7 +6,7 @@ namespace ieml {
 		++line;
 	}
 	
-	void Mark::enter(std::string::const_iterator &pos) {
+	void Mark::enter(std::string::const_iterator& pos) {
 		++pos;
 		enter();
 	}

@@ -7,8 +7,8 @@
 #include "parseRaw/parseRaw.hpp"
 
 namespace ieml {
-	NodeData parseScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, Mark &mark, size_t indent) {
-		if(auto null {parseNull(pos, end, mark)}) {
+	NodeData parseScalar(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, Mark& mark, size_t indent) {
+		if(auto null{parseNull(pos, end, mark)}) {
 			matchAndMove<reWhitespace>(mark, pos, end);
 			return null.value();
 		}
@@ -16,7 +16,7 @@ namespace ieml {
 			matchAndMove<reWhitespace>(mark, pos, end);
 			return classic.value();
 		}
-		if(auto unshielded {parseUnshieldedString(pos, end, mark)}) {
+		if(auto unshielded{parseUnshieldedString(pos, end, mark)}) {
 			return unshielded.value();
 		}
 		if(auto raw{parseRaw(pos, end, mark)}) {

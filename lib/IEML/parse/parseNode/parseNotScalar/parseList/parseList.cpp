@@ -6,15 +6,18 @@
 #include "../FindResult/FindResult.hpp"
 
 namespace ieml {
-	static constexpr auto reListSpecial = ctll::fixed_string{R"(-[ \n])" };
+	static constexpr auto reListSpecial = ctll::fixed_string{R"(-[ \n])"};
 	
-	bool findListSpecial(std::string::const_iterator &pos, std::string::const_iterator end, Mark &mark) {
+	bool findListSpecial(std::string::const_iterator& pos, std::string::const_iterator end, Mark& mark) {
 		bool find{matchAndMove<reListSpecial>(mark, pos, end)};
-		if(*(pos - 1) == '\n') { --pos; --mark.symbol; }
+		if(*(pos - 1) == '\n') {
+			--pos;
+			--mark.symbol;
+		}
 		return find;
 	}
 	
-	Option<ListData> parseList(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+	Option<ListData> parseList(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
 		if(ctre::starts_with<reListSpecial>(pos, end)) {
 			ListData nodes{};
 			Mark currentMark{mark};
@@ -28,7 +31,7 @@ namespace ieml {
 				pos = currentPos;
 				mark = currentMark;
 				
-				skipEmptyLines(currentMark, currentPos, end);
+				skipEmptyLines(currentPos, end, currentMark);
 				currentIndent = matchAndMove<reTabs>(currentMark, currentPos, end);
 			}
 			return nodes;

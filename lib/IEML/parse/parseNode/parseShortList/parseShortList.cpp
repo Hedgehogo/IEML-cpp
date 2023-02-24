@@ -3,14 +3,14 @@
 #include "../../match/match.hpp"
 
 namespace ieml {
-	static constexpr auto special = ctll::fixed_string{ R"([\[\]\"]|, ?)" };
+	static constexpr auto special = ctll::fixed_string{R"([\[\]\"]|, ?)"};
 	
-	NodeData parseSubShortList(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+	NodeData parseSubShortList(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
 		auto listEnd = ieml::rfind(pos, end, ']');
 		//Planned
 	}
 	
-	NodeData parseShortList(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+	NodeData parseShortList(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
 		auto lineEnd = ieml::find(pos, end, '\n');
 		NodeData nodeData{parseSubShortList(pos, lineEnd, filePath, refKeeper, mark, indent)};
 		pos = lineEnd;

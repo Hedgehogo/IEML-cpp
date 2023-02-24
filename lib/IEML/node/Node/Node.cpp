@@ -5,25 +5,35 @@
 #include "../../parse/parse.hpp"
 
 namespace ieml {
-	TagData::TagData(PNodeData data, Tag tag) : data(data), tag(tag) {}
+	TagData::TagData(PNodeData data, Tag tag) : data(data), tag(tag) {
+	}
 	
-	TagData::TagData(const TagData &other) : data(new NodeData{*other.data}), tag(other.tag) {}
+	TagData::TagData(const TagData& other) : data(new NodeData{*other.data}), tag(other.tag) {
+	}
 	
-	TagData::~TagData() { delete data; }
+	TagData::~TagData() {
+		delete data;
+	}
 	
-	FileData::FileData(PNodeData data, FilePath filePath) : data(data), filePath(filePath) {}
+	FileData::FileData(PNodeData data, FilePath filePath) : data(data), filePath(filePath) {
+	}
 	
-	FileData::FileData(const FileData &other) : data(new NodeData{*other.data}), filePath(other.filePath) {}
+	FileData::FileData(const FileData& other) : data(new NodeData{*other.data}), filePath(other.filePath) {
+	}
 	
-	FileData::~FileData() { delete data; }
+	FileData::~FileData() {
+		delete data;
+	}
 	
 	Node Node::undefined = Node{NullData{}, Mark{0, 0}};
 	
-	Node::Node(const std::string &config) : data(parse(preprocess(config), mark)), mark({0, 0}) {}
+	Node::Node(const std::string& config) : data(parse(preprocess(config), mark)), mark({0, 0}) {
+	}
 	
-	Node::Node(NodeData data, Mark mark) : data(std::move(data)), mark(mark) {}
+	Node::Node(NodeData data, Mark mark) : data(std::move(data)), mark(mark) {
+	}
 	
-	const NodeData &Node::getDataFrom(const NodeData &data) {
+	const NodeData& Node::getDataFrom(const NodeData& data) {
 		if(auto tagData = std::get_if<TagData>(&data))
 			return getDataFrom(*tagData->data);
 		if(auto fileData = std::get_if<FileData>(&data))
@@ -31,7 +41,7 @@ namespace ieml {
 		return data;
 	}
 	
-	NodeData &Node::getDataFrom(NodeData &data) {
+	NodeData& Node::getDataFrom(NodeData& data) {
 		if(auto tagData = std::get_if<TagData>(&data))
 			return getDataFrom(*tagData->data);
 		if(auto fileData = std::get_if<FileData>(&data))
@@ -39,7 +49,7 @@ namespace ieml {
 		return data;
 	}
 	
-	const FileData *Node::getFileFrom(const NodeData &data) {
+	const FileData* Node::getFileFrom(const NodeData& data) {
 		if(auto tagData = std::get_if<TagData>(&data))
 			return getFileFrom(*tagData->data);
 		if(auto fileData = std::get_if<FileData>(&data))
@@ -47,7 +57,7 @@ namespace ieml {
 		return nullptr;
 	}
 	
-	FileData *Node::getFileFrom(NodeData &data) {
+	FileData* Node::getFileFrom(NodeData& data) {
 		if(auto tagData = std::get_if<TagData>(&data))
 			return getFileFrom(*tagData->data);
 		if(auto fileData = std::get_if<FileData>(&data))
@@ -55,7 +65,7 @@ namespace ieml {
 		return nullptr;
 	}
 	
-	const TagData *Node::getTagFrom(const NodeData &data) {
+	const TagData* Node::getTagFrom(const NodeData& data) {
 		if(auto fileData = std::get_if<FileData>(&data))
 			return getTagFrom(*fileData->data);
 		if(auto tagData = std::get_if<TagData>(&data))
@@ -63,7 +73,7 @@ namespace ieml {
 		return nullptr;
 	}
 	
-	TagData *Node::getTagFrom(NodeData &data) {
+	TagData* Node::getTagFrom(NodeData& data) {
 		if(auto fileData = std::get_if<FileData>(&data))
 			return getTagFrom(*fileData->data);
 		if(auto tagData = std::get_if<TagData>(&data))
@@ -71,7 +81,7 @@ namespace ieml {
 		return nullptr;
 	}
 	
-	bool Node::isDefined(const Node &node) {
+	bool Node::isDefined(const Node& node) {
 		return &node != &undefined;
 	}
 	
@@ -88,17 +98,29 @@ namespace ieml {
 		return getNodeTypeFromIndex(clearData.index());
 	}
 	
-	bool Node::isNull() const { return this->is<NodeType::Null>(); }
+	bool Node::isNull() const {
+		return this->is<NodeType::Null>();
+	}
 	
-	bool Node::isRaw() const { return this->is<NodeType::Raw>(); }
+	bool Node::isRaw() const {
+		return this->is<NodeType::Raw>();
+	}
 	
-	bool Node::isString() const { return this->is<NodeType::String>(); }
+	bool Node::isString() const {
+		return this->is<NodeType::String>();
+	}
 	
-	bool Node::isList() const { return this->is<NodeType::List>(); }
+	bool Node::isList() const {
+		return this->is<NodeType::List>();
+	}
 	
-	bool Node::isMap() const { return this->is<NodeType::Map>(); }
+	bool Node::isMap() const {
+		return this->is<NodeType::Map>();
+	}
 	
-	bool Node::isWithTag() { return getTagFrom(data) != nullptr; }
+	bool Node::isWithTag() {
+		return getTagFrom(data) != nullptr;
+	}
 	
 	std::string Node::getTag() {
 		if(auto tagData = getTagFrom(data))
@@ -106,7 +128,9 @@ namespace ieml {
 		throw NodeAnotherTypeException{NodeType::Null, getType()};
 	}
 	
-	bool Node::isFile() { return getFileFrom(data) != nullptr; }
+	bool Node::isFile() {
+		return getFileFrom(data) != nullptr;
+	}
 	
 	fs::path Node::getFilePath() {
 		if(auto fileData = getFileFrom(data))
@@ -131,14 +155,14 @@ namespace ieml {
 		return getT<MapData>(NodeAnotherTypeException{NodeType::Map, getType()});
 	}
 	
-	Node &Node::at(std::size_t index) {
+	Node& Node::at(std::size_t index) {
 		auto& list = getT<ListData>(NodeAnotherTypeException{NodeType::List, getType()});
 		if(index < list.size())
 			return list.at(index);
 		return undefined;
 	}
 	
-	Node &Node::at(std::string key) {
+	Node& Node::at(std::string key) {
 		auto& map = getT<MapData>(NodeAnotherTypeException{NodeType::Map, getType()});
 		if(auto find{map.find(key)}; find != map.end())
 			return find->second;
@@ -149,16 +173,16 @@ namespace ieml {
 		return this->isDefined();
 	}
 	
-	Node &Node::operator[](std::size_t index) {
+	Node& Node::operator[](std::size_t index) {
 		return this->at(index);
 	}
 	
-	Node &Node::operator[](std::string key) {
+	Node& Node::operator[](std::string key) {
 		return this->at(key);
 	}
 	
 	namespace detail {
-		bool DecodeImpl<RawData>::func(const Node &node, RawData &object) {
+		bool DecodeImpl<RawData>::func(const Node& node, RawData& object) {
 			auto& clearData = Node::getDataFrom(node.data);
 			if(auto strData = std::get_if<RawData>(&clearData)) {
 				object = *strData;
@@ -167,7 +191,7 @@ namespace ieml {
 			return false;
 		}
 		
-		bool DecodeImpl<std::string>::func(const Node &node, std::string &object) {
+		bool DecodeImpl<std::string>::func(const Node& node, std::string& object) {
 			auto& clearData = Node::getDataFrom(node.data);
 			if(auto strData = std::get_if<StringData>(&clearData)) {
 				object = *strData;
@@ -176,7 +200,7 @@ namespace ieml {
 			return false;
 		}
 		
-		bool DecodeImpl<std::vector<Node>>::func(const Node &node, std::vector<Node> &object) {
+		bool DecodeImpl<std::vector<Node>>::func(const Node& node, std::vector<Node>& object) {
 			auto& clearData = Node::getDataFrom(node.data);
 			if(auto vecData = std::get_if<ListData>(&clearData)) {
 				object = *vecData;
@@ -185,7 +209,7 @@ namespace ieml {
 			return false;
 		}
 		
-		bool DecodeImpl<std::map<std::string, Node>>::func(const Node &node, std::map<std::string, Node> &object) {
+		bool DecodeImpl<std::map<std::string, Node>>::func(const Node& node, std::map<std::string, Node>& object) {
 			auto& clearData = Node::getDataFrom(node.data);
 			if(auto mapData = std::get_if<MapData>(&clearData)) {
 				object = *mapData;
@@ -195,7 +219,7 @@ namespace ieml {
 		}
 	}
 	
-	Node file(const fs::path &filePath) {
+	Node file(const fs::path& filePath) {
 		Mark mark{0, 0};
 		NodeData data{parse(preprocess(readFile<char>(filePath)), mark, filePath)};
 		return Node{std::move(data), filePath, mark};

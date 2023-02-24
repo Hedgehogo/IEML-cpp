@@ -3,14 +3,14 @@
 #include <algorithm>
 
 namespace ieml {
-	static constexpr auto rePreprocess = ctll::fixed_string{R"((^|[ \t\n])#|\"|> |< )" };
-	static constexpr auto reComment = ctll::fixed_string{R"(#.*?\n)" };
-	static constexpr auto reClassicString = ctll::fixed_string{R"(\"([^\\]|\\.)*?\")" };
-	static constexpr auto reUnshieldedString = ctll::fixed_string{R"(> .*?\n)" };
-	static constexpr auto reFileString = ctll::fixed_string{R"(< .*?\n)" };
+	static constexpr auto rePreprocess = ctll::fixed_string{R"((^|[ \t\n])#|\"|> |< )"};
+	static constexpr auto reComment = ctll::fixed_string{R"(#.*?\n)"};
+	static constexpr auto reClassicString = ctll::fixed_string{R"(\"([^\\]|\\.)*?\")"};
+	static constexpr auto reUnshieldedString = ctll::fixed_string{R"(> .*?\n)"};
+	static constexpr auto reFileString = ctll::fixed_string{R"(< .*?\n)"};
 	
-	template<CTRE_REGEX_INPUT_TYPE R, typename T>
-	inline void pasteIf(const std::string &str, std::string &result, std::string::const_iterator &resultEnd, T &findBegin) {
+	template <CTRE_REGEX_INPUT_TYPE R, typename T>
+	inline void pasteIf(const std::string& str, std::string& result, std::string::const_iterator& resultEnd, T& findBegin) {
 		if(auto find = ctre::starts_with<R>(findBegin, str.cend()); find) {
 			resultEnd = find.end();
 		} else {
@@ -19,7 +19,7 @@ namespace ieml {
 		result.append(findBegin, resultEnd);
 	}
 	
-	std::string preprocess(const std::string &str) {
+	std::string preprocess(const std::string& str) {
 		std::string::const_iterator resultEnd{str.cbegin()};
 		std::string result{};
 		while(resultEnd != str.end()) {

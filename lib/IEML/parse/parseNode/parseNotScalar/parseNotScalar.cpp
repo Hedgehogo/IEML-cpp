@@ -5,9 +5,9 @@
 #include "../../exceptions/FailedParseException.hpp"
 
 namespace ieml {
-	Option<NodeData> parseNotScalar(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+	Option<NodeData> parseNotScalar(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
 		if(matchAndEnter<reEmptyLine>(mark, pos, end)) {
-			skipEmptyLines(mark, pos, end);
+			skipEmptyLines(pos, end, mark);
 			std::size_t currentIndent{matchAndMove<reTabs>(mark, pos, end)};
 			if(currentIndent == indent) {
 				if(auto list{parseList(pos, end, filePath, refKeeper, mark, indent)}) {

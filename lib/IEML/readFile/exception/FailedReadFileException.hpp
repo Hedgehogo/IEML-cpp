@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../../exceptions/BaseException.hpp"
 #include "../../fileSystem/fileSystem.hpp"
 
@@ -9,6 +10,8 @@ namespace ieml {
 	
 	public:
 		FailedReadFileException(fs::path filePath);
+		
+		std::string getDescription() const override;
 		
 		/// @brief Gets the path to the file.
 		///

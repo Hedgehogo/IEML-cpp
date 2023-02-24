@@ -10,12 +10,15 @@ namespace ieml {
 	};
 	
 	Option<StringMark> isClassicString(std::string::const_iterator inputPos, std::string::const_iterator end) {
-		if(*inputPos != '\"') return {};
+		if(*inputPos != '\"')
+			return {};
 		
 		StringMark mark{inputPos + 1, 1};
 		while(true) {
-			if(mark.pos >= end) return {};
-			if(*mark.pos == '\"') break;
+			if(mark.pos >= end)
+				return {};
+			if(*mark.pos == '\"')
+				break;
 			if(*mark.pos == '\\') {
 				mark.pos += 2;
 				mark.lastLength += 2;
@@ -41,10 +44,18 @@ namespace ieml {
 			if(*first == '\\') {
 				++first;
 				switch(*first) {
-					case '"': *pos = '\"'; break;
-					case 'n': *pos = '\n'; break;
-					case 't': *pos = '\t'; break;
-					case '\\': *pos = '\\'; break;
+					case '"':
+						*pos = '\"';
+						break;
+					case 'n':
+						*pos = '\n';
+						break;
+					case 't':
+						*pos = '\t';
+						break;
+					case '\\':
+						*pos = '\\';
+						break;
 					default:
 						*pos = '\\';
 						++pos;
@@ -59,7 +70,7 @@ namespace ieml {
 		return result;
 	}
 	
-	Option<StringData> parseClassicString(std::string::const_iterator &pos, std::string::const_iterator end, Mark &mark) {
+	Option<StringData> parseClassicString(std::string::const_iterator& pos, std::string::const_iterator end, Mark& mark) {
 		if(auto stringMark{isClassicString(pos, end)}) {
 			std::string result{handleClassicString(pos + 1, stringMark->pos - 1, stringMark->realLength)};
 			pos = stringMark->pos;

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 
 namespace ieml {
@@ -7,5 +8,5 @@ namespace ieml {
 	/// @param str String to be processed.
 	///
 	/// @return Processed string.
-	std::string preprocess(const std::string &str);
+	std::string preprocess(const std::string& str);
 }

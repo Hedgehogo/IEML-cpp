@@ -1,9 +1,13 @@
 #include "NodeAnotherTypeException.hpp"
 
 namespace ieml {
-	NodeAnotherTypeException::NodeAnotherTypeException(NodeType requestedType, NodeType nodeType) :
-	BaseException(std::string("Node of the '") + getNodeTypeString(nodeType) +std::string("' type cannot be converted to a value of the '") +
-	getNodeTypeString(requestedType) + std::string("' type.")), requestedType(requestedType), nodeType(nodeType) {}
+	NodeAnotherTypeException::NodeAnotherTypeException(NodeType requestedType, NodeType nodeType) : requestedType(requestedType), nodeType(nodeType) {
+	}
+	
+	std::string NodeAnotherTypeException::getDescription() const {
+		return std::string("Node of the '") + getNodeTypeString(nodeType) + std::string("' type cannot be converted to a value of the '") +
+			   getNodeTypeString(requestedType) + std::string("' type.");
+	}
 	
 	NodeType NodeAnotherTypeException::getRequestedType() {
 		return requestedType;

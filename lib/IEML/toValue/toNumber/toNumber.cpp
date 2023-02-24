@@ -47,7 +47,8 @@ namespace ieml {
 		int divider{1};
 		bool divide{false};
 		for(std::string::const_iterator iter = start + 1; iter < last && *iter != ' '; ++iter) {
-			if(divide) divider *= basis;
+			if(divide)
+				divider *= basis;
 			if(*iter != '.') {
 				number = number * basis + toDigit(*iter);
 			} else {
@@ -67,7 +68,8 @@ namespace ieml {
 		int divider{1};
 		bool divide{false};
 		for(std::string::const_iterator iter = start + 1; iter < last && *iter != ' '; ++iter) {
-			if(divide) divider *= 10;
+			if(divide)
+				divider *= 10;
 			if(*iter != '.') {
 				number = number * 10 + (*iter - '0');
 			} else {

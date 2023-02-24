@@ -8,9 +8,9 @@
 #include "../parseNotScalar/parseMap/parseMap.hpp"
 
 namespace ieml {
-	static constexpr auto reFile = ctll::fixed_string{R"(< [^\n]*)" };
+	static constexpr auto reFile = ctll::fixed_string{R"(< [^\n]*)"};
 	
-	void parseFileRefMap(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+	void parseFileRefMap(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
 		if(pos != end) {
 			auto currentIndentFind{ctre::starts_with<reTabs>(pos + 1, end)};
 			if(currentIndentFind.size() == indent) {
@@ -19,7 +19,7 @@ namespace ieml {
 				if(auto map{parseMap(currentPos, end, filePath, refKeeper, currentMark, indent)}) {
 					pos = currentPos;
 					mark = currentMark;
-					for(auto& [key, value] : map.value()) {
+					for(auto& [key, value]: map.value()) {
 						refKeeper.add(key, value);
 					}
 				}
@@ -27,7 +27,7 @@ namespace ieml {
 		}
 	}
 	
-	Option<FileData> parseFile(std::string::const_iterator &pos, std::string::const_iterator end, const fs::path &filePath, RefKeeper &refKeeper, Mark &mark, size_t indent) {
+	Option<FileData> parseFile(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
 		if(auto find{matchAndMove<reFile>(mark, pos, end)}) {
 			Mark loadedMark{0, 0};
 			RefKeeper loadedRefKeeper{refKeeper};

@@ -8,11 +8,13 @@
 namespace ieml {
 	template <typename T>
 	Node::Node(T data, Mark mark) :
-		data(std::move(data)), mark(mark) {}
-		
+		data(std::move(data)), mark(mark) {
+	}
+	
 	template <typename T>
 	Node::Node(T data, FilePath filePath, Mark mark) :
-		data(FileData{new NodeData{std::move(data)}, filePath}), mark(mark) {}
+		data(FileData{new NodeData{std::move(data)}, filePath}), mark(mark) {
+	}
 	
 	template <typename T, typename E>
 	const T& Node::getT(E e) const {
@@ -23,7 +25,7 @@ namespace ieml {
 	}
 	
 	template <typename T, typename E>
-	T &Node::getT(E e) {
+	T& Node::getT(E e) {
 		auto& clearData = getDataFrom(data);
 		if(auto typeData = std::get_if<T>(&clearData))
 			return *typeData;
@@ -37,13 +39,13 @@ namespace ieml {
 	}
 	
 	namespace detail {
-		template<typename T>
-		std::enable_if_t<!std::is_arithmetic_v<T>, bool> decode(const Node &node, T &object) {
+		template <typename T>
+		std::enable_if_t<!std::is_arithmetic_v<T>, bool> decode(const Node& node, T& object) {
 			return Decode<T>::func(node, object);
 		}
 		
-		template<typename T>
-		std::enable_if_t<std::is_integral_v<T>, bool> decode(const Node &node, T &object) {
+		template <typename T>
+		std::enable_if_t<std::is_integral_v<T>, bool> decode(const Node& node, T& object) {
 			if(node.isRaw()) {
 				std::string str{node.as<RawData>()};
 				if(isInt(str.cbegin(), str.cend())) {
@@ -54,8 +56,8 @@ namespace ieml {
 			return false;
 		}
 		
-		template<typename T>
-		std::enable_if_t<std::is_floating_point_v<T>, bool> decode(const Node &node, T &object) {
+		template <typename T>
+		std::enable_if_t<std::is_floating_point_v<T>, bool> decode(const Node& node, T& object) {
 			if(node.isRaw()) {
 				std::string str{node.as<RawData>()};
 				if(isDouble(str.cbegin(), str.cend()) || isInt(str.cbegin(), str.cend())) {
@@ -67,7 +69,7 @@ namespace ieml {
 		}
 		
 		template <typename T>
-		bool DecodeImpl<T>::func(const Node &node, T &object) {
+		bool DecodeImpl<T>::func(const Node& node, T& object) {
 			return decode(node, object);
 		}
 	}
@@ -81,7 +83,7 @@ namespace ieml {
 	}
 	
 	template <typename T>
-	T Node::asDefault(T &&defaultValue) const {
+	T Node::asDefault(T&& defaultValue) const {
 		if(!isDefined())
 			return defaultValue;
 		T object;
@@ -91,7 +93,7 @@ namespace ieml {
 	}
 	
 	template <typename Type, typename... ArgsTypes>
-	Type *Node::asDefaultPtr(ArgsTypes... args) const {
+	Type* Node::asDefaultPtr(ArgsTypes... args) const {
 		if(!isDefined())
 			return new Type{args...};
 		Type* object;

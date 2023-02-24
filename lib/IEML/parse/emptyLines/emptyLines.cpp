@@ -1,9 +1,10 @@
 #include "emptyLines.hpp"
 
 namespace ieml {
-	bool skipEmptyLines(Mark &mark, std::basic_string<char, std::char_traits<char>, std::allocator<char>>::const_iterator &pos, std::string::const_iterator end) {
+	bool skipEmptyLines(std::string::const_iterator& pos, std::string::const_iterator end, Mark& mark) {
 		auto empty = ctre::starts_with<reEmptyLine>(pos, end);
-		if(!empty) return false;
+		if(!empty)
+			return false;
 		while(empty) {
 			pos = empty.end();
 			++mark.line;

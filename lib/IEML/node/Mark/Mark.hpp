@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 
 namespace ieml {
@@ -8,6 +9,6 @@ namespace ieml {
 		
 		void enter();
 		
-		void enter(std::string::const_iterator &pos);
+		void enter(std::string::const_iterator& pos);
 	};
 }
