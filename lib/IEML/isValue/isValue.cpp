@@ -32,13 +32,13 @@ namespace ieml {
 		return ctre::match<boolValue>(first, last);
 	}
 	
-	static constexpr auto doubleValue = ctll::fixed_string{R"(([0-9]+\.[0-9]*|0[a-z][0-9A-P]+\.[0-9A-P]*) *)"};
+	static constexpr auto doubleValue = ctll::fixed_string{R"([\+\-]?([0-9_]+\.[0-9_]*|0[a-z][0-9A-P_]+\.[0-9A-P_]*) *)"};
 	
 	bool isDouble(std::string::const_iterator first, std::string::const_iterator last) {
 		return ctre::match<doubleValue>(first, last);
 	}
 	
-	static constexpr auto intValue = ctll::fixed_string{R"(([0-9]+|0[a-z][0-9A-P]+) *)"};
+	static constexpr auto intValue = ctll::fixed_string{R"([\+\-]?([0-9_]+|0[a-z][0-9A-P_]+) *)"};
 	
 	bool isInt(std::string::const_iterator first, std::string::const_iterator last) {
 		return ctre::match<intValue>(first, last);

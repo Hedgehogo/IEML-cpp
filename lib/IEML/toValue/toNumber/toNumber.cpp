@@ -17,6 +17,8 @@ namespace ieml {
 		int basis{*(start - 1) + 1 - 'a'};
 		llint number{toDigit(*start)};
 		for(std::string::const_iterator iter = start + 1; iter < last && *iter != ' '; ++iter) {
+			if(*iter == '_')
+				continue;
 			number = number * basis + toDigit(*iter);
 		}
 		return (first[0] == '-' ? -number : number);
@@ -26,6 +28,8 @@ namespace ieml {
 		std::string::const_iterator start{first + ((first[0] == '-' || first[0] == '+') ? 1 : 0)};
 		llint number{start[0] - '0'};
 		for(std::string::const_iterator iter = start + 1; iter < last && *iter != ' '; ++iter) {
+			if(*iter == '_')
+				continue;
 			number = number * 10 + (*iter - '0');
 		}
 		return (first[0] == '-' ? -number : number);
@@ -47,6 +51,8 @@ namespace ieml {
 		int divider{1};
 		bool divide{false};
 		for(std::string::const_iterator iter = start + 1; iter < last && *iter != ' '; ++iter) {
+			if(*iter == '_')
+				continue;
 			if(divide)
 				divider *= basis;
 			if(*iter != '.') {
@@ -68,6 +74,8 @@ namespace ieml {
 		int divider{1};
 		bool divide{false};
 		for(std::string::const_iterator iter = start + 1; iter < last && *iter != ' '; ++iter) {
+			if(*iter == '_')
+				continue;
 			if(divide)
 				divider *= 10;
 			if(*iter != '.') {

@@ -1,6 +1,6 @@
 # File begin
 first:
-	- &str -10
+	- &str -1_000
 	# File loading
 	- = File: < ../exampleSrc/subtest.ieml
 			str: "Hello
