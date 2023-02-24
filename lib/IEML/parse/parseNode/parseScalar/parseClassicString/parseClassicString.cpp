@@ -20,17 +20,22 @@ namespace ieml {
 			if(*mark.pos == '\"')
 				break;
 			if(*mark.pos == '\\') {
-				mark.pos += 2;
-				mark.lastLength += 2;
+				++mark.pos;
+				if(*mark.pos != '\n') {
+					mark.lastLength += 2;
+					++mark.realLength;
+				}
+				++mark.pos;
 			} else if(*mark.pos == '\n') {
 				++mark.pos;
 				++mark.enterCount;
 				mark.lastLength = 0;
+				++mark.realLength;
 			} else {
 				++mark.pos;
 				++mark.lastLength;
+				++mark.realLength;
 			}
-			++mark.realLength;
 		}
 		++mark.pos;
 		++mark.lastLength;
@@ -38,34 +43,36 @@ namespace ieml {
 		return mark;
 	}
 	
+	void handleSymbol(std::string::const_iterator& input, std::string::iterator& output) {
+		if(*input == '\\') {
+			++input;
+			if(*input != '\n') {
+				if(*input == '"') {
+					*output = '\"';
+				} else if(*input == 'n') {
+					*output = '\n';
+				} else if(*input == 't') {
+					*output = '\t';
+				} else if(*input == '\\') {
+					*output = '\\';
+				} else {
+					*output = '\\';
+					++output;
+					*output = *input;
+				}
+				++output;
+			}
+		} else {
+			*output = *input;
+			++output;
+		}
+		++input;
+	}
+	
 	std::string handleClassicString(std::string::const_iterator first, std::string::const_iterator last, std::size_t realLength) {
 		std::string result(realLength, '\0');
-		for(auto pos = result.begin(); pos < result.end(); ++pos) {
-			if(*first == '\\') {
-				++first;
-				switch(*first) {
-					case '"':
-						*pos = '\"';
-						break;
-					case 'n':
-						*pos = '\n';
-						break;
-					case 't':
-						*pos = '\t';
-						break;
-					case '\\':
-						*pos = '\\';
-						break;
-					default:
-						*pos = '\\';
-						++pos;
-						*pos = *first;
-						break;
-				}
-			} else {
-				*pos = *first;
-			}
-			++first;
+		for(auto pos = result.begin(); pos < result.end();) {
+			handleSymbol(first, pos);
 		}
 		return result;
 	}
