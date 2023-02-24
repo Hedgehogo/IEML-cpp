@@ -13,7 +13,6 @@ namespace ieml {
 	class Node;
 	
 	using Tag = std::string;
-	using FilePath = ieml::fs::path;
 	
 	/// @brief Node data storing null
 	struct NullData {};

@@ -1,7 +1,7 @@
 #include "FailedParseException.hpp"
 
 namespace ieml {
-	FailedParseException::FailedParseException(fs::path filePath, Mark mark) :
+	FailedParseException::FailedParseException(FilePath filePath, Mark mark) :
 		WithMarkException(mark), filePath(filePath) {
 	}
 	
@@ -10,7 +10,7 @@ namespace ieml {
 			   (filePath.empty() ? std::string("") : std::string(" in the file '") + filePath.string() + std::string("'")) + std::string(".");
 	}
 	
-	fs::path FailedParseException::getFilePath() const {
+	FilePath FailedParseException::getFilePath() const {
 		return filePath;
 	}
 }

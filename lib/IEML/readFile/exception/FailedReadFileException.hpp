@@ -6,16 +6,16 @@
 namespace ieml {
 	class FailedReadFileException : public BaseException {
 	private:
-		fs::path filePath;
+		FilePath filePath;
 	
 	public:
-		FailedReadFileException(fs::path filePath);
+		FailedReadFileException(FilePath filePath);
 		
 		std::string getDescription() const override;
 		
 		/// @brief Gets the path to the file.
 		///
 		/// @return Path to the file.
-		fs::path getFilePath();
+		FilePath getFilePath();
 	};
 }

@@ -9,7 +9,7 @@
 namespace ieml {
 	static constexpr auto reMapKey = ctll::fixed_string{R"([^\"\n<>]*?: ?)"};
 	
-	Option<MapData> parseMap(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
+	Option<MapData> parseMap(std::string::const_iterator& pos, std::string::const_iterator end, const FilePath& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
 		if(ctre::starts_with<reMapKey>(pos, end)) {
 			MapData nodes{};
 			Mark currentMark{mark};

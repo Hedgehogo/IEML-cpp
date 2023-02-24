@@ -132,7 +132,7 @@ namespace ieml {
 		return getFileFrom(data) != nullptr;
 	}
 	
-	fs::path Node::getFilePath() {
+	FilePath Node::getFilePath() {
 		if(auto fileData = getFileFrom(data))
 			return fileData->filePath;
 		throw NodeAnotherTypeException{NodeType::Null, getType()};

@@ -202,7 +202,7 @@ namespace ieml {
 		Node& operator[](std::string key);
 	};
 	
-	Node file(const fs::path& filePath);
+	Node file(const FilePath& filePath);
 }
 
 #include "Node.inl"

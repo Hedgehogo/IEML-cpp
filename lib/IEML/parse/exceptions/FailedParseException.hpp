@@ -6,13 +6,13 @@
 namespace ieml {
 	class FailedParseException : public WithMarkException {
 	private:
-		fs::path filePath;
+		FilePath filePath;
 	
 	public:
-		FailedParseException(fs::path filePath, Mark mark);
+		FailedParseException(FilePath filePath, Mark mark);
 		
 		std::string getDescription() const override;
 		
-		fs::path getFilePath() const;
+		FilePath getFilePath() const;
 	};
 }

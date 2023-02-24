@@ -9,5 +9,5 @@ namespace ieml {
 	static constexpr auto reTagSpecial = ctll::fixed_string{R"( ?= )"};
 	static constexpr auto reTag = ctll::fixed_string{R"( ?= [^\"\n<>]*?: ?)"};
 	
-	NodeData parseTag(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent, bool lineBegin);
+	NodeData parseTag(std::string::const_iterator& pos, std::string::const_iterator end, const FilePath& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent, bool lineBegin);
 }

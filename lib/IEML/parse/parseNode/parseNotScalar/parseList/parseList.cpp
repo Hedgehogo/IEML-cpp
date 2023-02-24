@@ -17,7 +17,7 @@ namespace ieml {
 		return find;
 	}
 	
-	Option<ListData> parseList(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
+	Option<ListData> parseList(std::string::const_iterator& pos, std::string::const_iterator end, const FilePath& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
 		if(ctre::starts_with<reListSpecial>(pos, end)) {
 			ListData nodes{};
 			Mark currentMark{mark};

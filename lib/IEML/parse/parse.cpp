@@ -8,7 +8,7 @@ namespace ieml {
 		return ctre::starts_with<reTabs>(pos, end).end() - pos;
 	}
 	
-	NodeData parse(const std::string& config, Mark& mark, RefKeeper& refKeeper, const fs::path& filePath) {
+	NodeData parse(const std::string& config, Mark& mark, RefKeeper& refKeeper, const FilePath& filePath) {
 		std::string::const_iterator pos{config.cbegin()};
 		std::string::const_iterator end{config.cend()};
 		
@@ -23,7 +23,7 @@ namespace ieml {
 		return nodeData;
 	}
 	
-	NodeData parse(const std::string& config, Mark& mark, const fs::path& filePath) {
+	NodeData parse(const std::string& config, Mark& mark, const FilePath& filePath) {
 		RefKeeper refKeeper{};
 		return parse(config, mark, refKeeper, filePath);
 	}

@@ -6,7 +6,7 @@
 #include "parseFile/parseFile.hpp"
 
 namespace ieml {
-	NodeData parseNode(std::string::const_iterator& pos, std::string::const_iterator end, const fs::path& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
+	NodeData parseNode(std::string::const_iterator& pos, std::string::const_iterator end, const FilePath& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
 		if(auto file{parseFile(pos, end, filePath, refKeeper, mark, indent)})
 			return *file;
 		if(auto list{parseList(pos, end, filePath, refKeeper, mark, indent)})
