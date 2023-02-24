@@ -219,9 +219,10 @@ namespace ieml {
 		}
 	}
 	
-	Node file(const fs::path& filePath) {
+	Node file(const FilePath& filePath) {
 		Mark mark{0, 0};
-		NodeData data{parse(preprocess(readFile<char>(filePath)), mark, filePath)};
-		return Node{std::move(data), filePath, mark};
+		FilePath normalFilePath{filePath.lexically_normal().make_preferred()};
+		NodeData data{parse(preprocess(readFile<char>(normalFilePath)), mark, normalFilePath)};
+		return Node{std::move(data), normalFilePath, mark};
 	}
 }
