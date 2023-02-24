@@ -17,7 +17,7 @@ namespace ieml {
 					return map.value();
 				}
 			}
-			throw FailedParseException{filePath, mark};
+			throw FailedParseException{filePath, FailedParseException::Expected::NotScalar, mark};
 		}
 		return {};
 	}

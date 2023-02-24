@@ -23,18 +23,24 @@ namespace ieml {
 			Mark currentMark{mark};
 			std::size_t currentIndent{indent};
 			std::string::const_iterator currentPos{pos};
-			while(currentIndent == indent && findListSpecial(currentPos, end, currentMark)) {
-				Mark nodeMark{currentMark};
-				NodeData nodeData{parseTag(currentPos, end, filePath, refKeeper, currentMark, indent, false)};
-				nodes.emplace_back(nodeData, nodeMark);
-				
-				pos = currentPos;
-				mark = currentMark;
-				
-				if(pos != end && *pos != '\n')
-					throw FailedParseException{filePath, mark};
-				skipEmptyLines(currentPos, end, currentMark);
-				currentIndent = matchAndMove<reTabs>(currentMark, currentPos, end);
+			while(currentIndent == indent) {
+				if(findListSpecial(currentPos, end, currentMark)) {
+					Mark nodeMark{currentMark};
+					NodeData nodeData{parseTag(currentPos, end, filePath, refKeeper, currentMark, indent, false)};
+					nodes.emplace_back(nodeData, nodeMark);
+					
+					pos = currentPos;
+					mark = currentMark;
+					
+					if(pos != end && *pos != '\n')
+						throw FailedParseException{filePath, FailedParseException::Expected::ListItem, mark};
+					skipEmptyLines(currentPos, end, currentMark);
+					currentIndent = matchAndMove<reTabs>(currentMark, currentPos, end).size();
+				} else if(currentPos == end) {
+					break;
+				} else {
+					throw FailedParseException{filePath, FailedParseException::Expected::ListItem, mark};
+				}
 			}
 			return nodes;
 		}

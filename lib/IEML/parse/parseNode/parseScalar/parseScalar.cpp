@@ -22,6 +22,6 @@ namespace ieml {
 		if(auto raw{parseRaw(pos, end, mark)}) {
 			return raw.value();
 		}
-		throw FailedParseException{filePath, mark};
+		throw FailedParseException{filePath, FailedParseException::Expected::Scalar, mark};
 	}
 }

@@ -29,7 +29,7 @@ namespace ieml {
 			if(auto data{refKeeper.get(key)}) {
 				return *data;
 			}
-			throw FailedParseException{filePath, mark};
+			throw FailedParseException{filePath, FailedParseException::Expected::ExistingAnchor, mark};
 		}
 		return {};
 	}

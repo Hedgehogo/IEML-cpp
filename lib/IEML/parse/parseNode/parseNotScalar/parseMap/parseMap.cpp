@@ -35,11 +35,13 @@ namespace ieml {
 					mark = currentMark;
 					
 					if(pos != end && *pos != '\n')
-						throw FailedParseException{filePath, mark};
+						throw FailedParseException{filePath, FailedParseException::Expected::MapKey, mark};
 					skipEmptyLines(currentPos, end, currentMark);
 					currentIndent = matchAndMove<reTabs>(currentMark, currentPos, end).size();
-				} else {
+				} else if(currentPos == end) {
 					break;
+				} else {
+					throw FailedParseException{filePath, FailedParseException::Expected::MapKey, mark};
 				}
 			}
 			return nodes;
