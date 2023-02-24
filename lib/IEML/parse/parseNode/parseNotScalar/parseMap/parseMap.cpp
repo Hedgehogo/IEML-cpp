@@ -44,6 +44,8 @@ namespace ieml {
 					throw FailedParseException{filePath, FailedParseException::Expected::MapKey, mark};
 				}
 			}
+			if(currentIndent > indent)
+				throw FailedParseException{filePath, FailedParseException::Expected::MapKey, mark};
 			return nodes;
 		}
 		return {};
