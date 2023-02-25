@@ -16,7 +16,7 @@ namespace ieml {
 			std::size_t currentIndent{indent};
 			std::string::const_iterator currentPos{pos};
 			while(currentIndent == indent) {
-				if(auto find{matchAndMove<reMapKey>(currentMark, currentPos, end)}) {
+				if(auto find{matchAndMove<reMapKey>(currentPos, end, currentMark)}) {
 					std::string::const_iterator findEnd{find.end() - (*(find.end() - 1) == ' ' ? 2 : 1)};
 					std::string str;
 					Mark nodeMark{currentMark};
@@ -37,7 +37,7 @@ namespace ieml {
 					if(pos != end && *pos != '\n')
 						throw FailedParseException{filePath, FailedParseException::Expected::MapKey, mark};
 					skipBlankLines(currentPos, end, currentMark);
-					currentIndent = matchAndMove<reTabs>(currentMark, currentPos, end).size();
+					currentIndent = matchAndMove<reTabs>(currentPos, end, currentMark).size();
 				} else if(currentPos == end) {
 					break;
 				} else {

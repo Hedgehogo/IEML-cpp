@@ -15,7 +15,7 @@ namespace ieml {
 			Mark currentMark{mark};
 			std::string::const_iterator currentPos{pos};
 			skipBlankLines(currentPos, end, currentMark);
-			std::size_t currentIndent{matchAndMove<reTabs>(currentMark, currentPos, end).size()};
+			std::size_t currentIndent{matchAndMove<reTabs>(currentPos, end, currentMark).size()};
 			if(currentIndent == indent) {
 				if(auto map{parseMap(currentPos, end, filePath, refKeeper, currentMark, indent)}) {
 					pos = currentPos;
@@ -37,7 +37,7 @@ namespace ieml {
 	}
 	
 	Option<FileData> parseFile(std::string::const_iterator& pos, std::string::const_iterator end, const FilePath& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
-		if(auto find{matchAndMove<reFile>(mark, pos, end)}) {
+		if(auto find{matchAndMove<reFile>(pos, end, mark)}) {
 			Mark loadedMark{0, 0};
 			RefKeeper loadedRefKeeper{refKeeper};
 			FilePath loadedFilePath{getFilePath(filePath, fs::u8path(find.begin() + 2, find.end()))};

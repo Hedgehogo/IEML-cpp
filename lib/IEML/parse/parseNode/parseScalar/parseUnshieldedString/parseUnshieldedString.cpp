@@ -5,7 +5,7 @@ namespace ieml {
 	static constexpr auto reUnshieldedString = ctll::fixed_string{R"(> [^\n]*)"};
 	
 	Option<StringData> parseUnshieldedString(std::string::const_iterator& pos, std::string::const_iterator end, Mark& mark) {
-		if(auto matched = matchAndMove<reUnshieldedString>(mark, pos, end); matched) {
+		if(auto matched = matchAndMove<reUnshieldedString>(pos, end, mark); matched) {
 			std::string result{};
 			Mark currentMark{mark};
 			std::string::const_iterator currentPos{matched.end()};
@@ -21,7 +21,7 @@ namespace ieml {
 				
 				currentMark.enter(currentPos);
 				matched = ctre::starts_with<reWhitespace>(currentPos, end);
-				matched = matchAndMove<reUnshieldedString>(currentMark, matched.end(), currentPos, end);
+				matched = matchAndMove<reUnshieldedString>(matched.end(), currentPos, end, currentMark);
 				
 				if(matched)
 					result.push_back('\n');

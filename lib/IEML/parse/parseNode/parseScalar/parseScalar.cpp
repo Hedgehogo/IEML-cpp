@@ -9,11 +9,11 @@
 namespace ieml {
 	NodeData parseScalar(std::string::const_iterator& pos, std::string::const_iterator end, const FilePath& filePath, Mark& mark, size_t indent) {
 		if(auto null{parseNull(pos, end, mark)}) {
-			matchAndMove<reWhitespace>(mark, pos, end);
+			matchAndMove<reWhitespace>(pos, end, mark);
 			return null.value();
 		}
 		if(auto classic{parseClassicString(pos, end, mark)}) {
-			matchAndMove<reWhitespace>(mark, pos, end);
+			matchAndMove<reWhitespace>(pos, end, mark);
 			return classic.value();
 		}
 		if(auto unshielded{parseUnshieldedString(pos, end, mark)}) {

@@ -9,7 +9,7 @@ namespace ieml {
 	static constexpr auto reListSpecial = ctll::fixed_string{R"(-[ \n])"};
 	
 	bool findListSpecial(std::string::const_iterator& pos, std::string::const_iterator end, Mark& mark) {
-		bool find{matchAndMove<reListSpecial>(mark, pos, end)};
+		bool find{matchAndMove<reListSpecial>(pos, end, mark)};
 		if(*(pos - 1) == '\n') {
 			--pos;
 			--mark.symbol;
@@ -35,7 +35,7 @@ namespace ieml {
 					if(pos != end && *pos != '\n')
 						throw FailedParseException{filePath, FailedParseException::Expected::ListItem, mark};
 					skipBlankLines(currentPos, end, currentMark);
-					currentIndent = matchAndMove<reTabs>(currentMark, currentPos, end).size();
+					currentIndent = matchAndMove<reTabs>(currentPos, end, currentMark).size();
 				} else if(currentPos == end) {
 					break;
 				} else {

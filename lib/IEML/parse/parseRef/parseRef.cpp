@@ -11,7 +11,7 @@ namespace ieml {
 	static constexpr auto reGetRef = ctll::fixed_string{R"(\*[^\"\n<> ]*)"};
 	
 	Option<NodeData> parseTakeRef(std::string::const_iterator& pos, std::string::const_iterator end, const FilePath& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
-		if(auto find{matchAndMove<reTakeRef>(mark, pos, end)}; find) {
+		if(auto find{matchAndMove<reTakeRef>(pos, end, mark)}; find) {
 			std::string key{find.begin() + 1, find.end()};
 			if(pos != end && *pos == ' ')
 				++pos;
@@ -23,9 +23,9 @@ namespace ieml {
 	}
 	
 	Option<NodeData> parseGetRef(std::string::const_iterator& pos, std::string::const_iterator end, const FilePath& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
-		if(auto find{matchAndMove<reGetRef>(mark, pos, end)}; find) {
+		if(auto find{matchAndMove<reGetRef>(pos, end, mark)}; find) {
 			std::string key{find.begin() + 1, find.end()};
-			matchAndMove<reWhitespace>(mark, pos, end);
+			matchAndMove<reWhitespace>(pos, end, mark);
 			if(auto data{refKeeper.get(key)}) {
 				return *data;
 			}
