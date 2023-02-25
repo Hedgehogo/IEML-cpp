@@ -4,26 +4,28 @@
 namespace ieml {
 	static constexpr auto reUnshieldedString = ctll::fixed_string{R"(> [^\n]*)"};
 	
-	Option<StringData> parseUnshieldedString(std::string::const_iterator& inputPos, std::string::const_iterator inputEnd, Mark& inputMark) {
-		if(auto matched = matchAndMove<reUnshieldedString>(inputMark, inputPos, inputEnd); matched) {
+	Option<StringData> parseUnshieldedString(std::string::const_iterator& pos, std::string::const_iterator end, Mark& mark) {
+		if(auto matched = matchAndMove<reUnshieldedString>(mark, pos, end); matched) {
 			std::string result{};
-			std::string::const_iterator pos{matched.end()};
-			Mark mark{inputMark};
+			Mark currentMark{mark};
+			std::string::const_iterator currentPos{matched.end()};
 			while(matched) {
 				result.append(matched.begin() + 2, matched.end());
-				inputPos = matched.end();
+				currentPos = matched.end();
 				
-				if(inputPos == inputEnd)
+				pos = currentPos;
+				mark = currentMark;
+				
+				if(pos == end)
 					break;
 				
-				mark.enter(pos);
-				matched = ctre::starts_with<reWhitespace>(pos, inputEnd);
-				matched = matchAndMove<reUnshieldedString>(mark, matched.end(), pos, inputEnd);
+				currentMark.enter(currentPos);
+				matched = ctre::starts_with<reWhitespace>(currentPos, end);
+				matched = matchAndMove<reUnshieldedString>(currentMark, matched.end(), currentPos, end);
 				
 				if(matched)
 					result.push_back('\n');
 			}
-			inputMark = mark;
 			return StringData{result};
 		}
 		return {};

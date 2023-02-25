@@ -3,8 +3,8 @@ first:
 	- &str -1_000
 	# File loading
 	- = File: < subtest.ieml
-			str: "Hello
-\"IEML\"!"
+		str: "\
+Hello\n\"IEML!\""
 second:
 	- > Hello
 		> "IEML"!

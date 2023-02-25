@@ -24,18 +24,25 @@ namespace ieml {
 				if(*mark.pos != '\n') {
 					mark.lastLength += 2;
 					++mark.realLength;
+					if(*mark.pos != '\\' &&
+					   *mark.pos != '\"' &&
+					   *mark.pos != 't' &&
+					   *mark.pos != 'n') {
+						++mark.realLength;
+					}
+				} else {
+					++mark.enterCount;
+					mark.lastLength = 0;
 				}
-				++mark.pos;
 			} else if(*mark.pos == '\n') {
-				++mark.pos;
 				++mark.enterCount;
 				mark.lastLength = 0;
 				++mark.realLength;
 			} else {
-				++mark.pos;
 				++mark.lastLength;
 				++mark.realLength;
 			}
+			++mark.pos;
 		}
 		++mark.pos;
 		++mark.lastLength;

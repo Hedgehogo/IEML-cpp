@@ -12,10 +12,11 @@ namespace ieml {
 	
 	void parseFileRefMap(std::string::const_iterator& pos, std::string::const_iterator end, const FilePath& filePath, RefKeeper& refKeeper, Mark& mark, size_t indent) {
 		if(pos != end) {
-			auto currentIndentFind{ctre::starts_with<reTabs>(pos + 1, end)};
-			if(currentIndentFind.size() == indent) {
-				Mark currentMark{mark.line + 1, indent};
-				std::string::const_iterator currentPos{currentIndentFind.end()};
+			Mark currentMark{mark};
+			std::string::const_iterator currentPos{pos};
+			skipBlankLines(currentPos, end, currentMark);
+			std::size_t currentIndent{matchAndMove<reTabs>(currentMark, currentPos, end).size()};
+			if(currentIndent == indent) {
 				if(auto map{parseMap(currentPos, end, filePath, refKeeper, currentMark, indent)}) {
 					pos = currentPos;
 					mark = currentMark;
@@ -40,7 +41,7 @@ namespace ieml {
 			Mark loadedMark{0, 0};
 			RefKeeper loadedRefKeeper{refKeeper};
 			FilePath loadedFilePath{getFilePath(filePath, fs::u8path(find.begin() + 2, find.end()))};
-			parseFileRefMap(pos, end, filePath, loadedRefKeeper, mark, indent + 1);
+			parseFileRefMap(pos, end, filePath, loadedRefKeeper, mark, indent);
 			NodeData loadedData(parse(preprocess(readFile<char>(loadedFilePath)), loadedMark, loadedRefKeeper, loadedFilePath));
 			return FileData{new NodeData{loadedData}, loadedFilePath};
 		}

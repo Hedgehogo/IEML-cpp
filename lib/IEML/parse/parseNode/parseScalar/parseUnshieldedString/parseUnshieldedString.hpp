@@ -5,5 +5,5 @@
 #include "../whitespace.hpp"
 
 namespace ieml {
-	Option<StringData> parseUnshieldedString(std::string::const_iterator& inputPos, std::string::const_iterator inputEnd, Mark& inputMark);
+	Option<StringData> parseUnshieldedString(std::string::const_iterator& pos, std::string::const_iterator end, Mark& inputMark);
 }

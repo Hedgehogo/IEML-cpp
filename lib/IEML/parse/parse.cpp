@@ -12,7 +12,7 @@ namespace ieml {
 		std::string::const_iterator pos{config.cbegin()};
 		std::string::const_iterator end{config.cend()};
 		
-		skipEmptyLines(pos, end, mark);
+		skipBlankLines(pos, end, mark);
 		
 		std::size_t indent{determineIndent(pos, end)};
 		mark.symbol = indent;

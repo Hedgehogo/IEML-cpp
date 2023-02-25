@@ -34,7 +34,7 @@ namespace ieml {
 					
 					if(pos != end && *pos != '\n')
 						throw FailedParseException{filePath, FailedParseException::Expected::ListItem, mark};
-					skipEmptyLines(currentPos, end, currentMark);
+					skipBlankLines(currentPos, end, currentMark);
 					currentIndent = matchAndMove<reTabs>(currentMark, currentPos, end).size();
 				} else if(currentPos == end) {
 					break;
