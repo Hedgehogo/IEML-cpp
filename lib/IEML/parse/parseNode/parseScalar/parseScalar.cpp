@@ -16,7 +16,7 @@ namespace ieml {
 			matchAndMove<reWhitespace>(pos, end, mark);
 			return classic.value();
 		}
-		if(auto unshielded{parseUnshieldedString(pos, end, mark)}) {
+		if(auto unshielded{parseUnshieldedString(pos, end, mark, indent)}) {
 			return unshielded.value();
 		}
 		if(auto raw{parseRaw(pos, end, mark)}) {
