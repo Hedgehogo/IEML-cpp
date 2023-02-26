@@ -1,11 +1,13 @@
 # File begin
 first:
 	- &str -1_000
+	- &str -15
 	# File loading
 	- = File: < subtest.ieml
 		str: "\
-Hello\n\"IEML!\""
+Hello\n\"IEML\"!"
 second:
+	- *str
 	- > Hello
 		> "IEML"!
 	- >>

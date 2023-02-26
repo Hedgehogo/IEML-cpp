@@ -9,7 +9,7 @@ namespace ieml {
 	}
 	
 	void RefKeeper::add(const std::string& key, NodeData value) {
-		refs.emplace(key, value);
+		refs[key] = value;
 	}
 	
 	void RefKeeper::add(const std::string& key, Node value) {
