@@ -24,20 +24,20 @@ namespace ieml {
 		
 		/// @brief Help structure to implement the conversion functions from a node to string
 		template <>
-		struct DecodeImpl<std::string> {
-			static bool func(const Node& node, std::string& object);
+		struct DecodeImpl<StringData> {
+			static bool func(const Node& node, StringData& object);
 		};
 		
 		/// @brief Help structure to implement the conversion functions from a node to list
 		template <>
-		struct DecodeImpl<std::vector<Node>> {
-			static bool func(const Node& node, std::vector<Node>& object);
+		struct DecodeImpl<ListData> {
+			static bool func(const Node& node, ListData& object);
 		};
 		
 		/// @brief Help structure to implement the conversion functions from a node to map
 		template <>
-		struct DecodeImpl<std::map<std::string, Node>> {
-			static bool func(const Node& node, std::map<std::string, Node>& object);
+		struct DecodeImpl<MapData> {
+			static bool func(const Node& node, MapData& object);
 		};
 	}
 }

@@ -21,7 +21,7 @@ namespace ieml {
 					pos = currentPos;
 					mark = currentMark;
 					for(auto& [key, value]: map.value()) {
-						refKeeper.add(key, value);
+						refKeeper.add(key, *value);
 					}
 				}
 			}
@@ -43,7 +43,7 @@ namespace ieml {
 			FilePath loadedFilePath{getFilePath(filePath, fs::u8path(find.begin() + 2, find.end()))};
 			parseFileRefMap(pos, end, filePath, loadedRefKeeper, mark, indent);
 			NodeData loadedData(parse(preprocess(readFile<char>(loadedFilePath)), loadedMark, loadedRefKeeper, loadedFilePath));
-			return FileData{new NodeData{loadedData}, loadedFilePath};
+			return FileData{NodeData{std::move(loadedData)}, loadedFilePath};
 		}
 		return {};
 	}

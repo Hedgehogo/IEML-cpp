@@ -41,7 +41,7 @@ namespace ieml {
 			case NodeType::Map:
 				for(auto& [key, value]: node.getMap()) {
 					stream << indent << key << ": \n";
-					printNode(startIndent + 1, stream, value);;
+					printNode(startIndent + 1, stream, *value);
 				}
 				break;
 		}

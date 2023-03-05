@@ -27,7 +27,7 @@ namespace ieml {
 				if(findListSpecial(currentPos, end, currentMark)) {
 					Mark nodeMark{currentMark};
 					NodeData nodeData{parseTag(currentPos, end, filePath, refKeeper, currentMark, indent, false)};
-					nodes.emplace_back(nodeData, nodeMark);
+					nodes.emplace_back(std::move(Node{nodeData, nodeMark}));
 					
 					pos = currentPos;
 					mark = currentMark;

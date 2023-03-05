@@ -13,7 +13,7 @@ namespace ieml {
 	
 	template <typename T>
 	Node::Node(T data, FilePath filePath, Mark mark) :
-		data(FileData{new NodeData{std::move(data)}, filePath}), mark(mark) {
+		data(FileData{NodeData{std::move(data)}, filePath}), mark(mark) {
 	}
 	
 	template <typename T, typename E>

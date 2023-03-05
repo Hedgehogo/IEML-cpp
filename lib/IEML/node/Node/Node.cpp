@@ -5,26 +5,6 @@
 #include "../../parse/parse.hpp"
 
 namespace ieml {
-	TagData::TagData(PNodeData data, Tag tag) : data(data), tag(tag) {
-	}
-	
-	TagData::TagData(const TagData& other) : data(new NodeData{*other.data}), tag(other.tag) {
-	}
-	
-	TagData::~TagData() {
-		delete data;
-	}
-	
-	FileData::FileData(PNodeData data, FilePath filePath) : data(data), filePath(filePath) {
-	}
-	
-	FileData::FileData(const FileData& other) : data(new NodeData{*other.data}), filePath(other.filePath) {
-	}
-	
-	FileData::~FileData() {
-		delete data;
-	}
-	
 	Node Node::undefined = Node{NullData{}, Mark{0, 0}};
 	
 	Node::Node(const std::string& config) : data(parse(preprocess(config), mark)), mark({0, 0}) {
@@ -165,7 +145,7 @@ namespace ieml {
 	Node& Node::at(std::string key) {
 		auto& map = getT<MapData>(NodeAnotherTypeException{NodeType::Map, getType()});
 		if(auto find{map.find(key)}; find != map.end())
-			return find->second;
+			return *find->second;
 		return undefined;
 	}
 	
@@ -200,16 +180,16 @@ namespace ieml {
 			return false;
 		}
 		
-		bool DecodeImpl<std::vector<Node>>::func(const Node& node, std::vector<Node>& object) {
+		bool DecodeImpl<ListData>::func(const Node& node, ListData& object) {
 			auto& clearData = Node::getDataFrom(node.data);
-			if(auto vecData = std::get_if<ListData>(&clearData)) {
-				object = *vecData;
+			if(auto listData = std::get_if<ListData>(&clearData)) {
+				object = *listData;
 				return true;
 			}
 			return false;
 		}
 		
-		bool DecodeImpl<std::map<std::string, Node>>::func(const Node& node, std::map<std::string, Node>& object) {
+		bool DecodeImpl<MapData>::func(const Node& node, MapData& object) {
 			auto& clearData = Node::getDataFrom(node.data);
 			if(auto mapData = std::get_if<MapData>(&clearData)) {
 				object = *mapData;

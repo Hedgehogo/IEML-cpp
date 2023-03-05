@@ -24,12 +24,12 @@ namespace ieml {
 					if(auto tagFind{ctre::search<reTagSpecial>(find.begin(), find.end())}) {
 						str = {find.begin(), tagFind.begin()};
 						std::string tagStr{tagFind.end(), findEnd};
-						nodeData = TagData{new NodeData{parseRef(currentPos, end, filePath, refKeeper, currentMark, indent + 1)}, tagStr};
+						nodeData = std::move(TagData{NodeData{parseRef(currentPos, end, filePath, refKeeper, currentMark, indent + 1)}, tagStr});
 					} else {
 						str = {find.begin(), findEnd};
-						nodeData = parseRef(currentPos, end, filePath, refKeeper, currentMark, indent + 1);
+						nodeData = std::move(parseRef(currentPos, end, filePath, refKeeper, currentMark, indent + 1));
 					}
-					nodes.emplace(str, Node{nodeData, nodeMark});
+					nodes.emplace(str, std::move(PNode{std::move(Node{nodeData, nodeMark})}));
 					
 					pos = currentPos;
 					mark = currentMark;
