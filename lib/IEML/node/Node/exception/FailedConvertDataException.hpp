@@ -5,13 +5,13 @@
 namespace ieml {
 	class FailedConvertDataException : public WithMarkException {
 	private:
-		std::string type;
+		String type;
 	
 	public:
-		FailedConvertDataException(Mark mark, std::string type);
+		FailedConvertDataException(Mark mark, String type);
 		
-		std::string getDescription() const override;
+		String getDescription() const override;
 		
-		std::string getType() const;
+		String getType() const;
 	};
 }

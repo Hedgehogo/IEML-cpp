@@ -4,9 +4,9 @@ namespace ieml {
 	NodeAnotherTypeException::NodeAnotherTypeException(NodeType requestedType, NodeType nodeType) : requestedType(requestedType), nodeType(nodeType) {
 	}
 	
-	std::string NodeAnotherTypeException::getDescription() const {
-		return std::string("Node of the '") + getNodeTypeString(nodeType) + std::string("' type cannot be converted to a value of the '") +
-			   getNodeTypeString(requestedType) + std::string("' type.");
+	String NodeAnotherTypeException::getDescription() const {
+		return String("Node of the '") + getNodeTypeString(nodeType) + String("' type cannot be converted to a value of the '") +
+			   getNodeTypeString(requestedType) + String("' type.");
 	}
 	
 	NodeType NodeAnotherTypeException::getRequestedType() {

@@ -2,24 +2,28 @@
 #include <iostream>
 
 namespace ieml {
-	struct Indent { size_t count; };
+	struct IndentOut { Size count; };
 	
-	std::ostream& operator<<(std::ostream& stream, const Indent& indent) {
-		for(size_t i{0}; i < indent.count; ++i) {
+	std::ostream& operator<<(std::ostream& stream, const IndentOut& indent) {
+		for(Size i{0}; i < indent.count; ++i) {
 			stream << "  ";
 		}
 		return stream;
 	}
 	
-	void printNode(std::size_t startIndent, std::ostream& stream, Node& node) {
-		Indent indent{startIndent};
+	void printNode(Size startIndent, std::ostream& stream, Node& node) {
+		IndentOut indent{startIndent};
 		auto type{node.getType()};
 		stream << indent << "<" << node.getMark().line << ":" << node.getMark().symbol;
 		stream << ", " << getNodeTypeString(type);
-		if(node.isWithTag())
-			stream << ", tag: " << node.getTag();
-		if(node.isFile())
-			stream << ", file-path: " << node.getFilePath();
+		if(auto tag{node.getTag()})
+			stream << ", tag: " << tag.value();
+		if(auto filePath{node.getFilePath()})
+			stream << ", file-path: " << filePath.value();
+		if(auto getAnchorName{node.getGetAnchorName()})
+			stream << ", get-anchor-name: " << getAnchorName.value();
+		if(auto takeAnchorName{node.getTakeAnchorName()})
+			stream << ", take-anchor-name: " << takeAnchorName.value();
 		stream << ">\n";
 		
 		switch(type) {
@@ -30,12 +34,12 @@ namespace ieml {
 				stream << indent << "\"" << node.as<RawData>().str << "\"\n";
 				break;
 			case NodeType::String:
-				stream << indent << "\"" << node.as<std::string>() << "\"\n";
+				stream << indent << "\"" << node.as<String>() << "\"\n";
 				break;
 			case NodeType::List:
-				for(std::size_t i{0}; i < node.getSize(); ++i) {
-					stream << Indent{startIndent + 1} << "- \n";
-					printNode(startIndent + 2, stream, node.at(i));
+				for(Size i{0}; i < node.getSize(); ++i) {
+					stream << indent << "- \n";
+					printNode(startIndent + 1, stream, node.at(i));
 				}
 				break;
 			case NodeType::Map:

@@ -1,14 +1,15 @@
 #pragma once
 
 #include <string>
+#include "../../usings/usings.hpp"
 
 namespace ieml {
 	struct Mark {
-		std::size_t line;
-		std::size_t symbol;
+		Size line;
+		Size symbol;
 		
 		void enter();
 		
-		void enter(std::string::const_iterator& pos);
+		void enter(String::const_iterator& pos);
 	};
 }

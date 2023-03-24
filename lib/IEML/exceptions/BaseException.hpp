@@ -1,7 +1,7 @@
 #pragma once
 
 #include <exception>
-#include <string>
+#include "../usings/usings.hpp"
 
 namespace ieml {
 	/// @brief A base class, for convenient exception handling
@@ -10,10 +10,12 @@ namespace ieml {
 		/// @brief Gets an error description.
 		///
 		/// @return Error description.
-		virtual std::string getDescription() const = 0;
+		virtual String getDescription() const = 0;
 		
-		virtual std::string getFullDescription() const;
+		virtual String getFullDescription() const;
 		
 		const char* what() const noexcept final;
 	};
+	
+	std::ostream& operator<<(std::ostream& stream, const BaseException& exception);
 }

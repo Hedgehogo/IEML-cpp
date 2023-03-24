@@ -3,6 +3,7 @@
 #include <memory>
 #include "../NodeData/NodeData.hpp"
 #include "../Mark/Mark.hpp"
+#include "../../anchor/AnchorKeeper/AnchorKeeper.hpp"
 #include "as/as.hpp"
 
 namespace ieml {
@@ -12,7 +13,7 @@ namespace ieml {
 		friend
 		struct detail::DecodeImpl;
 		
-		friend class RefKeeper;
+		friend class AnchorKeeper;
 	
 	private:
 		static Node undefined;
@@ -32,6 +33,14 @@ namespace ieml {
 		
 		static TagData* getTagFrom(NodeData& data);
 		
+		static const TakeAnchorData* getTakeAnchorFrom(const NodeData& data);
+		
+		static TakeAnchorData* getTakeAnchorFrom(NodeData& data);
+		
+		static const GetAnchorData* getGetAnchorFrom(const NodeData& data);
+		
+		static GetAnchorData* getGetAnchorFrom(NodeData& data);
+		
 		template <typename T, typename E>
 		const T& getT(E e) const;
 		
@@ -39,7 +48,7 @@ namespace ieml {
 		T& getT(E e);
 	
 	public:
-		Node(const std::string& config);
+		Node(const String& inputStr);
 		
 		Node(NodeData data, Mark mark = {0, 0});
 		
@@ -111,23 +120,48 @@ namespace ieml {
 		
 		/// @brief Gets the tag.
 		///
-		/// @return A tag or throws an exception NotRequestedTypeException.
-		Tag getTag();
+		/// @return A tag.
+		Option<Tag> getTag();
 		
-		/// @brief Asks if a node has a tag.
+		/// @brief Asks if a node has a file path.
 		///
-		/// @return Value if a node has a tag.
+		/// @return Value if a node has a file path.
 		bool isFile();
 		
-		/// @brief Gets the tag.
+		/// @brief Gets the file path.
 		///
-		/// @return A tag or throws an exception NotRequestedTypeException.
-		FilePath getFilePath();
+		/// @return A file path.
+		Option<FilePath> getFilePath();
+		
+		/// @brief Asks if the node is take anchor.
+		///
+		/// @return Value whether a node is take anchor.
+		bool isTakeAnchor() const;
+		
+		/// @brief Gets the take anchor name.
+		///
+		/// @return A take anchor name.
+		Option<String> getTakeAnchorName() const;
+		
+		/// @brief Asks if the node is get anchor.
+		///
+		/// @return Value whether a node is get anchor.
+		bool isGetAnchor() const;
+		
+		/// @brief Gets the get anchor name.
+		///
+		/// @return A get anchor name.
+		Option<String> getGetAnchorName() const;
+		
+		/// @brief Gets the anchor name.
+		///
+		/// @return A anchor name.
+		Option<String> getAnchorName() const;
 		
 		/// @brief Gets the size.
 		///
 		/// @return A size or throws an exception NotRequestedTypeException.
-		std::size_t getSize();
+		Size getSize();
 		
 		/// @brief Gets the node list.
 		///
@@ -173,14 +207,14 @@ namespace ieml {
 		/// @param index Index of the requested node.
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
-		Node& at(std::size_t index);
+		Node& at(Size index);
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
-		Node& at(std::string key);
+		Node& at(String key);
 		
 		/// @brief Gets the node defined.
 		///
@@ -192,17 +226,17 @@ namespace ieml {
 		/// @param index Index of the requested node.
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
-		Node& operator[](std::size_t index);
+		Node& operator[](Size index);
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
-		Node& operator[](std::string key);
+		Node& operator[](String key);
 	};
 	
-	Node file(const FilePath& filePath);
+	Node fromFile(const FilePath& filePath, Rc<AnchorKeeper> anchorKeeper = std::make_shared<AnchorKeeper>());
 }
 
 #include "Node.inl"

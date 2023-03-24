@@ -13,7 +13,7 @@ namespace ieml {
 	public:
 		NodeAnotherTypeException(NodeType requestedType, NodeType nodeType);
 		
-		std::string getDescription() const override;
+		String getDescription() const override;
 		
 		/// @brief Gets the type of data that was queried.
 		///

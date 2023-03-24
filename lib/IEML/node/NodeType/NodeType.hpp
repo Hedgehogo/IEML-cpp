@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "../../usings/usings.hpp"
 
 namespace ieml {
 	/// @brief  Enum, storing the type of node
@@ -17,23 +18,23 @@ namespace ieml {
 	/// @param NodeType Node type.
 	///
 	/// @return The node type as a string.
-	std::string getNodeTypeString(NodeType nodeType);
+	String getNodeTypeString(NodeType nodeType);
 	
 	/// @brief Creates a index from a node type.
 	///
 	/// @param NodeType Node type.
 	///
 	/// @return The index.
-	constexpr std::size_t getNodeTypeIndex(NodeType nodeType) {
-		return static_cast<std::size_t>(nodeType);
+	constexpr Size getNodeTypeIndex(NodeType nodeType) {
+		return static_cast<Size>(nodeType);
 	}
 	
 	/// @brief Creates a node type from a index.
 	///
-	/// @param std::size_t index.
+	/// @param index Index.
 	///
 	/// @return The node type.
-	constexpr NodeType getNodeTypeFromIndex(std::size_t index) {
+	constexpr NodeType getNodeTypeFromIndex(Size index) {
 		if(index < 5)
 			return static_cast<NodeType>(index);
 		return NodeType::Null;

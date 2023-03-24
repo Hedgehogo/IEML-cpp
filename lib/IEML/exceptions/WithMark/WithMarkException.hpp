@@ -11,7 +11,7 @@ namespace ieml {
 	public:
 		WithMarkException(Mark mark);
 		
-		std::string getFullDescription() const override;
+		String getFullDescription() const override;
 		
 		Mark getMark();
 	};

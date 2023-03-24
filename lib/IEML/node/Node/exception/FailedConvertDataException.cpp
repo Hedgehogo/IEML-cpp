@@ -1,15 +1,15 @@
 #include "FailedConvertDataException.hpp"
 
 namespace ieml {
-	FailedConvertDataException::FailedConvertDataException(Mark mark, std::string type) :
+	FailedConvertDataException::FailedConvertDataException(Mark mark, String type) :
 		WithMarkException(mark), type(type) {
 	}
 	
-	std::string FailedConvertDataException::getDescription() const {
-		return std::string("Failed to convert node to '") + type + std::string("'");
+	String FailedConvertDataException::getDescription() const {
+		return String("Failed to convert node to '") + type + String("'");
 	}
 	
-	std::string FailedConvertDataException::getType() const {
+	String FailedConvertDataException::getType() const {
 		return type;
 	}
 }

@@ -3,7 +3,7 @@
 #include "../Node/Node.hpp"
 
 namespace ieml {
-	TagData::TagData(PNodeData data, const Tag& tag) : data(std::move(data)), tag(tag) {
+	TagData::TagData(Box<NodeData> data, const Tag& tag) : data(std::move(data)), tag(tag) {
 	}
 	
 	TagData::TagData(const NodeData& data, const Tag& tag) : data(std::make_unique<NodeData>(data)), tag(tag) {
@@ -18,7 +18,7 @@ namespace ieml {
 		return *this;
 	}
 	
-	FileData::FileData(PNodeData data, const FilePath& filePath) : data(std::move(data)), filePath(filePath) {
+	FileData::FileData(Box<NodeData> data, const FilePath& filePath) : data(std::move(data)), filePath(filePath) {
 	}
 	
 	FileData::FileData(const NodeData& data, const FilePath& filePath) : data(std::make_unique<NodeData>(data)), filePath(filePath) {
@@ -33,11 +33,14 @@ namespace ieml {
 		return *this;
 	}
 	
-	RawData::operator std::string() const {
+	RawData::operator String() const {
 		return str;
 	}
 	
 	PNode::PNode(const Node& node) : node(std::make_unique<Node>(node)) {
+	}
+	
+	PNode::PNode(PNode&& other) : node(std::move(other.node)) {
 	}
 	
 	PNode::PNode(const PNode& other) : node(std::make_unique<Node>(*other)) {

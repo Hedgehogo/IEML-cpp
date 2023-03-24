@@ -1,7 +1,7 @@
 //included into Node.hpp
-#include "../../toValue/toValue.hpp"
-#include "../../isValue/isValue.hpp"
-#include "../../getTypeName/getTypeName.hpp"
+#include "../../parser/helpers/toValue//toValue.hpp"
+#include "../../parser/helpers/isValue/isValue.hpp"
+#include "../../helpers/getTypeName/getTypeName.hpp"
 #include "../NodeData/exception/NodeAnotherTypeException.hpp"
 #include "exception/FailedConvertDataException.hpp"
 
@@ -47,7 +47,7 @@ namespace ieml {
 		template <typename T>
 		std::enable_if_t<std::is_integral_v<T>, bool> decode(const Node& node, T& object) {
 			if(node.isRaw()) {
-				std::string str{node.as<RawData>()};
+				String str{node.as<RawData>()};
 				if(isInt(str.cbegin(), str.cend())) {
 					object = static_cast<T>(toInt(str.cbegin(), str.cend()));
 					return true;
@@ -59,7 +59,7 @@ namespace ieml {
 		template <typename T>
 		std::enable_if_t<std::is_floating_point_v<T>, bool> decode(const Node& node, T& object) {
 			if(node.isRaw()) {
-				std::string str{node.as<RawData>()};
+				String str{node.as<RawData>()};
 				if(isDouble(str.cbegin(), str.cend()) || isInt(str.cbegin(), str.cend())) {
 					object = static_cast<T>(toDouble(str.cbegin(), str.cend()));
 					return true;
