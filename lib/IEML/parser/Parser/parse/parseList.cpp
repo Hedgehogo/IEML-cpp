@@ -32,17 +32,19 @@ namespace ieml {
 					mark = mark_;
 					
 					if(pos_ != end() && *pos_ != '\n')
-						throw FailedParseException{filePath_, FailedParseException::Reason::ExpectedListItem, mark_};
+						except(FailedParseException::Reason::ExpectedListItem);
 					skipBlankLines(pos, end(), mark);
 					currentIndent = matchAndMove<reTabs>(pos, end(), mark).size();
 				} else if(pos == end()) {
 					break;
+				} else if(*pos == ' ') {
+					except(FailedParseException::Reason::ImpermissibleSpace);
 				} else {
-					throw FailedParseException{filePath_, FailedParseException::Reason::ExpectedListItem, mark_};
+					except(FailedParseException::Reason::ExpectedListItem);
 				}
 			}
 			if(currentIndent > indent)
-				throw FailedParseException{filePath_, FailedParseException::Reason::ExpectedListItem, mark_};
+				except(FailedParseException::Reason::ExpectedListItem);
 			return nodes;
 		}
 		return {};
