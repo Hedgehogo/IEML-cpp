@@ -18,4 +18,15 @@ namespace ieml {
 		Parser parser{inputStr};
 		return parser.parse();
 	}
+	
+	void Parser::except(FailedParseException::Reason reason) {
+		throw FailedParseException{filePath_, reason, mark_};
+	}
+	
+	void Parser::exceptWithCheckSpace(FailedParseException::Reason reason) {
+		if(pos_ != end() && *pos_ == ' ') {
+			throw FailedParseException{filePath_, FailedParseException::Reason::ImpermissibleSpace, mark_};
+		}
+		throw FailedParseException{filePath_, reason, mark_};
+	}
 }

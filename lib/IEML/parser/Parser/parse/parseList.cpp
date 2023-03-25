@@ -1,7 +1,6 @@
 #include "../Parser.hpp"
 #include "../../helpers/emptyLines/emptyLines.hpp"
 #include "../../helpers/match/match.hpp"
-#include "../../exceptions/FailedParseException/FailedParseException.hpp"
 
 namespace ieml {
 	static constexpr auto reListSpecial = ctll::fixed_string{R"(-[ \n])"};

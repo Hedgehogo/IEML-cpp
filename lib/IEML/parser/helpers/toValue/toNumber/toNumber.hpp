@@ -12,9 +12,9 @@ namespace ieml {
 	///
 	/// @param char Symbol.
 	///
-	/// @return int Number derived from the character:
-	///   - [0-9] -> [0-9]
-	///   - [A-Z] -> [10-35]
+	/// @return int Number derived from the character: \n
+	///   - [0-9] -> [0-9] \n
+	///   - [A-P] -> [10-25]
 	///
 	/// @note Does not check for correct input.
 	int toDigit(char symbol);

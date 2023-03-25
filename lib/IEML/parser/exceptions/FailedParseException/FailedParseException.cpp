@@ -1,8 +1,8 @@
 #include "FailedParseException.hpp"
 
 namespace ieml {
-	FailedParseException::FailedParseException(FilePath file_path, Reason reason, Mark mark) :
-		WithMarkException(mark), file_path(file_path), reason(reason) {
+	FailedParseException::FailedParseException(FilePath filePath, Reason reason, Mark mark) :
+		WithMarkException(mark), file_path(filePath), reason(reason) {
 	}
 	
 	String getFileDescription(FilePath filePath) {
@@ -13,23 +13,25 @@ namespace ieml {
 	
 	String getReasonDescription(FailedParseException::Reason reason) {
 		if(reason == FailedParseException::Reason::ExpectedScalar) {
-			return "Expected Scalar";
+			return "Expected Scalar.";
 		} else if (reason == FailedParseException::Reason::ExpectedNotScalar) {
-			return "Expected List or Map";
+			return "Expected List or Map.";
 		} else if (reason == FailedParseException::Reason::ExpectedMapKey) {
-			return "Expected Map Key";
+			return "Expected Map Key.";
 		} else if (reason == FailedParseException::Reason::ExpectedListItem) {
-			return "Expected List Item";
+			return "Expected List Item.";
+		} else if (reason == FailedParseException::Reason::ImpermissibleSpace) {
+			return "A space was detected. Perhaps you meant to write a tab as an indentation.";
 		} else if (reason == FailedParseException::Reason::AnchorAlreadyExists) {
-			return "An attempt was made to take an anchor with the name of an anchor that already exists";
+			return "An attempt was made to take an anchor with the name of an anchor that already exists.";
 		}
-		return "The end of the file has been reached, but the String is not completed";
+		return "The end of the file has been reached, but the String is not completed.";
 	}
 	
 	String FailedParseException::getDescription() const {
 		return String("Failed to determine the type of data") +
 			   getFileDescription(file_path) + String(". ") +
-			   getReasonDescription(reason) + String(".");
+			   getReasonDescription(reason);
 	}
 	
 	FilePath FailedParseException::getFilePath() const {

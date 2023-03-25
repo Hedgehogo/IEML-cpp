@@ -3,6 +3,7 @@
 #include "../../node/Node/Node.hpp"
 #include "../../anchor/AnchorKeeper/AnchorKeeper.hpp"
 #include "../../usings/usings.hpp"
+#include "../exceptions/FailedParseException/FailedParseException.hpp"
 
 namespace ieml {
 	class Parser {
@@ -20,6 +21,10 @@ namespace ieml {
 		Option<GetAnchorData> parseGetAnchor(Size indent);
 		
 		void parseFileAnchorMap(Rc<AnchorKeeper> loadedAnchorKeeper, Size indent);
+		
+		void except(FailedParseException::Reason reason);
+		
+		void exceptWithCheckSpace(FailedParseException::Reason reason);
 		
 	public:
 		Parser(const String& inputStr, Rc<AnchorKeeper> anchorKeeper, FilePath filePath = FilePath{});

@@ -2,10 +2,9 @@
 #include "../../helpers/emptyLines/emptyLines.hpp"
 #include "../../helpers/match/match.hpp"
 #include "../../helpers/tag/tag.hpp"
-#include "../../exceptions/FailedParseException/FailedParseException.hpp"
 
 namespace ieml {
-	static constexpr auto reMapKey = ctll::fixed_string{R"([^\"\n<>]*?: ?)"};
+	static constexpr auto reMapKey = ctll::fixed_string{R"(([^\"\n<> ][^\"\n<>]*?|): ?)"};
 	
 	Option<MapData> Parser::parseMap(Size indent) {
 		if(ctre::starts_with<reMapKey>(pos_, end())) {
@@ -35,17 +34,17 @@ namespace ieml {
 					currentMark = mark_;
 					
 					if(pos_ != end() && *pos_ != '\n')
-						throw FailedParseException{filePath_, FailedParseException::Reason::ExpectedMapKey, mark_};
+						except(FailedParseException::Reason::ExpectedMapKey);
 					skipBlankLines(currentPos, end(), currentMark);
 					currentIndent = matchAndMove<reTabs>(currentPos, end(), currentMark).size();
 				} else if(currentPos == end()) {
 					break;
 				} else {
-					throw FailedParseException{filePath_, FailedParseException::Reason::ExpectedMapKey, mark_};
+					except(FailedParseException::Reason::ExpectedMapKey);
 				}
 			}
 			if(currentIndent > indent)
-				throw FailedParseException{filePath_, FailedParseException::Reason::ExpectedMapKey, mark_};
+				except(FailedParseException::Reason::ExpectedMapKey);
 			return nodes;
 		}
 		return {};

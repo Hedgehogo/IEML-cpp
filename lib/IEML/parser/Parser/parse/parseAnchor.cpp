@@ -1,7 +1,6 @@
 #include "../Parser.hpp"
 #include "../../helpers/match/match.hpp"
 #include "../../helpers/whitespace/whitespace.hpp"
-#include "../../exceptions/FailedParseException/FailedParseException.hpp"
 
 namespace ieml {
 	static constexpr auto reTakeAnchor = ctll::fixed_string{R"(&[^\"\n<> ]*)"};

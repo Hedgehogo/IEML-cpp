@@ -1,7 +1,6 @@
 #include "../Parser.hpp"
 #include "../../helpers/emptyLines/emptyLines.hpp"
 #include "../../helpers/match/match.hpp"
-#include "../../exceptions/FailedParseException/FailedParseException.hpp"
 
 namespace ieml {
 	Option<NodeData> Parser::parseNotScalar(Size indent) {
@@ -15,7 +14,7 @@ namespace ieml {
 					return map.value();
 				}
 			}
-			throw FailedParseException{filePath_, FailedParseException::Reason::ExpectedNotScalar, mark_};
+			exceptWithCheckSpace(FailedParseException::Reason::ExpectedNotScalar);
 		}
 		return {};
 	}

@@ -11,6 +11,7 @@ namespace ieml {
 			ExpectedNotScalar,
 			ExpectedMapKey,
 			ExpectedListItem,
+			ImpermissibleSpace,
 			AnchorAlreadyExists,
 			IncompleteString,
 		};
@@ -20,7 +21,7 @@ namespace ieml {
 		Reason reason;
 	
 	public:
-		FailedParseException(FilePath file_path, Reason reason, Mark mark);
+		FailedParseException(FilePath filePath, Reason reason, Mark mark);
 		
 		String getDescription() const override;
 		

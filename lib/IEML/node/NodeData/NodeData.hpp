@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <variant>
+#include <unordered_map>
 #include "../../helpers/fileSystem/fileSystem.hpp"
 #include "../NodeType/NodeType.hpp"
 
