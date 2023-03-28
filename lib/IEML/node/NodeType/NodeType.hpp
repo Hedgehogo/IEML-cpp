@@ -18,14 +18,14 @@ namespace ieml {
 	/// @param NodeType Node type.
 	///
 	/// @return The node type as a string.
-	String getNodeTypeString(NodeType nodeType);
+	String getStringFromNodeType(NodeType nodeType);
 	
 	/// @brief Creates a index from a node type.
 	///
 	/// @param NodeType Node type.
 	///
 	/// @return The index.
-	constexpr Size getNodeTypeIndex(NodeType nodeType) {
+	constexpr Size getIndexFromNodeType(NodeType nodeType) {
 		return static_cast<Size>(nodeType);
 	}
 	

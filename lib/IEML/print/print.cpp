@@ -15,7 +15,7 @@ namespace ieml {
 		IndentOut indent{startIndent};
 		auto type{node.getType()};
 		stream << indent << "<" << node.getMark().line << ":" << node.getMark().symbol;
-		stream << ", " << getNodeTypeString(type);
+		stream << ", " << getStringFromNodeType(type);
 		if(auto tag{node.getTag()})
 			stream << ", tag: " << tag.value();
 		if(auto filePath{node.getFilePath()})

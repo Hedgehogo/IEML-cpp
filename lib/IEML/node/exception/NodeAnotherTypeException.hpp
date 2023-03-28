@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../NodeType/NodeType.hpp"
-#include "../../../exceptions/BaseException.hpp"
+#include "../NodeType/NodeType.hpp"
+#include "../../exception/BaseException.hpp"
 
 namespace ieml {
 	/// @brief Exception thrown when a node has been asked for a value that is not a node

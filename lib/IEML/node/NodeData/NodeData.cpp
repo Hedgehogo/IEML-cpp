@@ -6,14 +6,14 @@ namespace ieml {
 	TagData::TagData(Box<NodeData> data, const Tag& tag) : data(std::move(data)), tag(tag) {
 	}
 	
-	TagData::TagData(const NodeData& data, const Tag& tag) : data(std::make_unique<NodeData>(data)), tag(tag) {
+	TagData::TagData(const NodeData& data, const Tag& tag) : data(makeBox<NodeData>(data)), tag(tag) {
 	}
 	
-	TagData::TagData(const TagData& other) : data(std::make_unique<NodeData>(*other.data)), tag(other.tag) {
+	TagData::TagData(const TagData& other) : data(makeBox<NodeData>(*other.data)), tag(other.tag) {
 	}
 	
 	TagData& TagData::operator=(const TagData& other) {
-		data = std::make_unique<NodeData>(*other.data);
+		data = makeBox<NodeData>(*other.data);
 		tag = other.tag;
 		return *this;
 	}
@@ -21,14 +21,14 @@ namespace ieml {
 	FileData::FileData(Box<NodeData> data, const FilePath& filePath) : data(std::move(data)), filePath(filePath) {
 	}
 	
-	FileData::FileData(const NodeData& data, const FilePath& filePath) : data(std::make_unique<NodeData>(data)), filePath(filePath) {
+	FileData::FileData(const NodeData& data, const FilePath& filePath) : data(makeBox<NodeData>(data)), filePath(filePath) {
 	}
 	
-	FileData::FileData(const FileData& other) : data(std::make_unique<NodeData>(*other.data)), filePath(other.filePath) {
+	FileData::FileData(const FileData& other) : data(makeBox<NodeData>(*other.data)), filePath(other.filePath) {
 	}
 	
 	FileData& FileData::operator=(const FileData& other) {
-		data = std::make_unique<NodeData>(*other.data);
+		data = makeBox<NodeData>(*other.data);
 		filePath = other.filePath;
 		return *this;
 	}
@@ -37,13 +37,13 @@ namespace ieml {
 		return str;
 	}
 	
-	PNode::PNode(const Node& node) : node(std::make_unique<Node>(node)) {
+	PNode::PNode(const Node& node) : node(makeBox<Node>(node)) {
 	}
 	
 	PNode::PNode(PNode&& other) : node(std::move(other.node)) {
 	}
 	
-	PNode::PNode(const PNode& other) : node(std::make_unique<Node>(*other)) {
+	PNode::PNode(const PNode& other) : node(makeBox<Node>(*other)) {
 	}
 	
 	Node& PNode::operator*() const {
@@ -55,7 +55,7 @@ namespace ieml {
 	}
 	
 	PNode& PNode::operator=(const PNode& other) {
-		node = std::make_unique<Node>(*other);
+		node = makeBox<Node>(*other);
 		return *this;
 	}
 	

@@ -21,7 +21,9 @@ namespace ieml {
 		}
 	}
 }
+
 #else
+
 // does nothing if not g++
 namespace ieml {
 	namespace detail {
@@ -30,4 +32,5 @@ namespace ieml {
 		}
 	}
 }
+
 #endif

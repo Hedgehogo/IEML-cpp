@@ -4,14 +4,13 @@
 #include "../NodeData/NodeData.hpp"
 #include "../Mark/Mark.hpp"
 #include "../../anchor/AnchorKeeper/AnchorKeeper.hpp"
-#include "as/as.hpp"
+#include "decode/decode.hpp"
 
 namespace ieml {
 	class Node {
 	public:
-		template <typename T>
-		friend
-		struct detail::DecodeImpl;
+		template<typename T>
+		friend struct detail::DecodeImpl;
 		
 		friend class AnchorKeeper;
 	
@@ -41,21 +40,19 @@ namespace ieml {
 		
 		static GetAnchorData* getGetAnchorFrom(NodeData& data);
 		
-		template <typename T, typename E>
-		const T& getT(E e) const;
+		template<typename T, typename E>
+		const T& getType(E e) const;
 		
-		template <typename T, typename E>
-		T& getT(E e);
+		template<typename T, typename E>
+		T& getType(E e);
 	
 	public:
-		Node(const String& inputStr);
-		
 		Node(NodeData data, Mark mark = {0, 0});
 		
-		template <typename T>
+		template<typename T>
 		Node(T data, Mark mark = {0, 0});
 		
-		template <typename T>
+		template<typename T>
 		Node(T data, FilePath filePath, Mark mark = {0, 0});
 		
 		/// @brief Gets the node defined.
@@ -85,7 +82,7 @@ namespace ieml {
 		/// @tparam Type Node type.
 		///
 		/// @return Value whether a node is type.
-		template <NodeType Type>
+		template<NodeType Type>
 		bool is() const;
 		
 		/// @brief Asks if the node is null.
@@ -161,24 +158,24 @@ namespace ieml {
 		/// @brief Gets the size.
 		///
 		/// @return A size or throws an exception NotRequestedTypeException.
-		Size getSize();
+		Size getSize() const;
 		
 		/// @brief Gets the node list.
 		///
 		/// @return A node list or throws an exception NotRequestedTypeException.
-		ListData getList() const;
+		const ListData& getList() const;
 		
 		/// @brief Gets the node map.
 		///
 		/// @return A node map or throws an exception NotRequestedTypeException.
-		MapData getMap();
+		const MapData& getMap() const;
 		
 		/// @brief Gets the T value.
 		///
 		/// @tparam T Value type.
 		///
 		/// @return A T value or throws an exception NotRequestedTypeException.
-		template <typename T>
+		template<typename T>
 		T as() const;
 		
 		/// @brief Gets the T value.
@@ -188,7 +185,7 @@ namespace ieml {
 		/// @param defaultValue Default value.
 		///
 		/// @return A T value or default T value.
-		template <typename T>
+		template<typename T>
 		T asDefault(T&& defaultValue) const;
 		
 		/// @brief Gets the T pointer value.
@@ -199,7 +196,7 @@ namespace ieml {
 		/// @param args Arguments to call the constructor.
 		///
 		/// @return Pointer to an object or to an object created using the default constructors.
-		template <typename Type, typename... ArgsTypes>
+		template<typename Type, typename... ArgsTypes>
 		Type* asDefaultPtr(ArgsTypes... args) const;
 		
 		/// @brief Gets a node from the list by index.
@@ -209,12 +206,16 @@ namespace ieml {
 		/// @return A node or throws an exception NotRequestedTypeException.
 		Node& at(Size index);
 		
+		const Node& at(Size index) const;
+		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
 		Node& at(String key);
+		
+		const Node& at(String key) const;
 		
 		/// @brief Gets the node defined.
 		///
@@ -228,15 +229,21 @@ namespace ieml {
 		/// @return A node or throws an exception NotRequestedTypeException.
 		Node& operator[](Size index);
 		
+		const Node& operator[](Size index) const;
+		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or throws an exception NotRequestedTypeException.
 		Node& operator[](String key);
+		
+		const Node& operator[](String key) const;
 	};
 	
-	Node fromFile(const FilePath& filePath, Rc<AnchorKeeper> anchorKeeper = std::make_shared<AnchorKeeper>());
+	Node fromFile(const FilePath& filePath, Rc<AnchorKeeper> anchorKeeper = makeRc<AnchorKeeper>());
+	
+	Node from(const String& inputStr, Rc<AnchorKeeper> anchorKeeper = makeRc<AnchorKeeper>());
 }
 
 #include "Node.inl"

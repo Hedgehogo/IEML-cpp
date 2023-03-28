@@ -1,17 +1,20 @@
 #pragma once
 
-#include "../../../exceptions/WithMark/WithMarkException.hpp"
+#include "../../../helpers/getTypeName/getTypeName.hpp"
+#include "../../../node/exception/WithMark/WithMarkException.hpp"
 
 namespace ieml {
 	class FailedConvertDataException : public WithMarkException {
 	private:
-		String type;
-	
+		const TypeInfo& typeInfo_;
+		
 	public:
-		FailedConvertDataException(Mark mark, String type);
+		FailedConvertDataException(Mark mark, const TypeInfo& typeInfo);
 		
 		String getDescription() const override;
 		
-		String getType() const;
+		String getTypeName() const;
+		
+		const TypeInfo& getTypeInfo() const;
 	};
 }

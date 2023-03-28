@@ -1,17 +1,18 @@
 #pragma once
 
-#include <string>
-#include "../../usings/usings.hpp"
+#include "TypeInfo/TypeInfo.hpp"
 
 namespace ieml {
 	namespace detail {
 		String demangle(const char* name);
 	}
 	
-	template <class T>
-	String getTypeName(const T& type);
+	template<typename T>
+	struct TypeName {
+		static String get();
+	};
 	
-	template <class T>
+	template<typename T>
 	String getTypeName();
 }
 

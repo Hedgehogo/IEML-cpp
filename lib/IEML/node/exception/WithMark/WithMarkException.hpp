@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../BaseException.hpp"
-#include "../../node/Mark/Mark.hpp"
+#include "../../../exception/BaseException.hpp"
+#include "../../Mark/Mark.hpp"
 
 namespace ieml {
 	class WithMarkException : public BaseException {

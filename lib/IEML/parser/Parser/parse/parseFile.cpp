@@ -36,7 +36,7 @@ namespace ieml {
 	
 	Option<FileData> Parser::parseFile(Size indent) {
 		if(auto find{matchAndMove<reFile>(pos_, end(), mark_)}) {
-			Rc<AnchorKeeper> loadedAnchorKeeper{std::make_shared<AnchorKeeper>(anchorKeeper_)};
+			Rc<AnchorKeeper> loadedAnchorKeeper{makeRc<AnchorKeeper>(anchorKeeper_)};
 			FilePath loadedFilePath{getFilePath(filePath_, fs::u8path(find.begin() + 2, find.end()))};
 			parseFileAnchorMap(loadedAnchorKeeper, indent);
 			Parser loadedParser{preprocess(readFile<char>(loadedFilePath)), loadedAnchorKeeper};

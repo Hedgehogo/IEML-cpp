@@ -14,11 +14,6 @@ namespace ieml {
 		return inputStr_.cend();
 	}
 	
-	NodeData parse(const String& inputStr) {
-		Parser parser{inputStr};
-		return parser.parse();
-	}
-	
 	void Parser::except(FailedParseException::Reason reason) {
 		throw FailedParseException{filePath_, reason, mark_};
 	}

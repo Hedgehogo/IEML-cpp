@@ -2,7 +2,7 @@
 #include "../../parser/helpers/toValue//toValue.hpp"
 #include "../../parser/helpers/isValue/isValue.hpp"
 #include "../../helpers/getTypeName/getTypeName.hpp"
-#include "../NodeData/exception/NodeAnotherTypeException.hpp"
+#include "../exception/NodeAnotherTypeException.hpp"
 #include "exception/FailedConvertDataException.hpp"
 
 namespace ieml {
@@ -17,7 +17,7 @@ namespace ieml {
 	}
 	
 	template <typename T, typename E>
-	const T& Node::getT(E e) const {
+	const T& Node::getType(E e) const {
 		auto& clearData = getDataFrom(data);
 		if(auto typeData = std::get_if<T>(&clearData))
 			return *typeData;
@@ -25,7 +25,7 @@ namespace ieml {
 	}
 	
 	template <typename T, typename E>
-	T& Node::getT(E e) {
+	T& Node::getType(E e) {
 		auto& clearData = getDataFrom(data);
 		if(auto typeData = std::get_if<T>(&clearData))
 			return *typeData;
@@ -35,7 +35,7 @@ namespace ieml {
 	template <NodeType Type>
 	bool Node::is() const {
 		auto& clearData = getDataFrom(data);
-		return clearData.index() == getNodeTypeIndex(Type);
+		return clearData.index() == getIndexFromNodeType(Type);
 	}
 	
 	namespace detail {
@@ -79,7 +79,7 @@ namespace ieml {
 		T object;
 		if(detail::DecodeImpl<T>::func(*this, object))
 			return object;
-		throw FailedConvertDataException{mark, getTypeName<T>()};
+		throw FailedConvertDataException{mark, getTypeInfo<T>()};
 	}
 	
 	template <typename T>
@@ -89,7 +89,7 @@ namespace ieml {
 		T object;
 		if(detail::DecodeImpl<T>::func(*this, object))
 			return object;
-		throw FailedConvertDataException{mark, getTypeName<T>()};
+		throw FailedConvertDataException{mark, getTypeInfo<T>()};
 	}
 	
 	template <typename Type, typename... ArgsTypes>
@@ -99,6 +99,6 @@ namespace ieml {
 		Type* object;
 		if(detail::DecodeImpl<Type*>::func(*this, object))
 			return object;
-		throw FailedConvertDataException{mark, getTypeName<Type>()};
+		throw FailedConvertDataException{mark, getTypeInfo<Type>()};
 	}
 }

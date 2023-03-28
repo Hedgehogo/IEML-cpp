@@ -6,16 +6,11 @@
 #include <variant>
 #include <unordered_map>
 #include "../../helpers/fileSystem/fileSystem.hpp"
+#include "../../helpers/pointers/pointers.hpp"
 #include "../NodeType/NodeType.hpp"
 
 namespace ieml {
 	using llint = long long;
-	template<typename T>
-	using Rc = std::shared_ptr<T>;
-	template<typename T>
-	using Weak = std::weak_ptr<T>;
-	template<typename T>
-	using Box = std::unique_ptr<T>;
 	
 	class Node;
 	

@@ -1,7 +1,7 @@
 #include "NodeType.hpp"
 
 namespace ieml {
-	String getNodeTypeString(NodeType nodeType) {
+	String getStringFromNodeType(NodeType nodeType) {
 		if(nodeType == NodeType::String) {
 			return "String";
 		} else if(nodeType == NodeType::Raw) {

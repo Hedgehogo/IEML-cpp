@@ -3,7 +3,7 @@
 #include "../../node/Node/Node.hpp"
 #include "../../anchor/AnchorKeeper/AnchorKeeper.hpp"
 #include "../../usings/usings.hpp"
-#include "../exceptions/FailedParseException/FailedParseException.hpp"
+#include "../exception/FailedParseException/FailedParseException.hpp"
 
 namespace ieml {
 	class Parser {
@@ -29,7 +29,7 @@ namespace ieml {
 	public:
 		Parser(const String& inputStr, Rc<AnchorKeeper> anchorKeeper, FilePath filePath = FilePath{});
 		
-		Parser(const String& inputStr, FilePath filePath = FilePath{}, Rc<AnchorKeeper> anchorKeeper = std::make_shared<AnchorKeeper>());
+		Parser(const String& inputStr, FilePath filePath = FilePath{}, Rc<AnchorKeeper> anchorKeeper = makeRc<AnchorKeeper>());
 		
 		/// @brief Parses all input to the node data.
 		///
@@ -68,6 +68,4 @@ namespace ieml {
 		
 		Option<ListData> parseShortList(Size indent);
 	};
-	
-	NodeData parse(const String& inputStr);
 }

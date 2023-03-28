@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../helpers/fileSystem/fileSystem.hpp"
-#include "../../../exceptions/WithMark/WithMarkException.hpp"
+#include "../../../node/exception/WithMark/WithMarkException.hpp"
 
 namespace ieml {
 	class FailedParseException : public WithMarkException {

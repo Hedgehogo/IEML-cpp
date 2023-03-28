@@ -8,9 +8,6 @@
 namespace ieml {
 	Node Node::undefined = Node{NullData{}, Mark{0, 0}};
 	
-	Node::Node(const String& inputStr) : data(parse(inputStr)), mark({0, 0}) {
-	}
-	
 	Node::Node(NodeData data, Mark mark) : data(std::move(data)), mark(mark) {
 	}
 	
@@ -148,7 +145,7 @@ namespace ieml {
 		return {};
 	}
 	
-	Size Node::getSize() {
+	Size Node::getSize() const {
 		auto& clearData = getDataFrom(data);
 		if(auto listData = std::get_if<ListData>(&clearData))
 			return listData->size();
@@ -157,23 +154,37 @@ namespace ieml {
 		throw NodeAnotherTypeException{NodeType::List, getType()};
 	}
 	
-	ListData Node::getList() const {
-		return getT<ListData>(NodeAnotherTypeException{NodeType::List, getType()});
+	const ListData& Node::getList() const {
+		return getType<ListData>(NodeAnotherTypeException{NodeType::List, getType()});
 	}
 	
-	MapData Node::getMap() {
-		return getT<MapData>(NodeAnotherTypeException{NodeType::Map, getType()});
+	const MapData& Node::getMap() const {
+		return getType<MapData>(NodeAnotherTypeException{NodeType::Map, getType()});
 	}
 	
 	Node& Node::at(Size index) {
-		auto& list = getT<ListData>(NodeAnotherTypeException{NodeType::List, getType()});
+		auto& list = getType<ListData>(NodeAnotherTypeException{NodeType::List, getType()});
+		if(index < list.size())
+			return list.at(index);
+		return undefined;
+	}
+	
+	const Node& Node::at(Size index) const {
+		auto& list = getType<ListData>(NodeAnotherTypeException{NodeType::List, getType()});
 		if(index < list.size())
 			return list.at(index);
 		return undefined;
 	}
 	
 	Node& Node::at(String key) {
-		auto& map = getT<MapData>(NodeAnotherTypeException{NodeType::Map, getType()});
+		auto& map = getType<MapData>(NodeAnotherTypeException{NodeType::Map, getType()});
+		if(auto find{map.find(key)}; find != map.end())
+			return *find->second;
+		return undefined;
+	}
+	
+	const Node& Node::at(String key) const {
+		auto& map = getType<MapData>(NodeAnotherTypeException{NodeType::Map, getType()});
 		if(auto find{map.find(key)}; find != map.end())
 			return *find->second;
 		return undefined;
@@ -187,7 +198,15 @@ namespace ieml {
 		return this->at(index);
 	}
 	
+	const Node& Node::operator[](Size index) const {
+		return this->at(index);
+	}
+	
 	Node& Node::operator[](String key) {
+		return this->at(key);
+	}
+	
+	const Node& Node::operator[](String key) const {
 		return this->at(key);
 	}
 	
@@ -233,5 +252,10 @@ namespace ieml {
 		FilePath normalFilePath{filePath.lexically_normal().make_preferred()};
 		Parser parser{readFile<char>(normalFilePath), normalFilePath, anchorKeeper};
 		return Node{parser.parse()};
+	}
+	
+	Node from(const String& inputStr, Rc<AnchorKeeper> anchorKeeper) {
+		Parser parser{inputStr, anchorKeeper};
+		return Node(parser.parse());
 	}
 }

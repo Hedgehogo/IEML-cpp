@@ -2,13 +2,13 @@
 #include <typeinfo>
 
 namespace ieml {
-	template <class T>
-	String getTypeName(const T& type) {
-		return detail::demangle(typeid(type).name());
+	template<typename T>
+	String TypeName<T>::get() {
+		return detail::demangle(typeid(T).name());
 	}
 	
-	template <class T>
+	template<typename T>
 	String getTypeName() {
-		return detail::demangle(typeid(T).name());
+		return TypeName<T>::get();
 	}
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../exceptions/BaseException.hpp"
+#include "../../../exception/BaseException.hpp"
 #include "../../fileSystem/fileSystem.hpp"
 
 namespace ieml {
