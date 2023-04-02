@@ -12,6 +12,7 @@ namespace ieml {
 			ExpectedMapKey,
 			ExpectedListItem,
 			ImpermissibleSpace,
+			ImpermissibleTab,
 			AnchorAlreadyExists,
 			IncompleteString,
 		};
@@ -26,5 +27,7 @@ namespace ieml {
 		String getDescription() const override;
 		
 		FilePath getFilePath() const;
+		
+		Reason getReason() const;
 	};
 }

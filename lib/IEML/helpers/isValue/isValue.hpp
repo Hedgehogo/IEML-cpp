@@ -1,17 +1,8 @@
 #pragma once
 
-#include <string>
-#include "../../../usings/usings.hpp"
+#include "../../usings/usings.hpp"
 
 namespace ieml {
-	/// @brief Checks if the string Enter.
-	///
-	/// @param first Beginning of the string to be checked.
-	/// @param last End of string to be checked.
-	///
-	/// @return Value whether the string Enter.
-	bool isEnter(String::const_iterator first, String::const_iterator last);
-	
 	/// @brief Checks if the string ShortList.
 	///
 	/// @param first Beginning of the string to be checked.

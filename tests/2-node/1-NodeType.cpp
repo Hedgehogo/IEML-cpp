@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+
 #include <IEML/node/NodeType/NodeType.hpp>
 
 TEST(node, NodeType) {

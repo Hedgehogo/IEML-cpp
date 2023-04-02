@@ -1,6 +1,6 @@
 //included into Node.hpp
-#include "../../parser/helpers/toValue//toValue.hpp"
-#include "../../parser/helpers/isValue/isValue.hpp"
+#include "../../helpers/toValue//toValue.hpp"
+#include "../../helpers/isValue/isValue.hpp"
 #include "../../helpers/getTypeName/getTypeName.hpp"
 #include "../exception/NodeAnotherTypeException.hpp"
 #include "exception/FailedConvertDataException.hpp"
@@ -40,37 +40,26 @@ namespace ieml {
 	
 	namespace detail {
 		template <typename T>
-		std::enable_if_t<!std::is_arithmetic_v<T>, bool> decode(const Node& node, T& object) {
-			return Decode<T>::func(node, object);
-		}
-		
-		template <typename T>
-		std::enable_if_t<std::is_integral_v<T>, bool> decode(const Node& node, T& object) {
-			if(node.isRaw()) {
-				String str{node.as<RawData>()};
-				if(isInt(str.cbegin(), str.cend())) {
-					object = static_cast<T>(toInt(str.cbegin(), str.cend()));
-					return true;
-				}
-			}
-			return false;
-		}
-		
-		template <typename T>
-		std::enable_if_t<std::is_floating_point_v<T>, bool> decode(const Node& node, T& object) {
-			if(node.isRaw()) {
-				String str{node.as<RawData>()};
-				if(isDouble(str.cbegin(), str.cend()) || isInt(str.cbegin(), str.cend())) {
-					object = static_cast<T>(toDouble(str.cbegin(), str.cend()));
-					return true;
-				}
-			}
-			return false;
-		}
-		
-		template <typename T>
 		bool DecodeImpl<T>::func(const Node& node, T& object) {
-			return decode(node, object);
+			if constexpr(std::is_arithmetic_v<T>) {
+				if(node.isRaw()) {
+					String str{node.as<RawData>()};
+					if constexpr(std::is_floating_point_v<T>) {
+						if(isDouble(str.cbegin(), str.cend()) || isInt(str.cbegin(), str.cend())) {
+							object = static_cast<T>(toDouble(str.cbegin(), str.cend()));
+							return true;
+						}
+					} else {
+						if(isInt(str.cbegin(), str.cend())) {
+							object = static_cast<T>(toInt(str.cbegin(), str.cend()));
+							return true;
+						}
+					}
+				}
+			} else {
+				return Decode<T>::func(node, object);
+			}
+			return false;
 		}
 	}
 	

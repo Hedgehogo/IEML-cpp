@@ -1,8 +1,6 @@
 #pragma once
 
 #include "toNumber/toNumber.hpp"
-#include <string>
-#include "../../../usings/usings.hpp"
 
 namespace ieml {
 	/// @brief Converts a letter into the bool.

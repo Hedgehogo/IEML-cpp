@@ -11,7 +11,7 @@ add_subdirectory(modules/compile_time_regex)
 
 add_library(${PROJECT_NAME} ${src})
 
-target_include_directories(${PROJECT_NAME} PRIVATE modules/compile_time_regex/include)
+target_include_directories(${PROJECT_NAME} PUBLIC modules/compile_time_regex/include)
 
 add_executable(${PROJECT_NAME}_ex main.cpp)
 

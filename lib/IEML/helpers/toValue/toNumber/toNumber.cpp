@@ -1,5 +1,4 @@
 #include "toNumber.hpp"
-#include <string>
 
 namespace ieml {
 	int toDigit(char symbol) {

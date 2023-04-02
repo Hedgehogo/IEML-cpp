@@ -1,8 +1,7 @@
 #include "../Parser.hpp"
 #include "../../../helpers/readFile/readFile.hpp"
-#include "../../preprocess/preprocess.hpp"
 #include "../../helpers/match/match.hpp"
-#include "../../helpers/emptyLines/emptyLines.hpp"
+#include "../../helpers/blankLines/blankLines.hpp"
 
 namespace ieml {
 	static constexpr auto reFile = ctll::fixed_string{R"(< [^\n]*)"};
@@ -17,10 +16,9 @@ namespace ieml {
 	
 	void Parser::parseFileAnchorMap(Rc<AnchorKeeper> loadedAnchorKeeper, Size indent) {
 		if(pos_ != end()) {
-			Mark mark{mark_};
-			String::const_iterator pos{pos_};
-			skipBlankLines(pos_, end(), mark_);
-			Size currentIndent{matchAndMove<reTabs>(pos_, end(), mark_).size()};
+			PosInfo posInfo{getPosInfo()};
+			skipBlankLinesLn(pos_, end(), mark_);
+			Size currentIndent{matchAndMove<reIndent>(pos_, end(), mark_).size()};
 			if(currentIndent == indent) {
 				if(auto map{parseMap(indent)}) {
 					for(auto& [key, value]: map.value()) {
@@ -29,8 +27,7 @@ namespace ieml {
 					return;
 				}
 			}
-			pos_ = pos;
-			mark_ = mark;
+			setPosInfo(posInfo);
 		}
 	}
 	
@@ -39,7 +36,7 @@ namespace ieml {
 			Rc<AnchorKeeper> loadedAnchorKeeper{makeRc<AnchorKeeper>(anchorKeeper_)};
 			FilePath loadedFilePath{getFilePath(filePath_, fs::u8path(find.begin() + 2, find.end()))};
 			parseFileAnchorMap(loadedAnchorKeeper, indent);
-			Parser loadedParser{preprocess(readFile<char>(loadedFilePath)), loadedAnchorKeeper};
+			Parser loadedParser{readFile<String::value_type>(loadedFilePath), loadedAnchorKeeper};
 			return FileData{loadedParser.parse(), loadedFilePath};
 		}
 		return {};

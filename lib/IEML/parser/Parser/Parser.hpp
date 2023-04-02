@@ -8,6 +8,11 @@
 namespace ieml {
 	class Parser {
 	private:
+		struct PosInfo {
+			String::const_iterator pos;
+			Mark mark;
+		};
+		
 		String inputStr_;
 		String::const_iterator pos_;
 		Mark mark_;
@@ -15,6 +20,10 @@ namespace ieml {
 		FilePath filePath_;
 		
 		String::const_iterator end();
+		
+		PosInfo getPosInfo();
+		
+		void setPosInfo(const PosInfo& posInfo);
 		
 		Option<TakeAnchorData> parseTakeAnchor(Size indent);
 		

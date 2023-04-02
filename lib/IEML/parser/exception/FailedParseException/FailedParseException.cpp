@@ -22,6 +22,8 @@ namespace ieml {
 			return "Expected List Item.";
 		} else if (reason == FailedParseException::Reason::ImpermissibleSpace) {
 			return "A space was detected. Perhaps you meant to write a tab as an indentation.";
+		} else if (reason == FailedParseException::Reason::ImpermissibleTab) {
+			return "A tab was detected. A lower level of indentation was expected.";
 		} else if (reason == FailedParseException::Reason::AnchorAlreadyExists) {
 			return "An attempt was made to take an anchor with the name of an anchor that already exists.";
 		}
@@ -36,5 +38,9 @@ namespace ieml {
 	
 	FilePath FailedParseException::getFilePath() const {
 		return file_path;
+	}
+	
+	FailedParseException::Reason FailedParseException::getReason() const {
+		return reason;
 	}
 }

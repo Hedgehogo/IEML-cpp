@@ -1,14 +1,14 @@
 #include "../Parser.hpp"
 #include "ctre/functions.hpp"
-#include "../../helpers/emptyLines/emptyLines.hpp"
+#include "../../helpers/blankLines/blankLines.hpp"
 
 namespace ieml {
 	Size determineIndent(String::const_iterator& pos, String::const_iterator end) {
-		return ctre::starts_with<reTabs>(pos, end).end() - pos;
+		return ctre::starts_with<reIndent>(pos, end).end() - pos;
 	}
 	
 	NodeData Parser::parse() {
-		skipBlankLines(pos_, end(), mark_);
+		skipBlankLinesLn(pos_, end(), mark_);
 		
 		Size indent{determineIndent(pos_, end())};
 		mark_.symbol = indent;

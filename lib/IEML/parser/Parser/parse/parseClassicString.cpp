@@ -1,5 +1,5 @@
 #include "../Parser.hpp"
-#include "../../helpers//emptyLines/emptyLines.hpp"
+#include "../../helpers//blankLines/blankLines.hpp"
 
 namespace ieml {
 	struct StringMark {

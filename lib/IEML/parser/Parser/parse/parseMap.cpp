@@ -1,52 +1,50 @@
 #include "../Parser.hpp"
-#include "../../helpers/emptyLines/emptyLines.hpp"
+#include "../../helpers/blankLines/blankLines.hpp"
 #include "../../helpers/match/match.hpp"
 #include "../../helpers/tag/tag.hpp"
 
 namespace ieml {
-	static constexpr auto reMapKey = ctll::fixed_string{R"([^\"\n<>]*?: ?)"};
+	static constexpr auto reMapKey = ctll::fixed_string{R"([^\"\n<>]*?:)"};
 	
 	Option<MapData> Parser::parseMap(Size indent) {
 		if(ctre::starts_with<reMapKey>(pos_, end())) {
 			MapData nodes{};
-			Mark currentMark{mark_};
-			Size currentIndent{indent};
-			String::const_iterator currentPos{pos_};
-			while(currentIndent == indent) {
-				if(currentPos != end() && *currentPos == ' ')
+			PosInfo posInfo{getPosInfo()};
+			bool rightIndent{true};
+			while(rightIndent) {
+				if(posInfo.pos == end()) {
+					break;
+				} else if(*posInfo.pos == ' ') {
 					except(FailedParseException::Reason::ImpermissibleSpace);
-				if(auto find{matchAndMove<reMapKey>(currentPos, end(), currentMark)}) {
-					pos_ = currentPos;
-					mark_ = currentMark;
-					
-					String::const_iterator findEnd{find.end() - (*(find.end() - 1) == ' ' ? 2 : 1)};
+				} else if(*posInfo.pos == '\t') {
+					except(FailedParseException::Reason::ImpermissibleTab);
+				} else if(auto find{matchAndMove<reMapKey>(posInfo.pos, end(), posInfo.mark)}) {
+					if(posInfo.pos != end() && *posInfo.pos == ' ') {
+						posInfo.pos += 1;
+						posInfo.mark.symbol += 1;
+					}
+					setPosInfo(posInfo);
 					String str;
 					NodeData nodeData;
 					if(auto tagFind{ctre::search<reTagSpecial>(find.begin(), find.end())}) {
 						str = {find.begin(), tagFind.begin()};
-						String tagStr{tagFind.end(), findEnd};
+						String tagStr{tagFind.end(), find.end()};
 						nodeData = TagData{parseAnchor(indent + 1), tagStr};
 					} else {
-						str = {find.begin(), findEnd};
+						str = {find.begin(), find.end() - 1};
 						nodeData = parseAnchor(indent + 1);
 					}
-					nodes.emplace(str, PNode{Node{nodeData, currentMark}});
-					
-					currentPos = pos_;
-					currentMark = mark_;
+					nodes.emplace(str, PNode{Node{nodeData, posInfo.mark}});
+					posInfo = getPosInfo();
 					
 					if(pos_ != end() && *pos_ != '\n')
 						except(FailedParseException::Reason::ExpectedMapKey);
-					skipBlankLines(currentPos, end(), currentMark);
-					currentIndent = matchAndMove<reTabs>(currentPos, end(), currentMark).size();
-				} else if(currentPos == end()) {
-					break;
+					skipBlankLinesLn(posInfo.pos, end(), posInfo.mark);
+					rightIndent = matchIndent(posInfo.pos, end(), posInfo.mark, indent);
 				} else {
 					except(FailedParseException::Reason::ExpectedMapKey);
 				}
 			}
-			if(currentIndent > indent)
-				except(FailedParseException::Reason::ExpectedMapKey);
 			return nodes;
 		}
 		return {};

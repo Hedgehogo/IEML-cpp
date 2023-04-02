@@ -2,12 +2,6 @@
 #include "ctre/functions.hpp"
 
 namespace ieml {
-	static constexpr auto enter = ctll::fixed_string{R"( *)"};
-	
-	bool isEnter(String::const_iterator first, String::const_iterator last) {
-		return ctre::match<enter>(first, last);
-	}
-	
 	static constexpr auto shortList = ctll::fixed_string{R"(\[.*\] *)"};
 	
 	bool isShortList(String::const_iterator first, String::const_iterator last) {

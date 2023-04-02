@@ -1,11 +1,11 @@
 #include "../Parser.hpp"
-#include "../../helpers/emptyLines/emptyLines.hpp"
+#include "../../helpers/blankLines/blankLines.hpp"
 #include "../../helpers/match/match.hpp"
 
 namespace ieml {
 	Option<NodeData> Parser::parseNotScalar(Size indent) {
-		if(skipBlankLines(pos_, end(), mark_)) {
-			Size currentIndent{matchAndMove<reTabs>(pos_, end(), mark_)};
+		if(skipBlankLinesLn(pos_, end(), mark_)) {
+			Size currentIndent{matchAndMove<reIndent>(pos_, end(), mark_)};
 			if(currentIndent == indent) {
 				if(auto list{parseList(indent)}) {
 					return list.value();
