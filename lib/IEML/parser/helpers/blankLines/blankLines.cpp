@@ -40,7 +40,7 @@ namespace ieml {
 	}
 	
 	bool skipBlankLine(String::const_iterator& pos, String::const_iterator end, Mark& mark) {
-		if(auto line{ctre::starts_with<reCommentLine>(pos, end)}) {
+		if(auto line{ctre::starts_with<reBlankLine>(pos, end)}) {
 			mark.symbol += line.size();
 			pos = line.end();
 			return true;
@@ -49,12 +49,12 @@ namespace ieml {
 	}
 	
 	bool skipBlankLinesLn(String::const_iterator& pos, String::const_iterator end, Mark& mark) {
-		auto line{ctre::starts_with<reCommentLine>(pos, end)};
+		auto line{ctre::starts_with<reBlankLine>(pos, end)};
 		if(line && isEnter(line.end(), end)) {
 			do {
 				pos = line.end() + 1;
 				mark.enter();
-				line = ctre::starts_with<reCommentLine>(line.end() + 1, end);
+				line = ctre::starts_with<reBlankLine>(line.end() + 1, end);
 			} while(line && isEnter(line.end(), end));
 			return true;
 		}

@@ -18,8 +18,7 @@ namespace ieml {
 		if(pos_ != end()) {
 			PosInfo posInfo{getPosInfo()};
 			skipBlankLinesLn(pos_, end(), mark_);
-			Size currentIndent{matchAndMove<reIndent>(pos_, end(), mark_).size()};
-			if(currentIndent == indent) {
+			if(matchIndent(pos_, end(), mark_, indent)) {
 				if(auto map{parseMap(indent)}) {
 					for(auto& [key, value]: map.value()) {
 						loadedAnchorKeeper->add(key, *value);

@@ -4,8 +4,7 @@
 #include "../../../node/Mark/Mark.hpp"
 
 namespace ieml {
-	static constexpr auto reBlankLine = ctll::fixed_string{R"([\t ]*\n)"};
-	static constexpr auto reCommentLine = ctll::fixed_string{R"([\t ]*(#[! ][^\n]*)?)"};
+	static constexpr auto reBlankLine = ctll::fixed_string{R"([\t ]*(#[! ][^\n]*)?)"};
 	static constexpr auto reIndent = ctll::fixed_string{R"(\t*)"};
 	
 	bool isEnter(String::const_iterator pos, String::const_iterator end);

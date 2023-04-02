@@ -1,15 +1,14 @@
 #include "../Parser.hpp"
-#include "../../helpers/match/match.hpp"
-#include "../../helpers/whitespace/whitespace.hpp"
+#include "../../helpers/blankLines/blankLines.hpp"
 
 namespace ieml {
 	NodeData Parser::parseScalar(Size indent) {
 		if(auto null{parseNull()}) {
-			matchAndMove<reWhitespace>(pos_, end(), mark_);
+			skipBlankLine(pos_, end(), mark_);
 			return null.value();
 		}
 		if(auto classic{parseClassicString(indent)}) {
-			matchAndMove<reWhitespace>(pos_, end(), mark_);
+			skipBlankLine(pos_, end(), mark_);
 			return classic.value();
 		}
 		if(auto unshielded{parseNotEscapedString(indent)}) {

@@ -1,6 +1,6 @@
 #include "../Parser.hpp"
 #include "../../helpers/match/match.hpp"
-#include "../../helpers/whitespace/whitespace.hpp"
+#include "../../helpers/blankLines/blankLines.hpp"
 
 namespace ieml {
 	static constexpr auto reTakeAnchor = ctll::fixed_string{R"(&[^\"\n<> ]*)"};
@@ -21,7 +21,8 @@ namespace ieml {
 	Option<GetAnchorData> Parser::parseGetAnchor(Size indent) {
 		if(auto find{matchAndMove<reGetAnchor>(pos_, end(), mark_)}; find) {
 			String name{find.begin() + 1, find.end()};
-			matchAndMove<reWhitespace>(pos_, end(), mark_);
+			
+			skipBlankLine(pos_, end(), mark_);
 			return GetAnchorData{anchorKeeper_, name};
 		}
 		return {};
