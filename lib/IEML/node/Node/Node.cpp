@@ -210,7 +210,7 @@ namespace ieml {
 	}
 	
 	namespace detail {
-		bool DecodeImpl<RawData>::func(const Node& node, RawData& object) {
+		bool DecodeImpl<RawData>::decode(const Node& node, RawData& object) {
 			auto& clearData = Node::getDataFrom(node.data);
 			if(auto strData = std::get_if<RawData>(&clearData)) {
 				object = *strData;
@@ -219,7 +219,7 @@ namespace ieml {
 			return false;
 		}
 		
-		bool DecodeImpl<String>::func(const Node& node, String& object) {
+		bool DecodeImpl<String>::decode(const Node& node, String& object) {
 			auto& clearData = Node::getDataFrom(node.data);
 			if(auto strData = std::get_if<StringData>(&clearData)) {
 				object = *strData;
@@ -228,7 +228,7 @@ namespace ieml {
 			return false;
 		}
 		
-		bool DecodeImpl<ListData>::func(const Node& node, ListData& object) {
+		bool DecodeImpl<ListData>::decode(const Node& node, ListData& object) {
 			auto& clearData = Node::getDataFrom(node.data);
 			if(auto listData = std::get_if<ListData>(&clearData)) {
 				object = *listData;
@@ -237,7 +237,7 @@ namespace ieml {
 			return false;
 		}
 		
-		bool DecodeImpl<MapData>::func(const Node& node, MapData& object) {
+		bool DecodeImpl<MapData>::decode(const Node& node, MapData& object) {
 			auto& clearData = Node::getDataFrom(node.data);
 			if(auto mapData = std::get_if<MapData>(&clearData)) {
 				object = *mapData;

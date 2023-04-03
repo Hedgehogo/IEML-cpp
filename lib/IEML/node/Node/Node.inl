@@ -40,7 +40,7 @@ namespace ieml {
 	
 	namespace detail {
 		template <typename T>
-		bool DecodeImpl<T>::func(const Node& node, T& object) {
+		bool DecodeImpl<T>::decode(const Node& node, T& object) {
 			if constexpr(std::is_arithmetic_v<T>) {
 				if(node.isRaw()) {
 					String str{node.as<RawData>()};
@@ -57,7 +57,7 @@ namespace ieml {
 					}
 				}
 			} else {
-				return Decode<T>::func(node, object);
+				return Decode<T>::decode(node, object);
 			}
 			return false;
 		}
@@ -66,28 +66,28 @@ namespace ieml {
 	template <typename T>
 	T Node::as() const {
 		T object;
-		if(detail::DecodeImpl<T>::func(*this, object))
+		if(detail::DecodeImpl<T>::decode(*this, object))
 			return object;
 		throw FailedConvertDataException{mark, getTypeInfo<T>()};
 	}
 	
 	template <typename T>
-	T Node::asDefault(T&& defaultValue) const {
+	T Node::asOr(T&& defaultValue) const {
 		if(!isDefined())
 			return defaultValue;
 		T object;
-		if(detail::DecodeImpl<T>::func(*this, object))
+		if(detail::DecodeImpl<T>::decode(*this, object))
 			return object;
-		throw FailedConvertDataException{mark, getTypeInfo<T>()};
+		return defaultValue;
 	}
 	
 	template <typename Type, typename... ArgsTypes>
-	Type* Node::asDefaultPtr(ArgsTypes... args) const {
+	Type* Node::asPtrOr(ArgsTypes... args) const {
 		if(!isDefined())
 			return new Type{args...};
 		Type* object;
-		if(detail::DecodeImpl<Type*>::func(*this, object))
+		if(detail::DecodeImpl<Type*>::decode(*this, object))
 			return object;
-		throw FailedConvertDataException{mark, getTypeInfo<Type>()};
+		return new Type{args...};
 	}
 }

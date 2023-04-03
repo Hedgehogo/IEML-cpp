@@ -13,31 +13,31 @@ namespace ieml {
 		/// @brief Help structure to implement the conversion functions from a node to T
 		template <typename T>
 		struct DecodeImpl {
-			static bool func(const Node& node, T& object);
+			static bool decode(const Node& node, T& object);
 		};
 		
 		/// @brief Help structure to implement the conversion functions from a node to raw data
 		template <>
 		struct DecodeImpl<RawData> {
-			static bool func(const Node& node, RawData& object);
+			static bool decode(const Node& node, RawData& object);
 		};
 		
 		/// @brief Help structure to implement the conversion functions from a node to string
 		template <>
 		struct DecodeImpl<StringData> {
-			static bool func(const Node& node, StringData& object);
+			static bool decode(const Node& node, StringData& object);
 		};
 		
 		/// @brief Help structure to implement the conversion functions from a node to list
 		template <>
 		struct DecodeImpl<ListData> {
-			static bool func(const Node& node, ListData& object);
+			static bool decode(const Node& node, ListData& object);
 		};
 		
 		/// @brief Help structure to implement the conversion functions from a node to map
 		template <>
 		struct DecodeImpl<MapData> {
-			static bool func(const Node& node, MapData& object);
+			static bool decode(const Node& node, MapData& object);
 		};
 	}
 }

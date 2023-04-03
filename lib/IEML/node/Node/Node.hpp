@@ -157,24 +157,24 @@ namespace ieml {
 		
 		/// @brief Gets the size.
 		///
-		/// @return A size or throws an exception NotRequestedTypeException.
+		/// @return A size or throws an exception NodeAnotherTypeException.
 		Size getSize() const;
 		
 		/// @brief Gets the node list.
 		///
-		/// @return A node list or throws an exception NotRequestedTypeException.
+		/// @return A node list or throws an exception NodeAnotherTypeException.
 		const ListData& getList() const;
 		
 		/// @brief Gets the node map.
 		///
-		/// @return A node map or throws an exception NotRequestedTypeException.
+		/// @return A node map or throws an exception NodeAnotherTypeException.
 		const MapData& getMap() const;
 		
 		/// @brief Gets the T value.
 		///
 		/// @tparam T Value type.
 		///
-		/// @return A T value or throws an exception NotRequestedTypeException.
+		/// @return A T value or throws an exception FailedConvertDataException.
 		template<typename T>
 		T as() const;
 		
@@ -186,7 +186,7 @@ namespace ieml {
 		///
 		/// @return A T value or default T value.
 		template<typename T>
-		T asDefault(T&& defaultValue) const;
+		T asOr(T&& defaultValue) const;
 		
 		/// @brief Gets the T pointer value.
 		///
@@ -197,13 +197,13 @@ namespace ieml {
 		///
 		/// @return Pointer to an object or to an object created using the default constructors.
 		template<typename Type, typename... ArgsTypes>
-		Type* asDefaultPtr(ArgsTypes... args) const;
+		Type* asPtrOr(ArgsTypes... args) const;
 		
 		/// @brief Gets a node from the list by index.
 		///
 		/// @param index Index of the requested node.
 		///
-		/// @return A node or throws an exception NotRequestedTypeException.
+		/// @return A node or throws an exception NodeAnotherTypeException.
 		Node& at(Size index);
 		
 		const Node& at(Size index) const;
@@ -212,7 +212,7 @@ namespace ieml {
 		///
 		/// @param key Key of the requested node.
 		///
-		/// @return A node or throws an exception NotRequestedTypeException.
+		/// @return A node or throws an exception NodeAnotherTypeException.
 		Node& at(String key);
 		
 		const Node& at(String key) const;
@@ -226,7 +226,7 @@ namespace ieml {
 		///
 		/// @param index Index of the requested node.
 		///
-		/// @return A node or throws an exception NotRequestedTypeException.
+		/// @return A node or throws an exception NodeAnotherTypeException.
 		Node& operator[](Size index);
 		
 		const Node& operator[](Size index) const;
@@ -235,7 +235,7 @@ namespace ieml {
 		///
 		/// @param key Key of the requested node.
 		///
-		/// @return A node or throws an exception NotRequestedTypeException.
+		/// @return A node or throws an exception NodeAnotherTypeException.
 		Node& operator[](String key);
 		
 		const Node& operator[](String key) const;

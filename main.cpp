@@ -1,6 +1,6 @@
 #include <iostream>
-#include "lib/IEML/node/Node/Node.hpp"
-#include "lib/IEML/print/print.hpp"
+#include <IEML/node/Node/Node.hpp>
+#include <IEML/print/print.hpp>
 
 int main() {
 	ieml::Node node{ieml::fromFile("../exampleSrc/test.ieml")};

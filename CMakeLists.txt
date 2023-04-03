@@ -13,9 +13,13 @@ add_library(${PROJECT_NAME} ${src})
 
 target_include_directories(${PROJECT_NAME} PUBLIC modules/compile_time_regex/include)
 
+
 add_executable(${PROJECT_NAME}_ex main.cpp)
 
 target_link_libraries(${PROJECT_NAME}_ex PRIVATE ${PROJECT_NAME})
+
+target_include_directories(${PROJECT_NAME}_ex PRIVATE lib/)
+
 
 file(GLOB_RECURSE test_src "tests/*.hpp" "tests/*.cpp")
 
