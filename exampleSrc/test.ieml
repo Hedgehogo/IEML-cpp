@@ -2,7 +2,7 @@
 first:
 	- *str
 	# File loading
-	- = File: < subtest.ieml
+	- = File: < subtest
 		str: "\
 Hello\n\"IEML\"!"
 second:

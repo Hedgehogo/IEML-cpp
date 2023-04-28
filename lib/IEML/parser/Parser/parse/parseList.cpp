@@ -3,16 +3,7 @@
 #include "../../helpers/match/match.hpp"
 
 namespace ieml {
-	static constexpr auto reListSpecial = ctll::fixed_string{R"(-[ \n])"};
-	
-	bool findListSpecial(String::const_iterator& pos, String::const_iterator end, Mark& mark) {
-		bool find{matchAndMove<reListSpecial>(pos, end, mark)};
-		if(*(pos - 1) == '\n') {
-			--pos;
-			--mark.symbol;
-		}
-		return find;
-	}
+	static constexpr auto reListSpecial = ctll::fixed_string{R"(-( |(?=\n)))"};
 	
 	Option<ListData> Parser::parseList(Size indent) {
 		if(ctre::starts_with<reListSpecial>(pos_, end())) {
@@ -20,7 +11,7 @@ namespace ieml {
 			PosInfo posInfo{getPosInfo()};
 			bool rightIndent{true};
 			while(rightIndent) {
-				if(findListSpecial(posInfo.pos, end(), posInfo.mark)) {
+				if(matchAndMove<reListSpecial>(posInfo.pos, end(), posInfo.mark)) {
 					setPosInfo(posInfo);
 					NodeData nodeData{parseTag(indent, false)};
 					nodes.emplace_back(std::move(Node{nodeData, posInfo.mark}));

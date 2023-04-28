@@ -44,16 +44,9 @@ namespace ieml {
 			if constexpr(std::is_arithmetic_v<T>) {
 				if(node.isRaw()) {
 					String str{node.as<RawData>()};
-					if constexpr(std::is_floating_point_v<T>) {
-						if(isDouble(str.cbegin(), str.cend()) || isInt(str.cbegin(), str.cend())) {
-							object = static_cast<T>(toDouble(str.cbegin(), str.cend()));
-							return true;
-						}
-					} else {
-						if(isInt(str.cbegin(), str.cend())) {
-							object = static_cast<T>(toInt(str.cbegin(), str.cend()));
-							return true;
-						}
+					if(auto number{toNumber<T, String::value_type>(str.cbegin(), str.cend())}) {
+						object = *number;
+						return true;
 					}
 				}
 			} else {

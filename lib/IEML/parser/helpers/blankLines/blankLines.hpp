@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ctre/functions.hpp>
+#include <ctre.hpp>
 #include "../../../node/Mark/Mark.hpp"
 
 namespace ieml {
@@ -9,15 +9,13 @@ namespace ieml {
 	
 	bool isEnter(String::const_iterator pos, String::const_iterator end);
 	
-	bool matchEnter(String::const_iterator pos, String::const_iterator end, Mark &mark);
+	bool matchEnter(String::const_iterator& pos, String::const_iterator end, Mark& mark);
 	
-	bool matchIndent(String::const_iterator &pos, String::const_iterator end, Mark &mark, Size indent);
+	bool matchIndent(String::const_iterator& pos, String::const_iterator end, Mark& mark, Size indent);
 	
-	bool skipIndent(String::const_iterator &pos, String::const_iterator end, Mark &mark, Size indent);
+	bool skipIndent(String::const_iterator& pos, String::const_iterator end, Mark& mark, Size indent);
 	
-	bool skipBlankLine(String::const_iterator &pos, String::const_iterator end, Mark &mark);
+	bool skipBlankLine(String::const_iterator& pos, String::const_iterator end, Mark& mark);
 	
-	bool skipBlankLinesLn(String::const_iterator &pos, String::const_iterator end, Mark &mark);
-	
-	bool skipBlankLinesAndIndent(String::const_iterator &pos, String::const_iterator end, Mark &mark, Size indent);
+	bool skipBlankLinesLn(String::const_iterator& pos, String::const_iterator end, Mark& mark);
 }

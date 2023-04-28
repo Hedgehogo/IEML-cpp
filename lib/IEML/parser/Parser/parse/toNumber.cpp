@@ -1,5 +1,5 @@
 #include "../Parser.hpp"
-#include "ctre/functions.hpp"
+#include <ctre.hpp>
 #include "../../helpers/blankLines/blankLines.hpp"
 
 namespace ieml {

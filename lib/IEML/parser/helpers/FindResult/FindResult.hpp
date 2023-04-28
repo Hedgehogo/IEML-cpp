@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ctre/functions.hpp>
+#include <ctre.hpp>
 
 namespace ieml {
 	namespace detail {

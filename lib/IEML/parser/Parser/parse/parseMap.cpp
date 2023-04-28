@@ -4,7 +4,7 @@
 #include "../../helpers/tag/tag.hpp"
 
 namespace ieml {
-	static constexpr auto reMapKey = ctll::fixed_string{R"([^\"\n<>]*?:)"};
+	static constexpr auto reMapKey = ctll::fixed_string{R"([^\"\n<>]*?:( |(?=\n)))"};
 	
 	Option<MapData> Parser::parseMap(Size indent) {
 		if(ctre::starts_with<reMapKey>(pos_, end())) {
@@ -19,10 +19,6 @@ namespace ieml {
 				} else if(*posInfo.pos == '\t') {
 					except(FailedParseException::Reason::ImpermissibleTab);
 				} else if(auto find{matchAndMove<reMapKey>(posInfo.pos, end(), posInfo.mark)}) {
-					if(posInfo.pos != end() && *posInfo.pos == ' ') {
-						posInfo.pos += 1;
-						posInfo.mark.symbol += 1;
-					}
 					setPosInfo(posInfo);
 					String str;
 					NodeData nodeData;

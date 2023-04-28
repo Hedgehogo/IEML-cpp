@@ -241,7 +241,7 @@ namespace ieml {
 		const Node& operator[](String key) const;
 	};
 	
-	Node fromFile(const FilePath& filePath, Rc<AnchorKeeper> anchorKeeper = makeRc<AnchorKeeper>());
+	Node fromFile(FilePath&& filePath, Rc<AnchorKeeper> anchorKeeper = makeRc<AnchorKeeper>());
 	
 	Node from(const String& inputStr, Rc<AnchorKeeper> anchorKeeper = makeRc<AnchorKeeper>());
 }

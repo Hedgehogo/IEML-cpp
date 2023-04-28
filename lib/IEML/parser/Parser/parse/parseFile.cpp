@@ -6,8 +6,8 @@
 namespace ieml {
 	static constexpr auto reFile = ctll::fixed_string{R"(< [^\n]*)"};
 	
-	FilePath getFilePath(const FilePath& parentFilePath, const FilePath& newFilePath) {
-		FilePath normalFilePath{newFilePath.lexically_normal().make_preferred()};
+	FilePath getFilePath(const FilePath& parentFilePath, FilePath&& newFilePath) {
+		FilePath normalFilePath{newFilePath.concat(".ieml").lexically_normal().make_preferred()};
 		FilePath relativeFilePath{FilePath{parentFilePath}.remove_filename() / normalFilePath};
 		if(fs::exists(relativeFilePath))
 			return relativeFilePath.lexically_normal();

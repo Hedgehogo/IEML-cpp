@@ -60,15 +60,4 @@ namespace ieml {
 		}
 		return false;
 	}
-	
-	bool skipBlankLinesAndIndent(String::const_iterator& pos, String::const_iterator end, Mark& mark, Size indent) {
-		String::const_iterator currentPos{pos};
-		Mark currentMark{mark};
-		if(skipBlankLinesLn(currentPos, end, currentMark) && matchIndent(currentPos, end, currentMark, indent)) {
-			pos = currentPos;
-			mark = currentMark;
-			return true;
-		}
-		return false;
-	}
 }

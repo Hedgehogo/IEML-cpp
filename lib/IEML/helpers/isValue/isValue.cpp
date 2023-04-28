@@ -1,5 +1,5 @@
 #include "isValue.hpp"
-#include "ctre/functions.hpp"
+#include <ctre.hpp>
 
 namespace ieml {
 	static constexpr auto shortList = ctll::fixed_string{R"(\[.*\] *)"};
@@ -20,7 +20,7 @@ namespace ieml {
 		return ctre::match<nullValue>(first, last);
 	}
 	
-	static constexpr auto boolValue = ctll::fixed_string{R"((no|yes|true|false) *)"};
+	static constexpr auto boolValue = ctll::fixed_string{R"((no|yes) *)"};
 	
 	bool isBool(String::const_iterator first, String::const_iterator last) {
 		return ctre::match<boolValue>(first, last);

@@ -247,8 +247,8 @@ namespace ieml {
 		}
 	}
 	
-	Node fromFile(const FilePath& filePath, Rc<AnchorKeeper> anchorKeeper) {
-		FilePath normalFilePath{filePath.lexically_normal().make_preferred()};
+	Node fromFile(FilePath&& filePath, Rc<AnchorKeeper> anchorKeeper) {
+		FilePath normalFilePath{filePath.concat(".ieml").lexically_normal().make_preferred()};
 		Parser parser{readFile<char>(normalFilePath), normalFilePath, anchorKeeper};
 		return Node{parser.parse()};
 	}

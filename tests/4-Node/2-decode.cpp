@@ -7,7 +7,7 @@ TEST(Node, decode_int) {
 	ASSERT_EQ(node.as<int>(), -8246);
 	ASSERT_EQ(node.as<float>(), -8246.f);
 	
-	ieml::Node node_basis{ieml::RawData{"0pFF"}};
+	ieml::Node node_basis{ieml::RawData{"16'FF"}};
 	ASSERT_FLOAT_EQ(node_basis.as<int>(), 255);
 	ASSERT_FLOAT_EQ(node_basis.as<float>(), 255.f);
 }
@@ -16,7 +16,7 @@ TEST(Node, decode_float) {
 	ieml::Node node{ieml::RawData{"-8_246.73"}};
 	ASSERT_FLOAT_EQ(node.as<float>(), -8246.73f);
 	
-	ieml::Node node_basis{ieml::RawData{"0c0.1"}};
+	ieml::Node node_basis{ieml::RawData{"3'0.1"}};
 	ASSERT_FLOAT_EQ(node_basis.as<float>(), 1.f/3.f);
 }
 
