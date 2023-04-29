@@ -15,6 +15,7 @@ namespace ieml {
 				if(posInfo.pos == end()) {
 					break;
 				} else if(*posInfo.pos == ' ') {
+					std::string str{posInfo.pos, end()};
 					except(FailedParseException::Reason::ImpermissibleSpace);
 				} else if(*posInfo.pos == '\t') {
 					except(FailedParseException::Reason::ImpermissibleTab);
