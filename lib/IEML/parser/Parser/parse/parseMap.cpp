@@ -4,7 +4,7 @@
 #include "../../helpers/tag/tag.hpp"
 
 namespace ieml {
-	static constexpr auto reMapKey = ctll::fixed_string{R"([^\"\n<>]*?:( |(?=\n)))"};
+	static constexpr auto reMapKey = ctll::fixed_string{R"(([^\"\n<>]*?):( |(?=\n)))"};
 	
 	Option<MapData> Parser::parseMap(Size indent) {
 		if(ctre::starts_with<reMapKey>(pos_, end())) {
@@ -15,6 +15,7 @@ namespace ieml {
 				if(posInfo.pos == end()) {
 					break;
 				} else if(*posInfo.pos == ' ') {
+					std::string str{posInfo.pos, end()};
 					except(FailedParseException::Reason::ImpermissibleSpace);
 				} else if(*posInfo.pos == '\t') {
 					except(FailedParseException::Reason::ImpermissibleTab);

@@ -16,7 +16,7 @@ namespace ieml {
 	bool matchIndent(String::const_iterator& pos, String::const_iterator end, Mark& mark, Size indent) {
 		Size currentIndent{0};
 		String::const_iterator currentPos{pos};
-		while(currentIndent < indent && pos != end && *pos == '\t') {
+		while(currentIndent < indent && currentPos != end && *currentPos == '\t') {
 			currentIndent += 1;
 			currentPos += 1;
 		}
