@@ -34,7 +34,7 @@ namespace ieml {
 		if(auto find{matchAndMove<reFile>(pos_, end(), mark_)}) {
 			Rc<AnchorKeeper> loadedAnchorKeeper{makeRc<AnchorKeeper>(anchorKeeper_)};
 			FilePath loadedFilePath{getFilePath(filePath_, fs::u8path(find.begin() + 2, find.end()))};
-			parseFileAnchorMap(loadedAnchorKeeper, indent + 1);
+			parseFileAnchorMap(loadedAnchorKeeper, indent);
 			Parser loadedParser{readFile<String::value_type>(loadedFilePath), loadedAnchorKeeper};
 			return FileData{loadedParser.parse(), loadedFilePath};
 		}
