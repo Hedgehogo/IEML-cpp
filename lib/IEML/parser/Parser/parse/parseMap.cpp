@@ -4,7 +4,7 @@
 #include "../../helpers/tag/tag.hpp"
 
 namespace ieml {
-	static constexpr auto reMapKey = ctll::fixed_string{R"([^\"\n<>]*?:( |(?=\n)))"};
+	static constexpr auto reMapKey = ctll::fixed_string{R"(([^\"\n<>]*?):( |(?=\n)))"};
 	
 	Option<MapData> Parser::parseMap(Size indent) {
 		if(ctre::starts_with<reMapKey>(pos_, end())) {
@@ -20,17 +20,9 @@ namespace ieml {
 					except(FailedParseException::Reason::ImpermissibleTab);
 				} else if(auto find{matchAndMove<reMapKey>(posInfo.pos, end(), posInfo.mark)}) {
 					setPosInfo(posInfo);
-					String str;
-					NodeData nodeData;
-					if(auto tagFind{ctre::search<reTagSpecial>(find.begin(), find.end())}) {
-						str = {find.begin(), tagFind.begin()};
-						String tagStr{tagFind.end(), find.end()};
-						nodeData = TagData{parseAnchor(indent + 1), tagStr};
-					} else {
-						str = {find.begin(), find.end() - 1};
-						nodeData = parseAnchor(indent + 1);
-					}
-					nodes.emplace(str, PNode{Node{nodeData, posInfo.mark}});
+					String keyStr{find.get<1>().str()};
+					NodeData nodeData{parseTag(indent + 1)};
+					nodes.emplace(keyStr, PNode{Node{nodeData, posInfo.mark}});
 					posInfo = getPosInfo();
 					
 					if(pos_ != end() && *pos_ != '\n')

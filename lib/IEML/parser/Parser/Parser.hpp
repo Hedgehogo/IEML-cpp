@@ -51,7 +51,7 @@ namespace ieml {
 		/// @param lineBegin Whether the virtual cursor is at the beginning of the line at the moment (Not just at the beginning of the document).
 		///
 		/// @return Returns node data, the result of parsing.
-		NodeData parseTag(Size indent, bool lineBegin);
+		NodeData parseTag(Size indent, bool lineBegin = false);
 		
 		NodeData parseAnchor(Size indent);
 		

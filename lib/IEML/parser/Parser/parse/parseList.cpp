@@ -14,7 +14,7 @@ namespace ieml {
 				if(matchAndMove<reListSpecial>(posInfo.pos, end(), posInfo.mark)) {
 					setPosInfo(posInfo);
 					NodeData nodeData{parseTag(indent, false)};
-					nodes.emplace_back(std::move(Node{nodeData, posInfo.mark}));
+					nodes.emplace_back(Node{nodeData, posInfo.mark});
 					posInfo = getPosInfo();
 					
 					if(pos_ != end() && *pos_ != '\n')
