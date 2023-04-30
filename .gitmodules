@@ -1,0 +1,3 @@
+[submodule "modules/compile_time_regex"]
+	path = modules/compile_time_regex
+	url = https://github.com/hanickadot/compile-time-regular-expressions.git
