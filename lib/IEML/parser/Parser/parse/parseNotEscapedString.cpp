@@ -4,7 +4,7 @@
 #include "../../helpers/blankLines/blankLines.hpp"
 
 namespace ieml {
-	static constexpr auto reNotEscapedString = ctll::fixed_string{R"(> [^\n]*)"};
+	static constexpr auto reNotEscapedString = ctll::fixed_string{R"(> ([^\n]*))"};
 	static constexpr auto reNotEscapedSpecial = ctll::fixed_string{R"(>>)"};
 	static constexpr auto reLine = ctll::fixed_string{R"([^\n]*)"};
 	
@@ -34,28 +34,8 @@ namespace ieml {
 	}
 	
 	Option<StringData> Parser::parseNotEscapedString(Size indent) {
-		if(auto matched = matchAndMove<reNotEscapedString>(pos_, end(), mark_)) {
-			StringData result{};
-			Mark mark{mark_};
-			String::const_iterator pos{matched.end()};
-			while(matched) {
-				result.append(matched.begin() + 2, matched.end());
-				pos = matched.end();
-				
-				pos_ = pos;
-				mark_ = mark;
-				
-				if(pos_ == end())
-					break;
-				
-				mark.enter(pos);
-				matched = ctre::starts_with<reWhitespace>(pos, end());
-				matched = matchAndMove<reNotEscapedString>(matched.end(), pos, end(), mark);
-				
-				if(matched)
-					result.push_back('\n');
-			}
-			return result;
+		if(auto find{matchAndMove<reNotEscapedString>(pos_, end(), mark_)}) {
+			return find.get<1>().str();
 		}
 		if(matchNotEscapedSpecial(pos_, end(), mark_)) {
 			StringData result{};

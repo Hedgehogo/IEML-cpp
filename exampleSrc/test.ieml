@@ -7,8 +7,7 @@ first:
 			Hello\n\"IEML\"!"
 second:
 	- &str -15
-	- > Hello
-		> "IEML"!
+	- > Hello "IEML"!
 	- >>
 		Hello
 		"IEML"!
