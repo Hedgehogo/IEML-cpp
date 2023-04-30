@@ -4,7 +4,7 @@ first:
 	# File loading
 	- = File: < subtest
 		str: "\
-Hello\n\"IEML\"!"
+			Hello\n\"IEML\"!"
 second:
 	- &str -15
 	- > Hello
