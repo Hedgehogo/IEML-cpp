@@ -6,7 +6,7 @@ first:
 		str: "\
 			Hello\n\"IEML\"!"
 second:
-	- &str -15
+	- &str = A: -15
 	- > Hello "IEML"!
 	- >>
 		Hello

@@ -13,7 +13,7 @@ namespace ieml {
 			while(rightIndent) {
 				if(matchAndMove<reListSpecial>(posInfo.pos, end(), posInfo.mark)) {
 					setPosInfo(posInfo);
-					NodeData nodeData{parseTag(indent + 1, false)};
+					NodeData nodeData{parseNode(indent + 1)};
 					nodes.emplace_back(Node{nodeData, posInfo.mark});
 					posInfo = getPosInfo();
 					

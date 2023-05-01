@@ -3,12 +3,12 @@
 #include "../../helpers/tag/tag.hpp"
 
 namespace ieml {
-	NodeData Parser::parseTag(Size indent, bool lineBegin) {
+	Option<TagData> Parser::parseTag(Size indent) {
 		if(auto find{matchAndMove<reTag>(pos_, end(), mark_)}) {
 			String tagStr{find.get<1>().str()};
-			return TagData{parseAnchor(indent), tagStr};
+			return TagData{parseNode(indent), tagStr};
 		} else {
-			return parseAnchor(indent);
+			return {};
 		}
 	}
 }

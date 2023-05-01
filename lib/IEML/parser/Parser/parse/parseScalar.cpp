@@ -11,8 +11,8 @@ namespace ieml {
 			skipBlankLine(pos_, end(), mark_);
 			return classic.value();
 		}
-		if(auto unshielded{parseNotEscapedString(indent)}) {
-			return unshielded.value();
+		if(auto notEscaped{parseNotEscapedString(indent)}) {
+			return notEscaped.value();
 		}
 		if(auto raw{parseRaw()}) {
 			return raw.value();

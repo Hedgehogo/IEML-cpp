@@ -2,6 +2,10 @@
 
 namespace ieml {
 	NodeData Parser::parseNode(Size indent) {
+		if(auto tag{parseTag(indent)})
+			return *tag;
+		if(auto anchor{parseAnchor(indent)})
+			return *anchor;
 		if(auto file{parseFile(indent)})
 			return *file;
 		if(auto list{parseList(indent)})

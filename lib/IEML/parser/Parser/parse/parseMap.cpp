@@ -22,7 +22,7 @@ namespace ieml {
 				} else if(auto find{matchAndMove<reMapKey>(posInfo.pos, end(), posInfo.mark)}) {
 					setPosInfo(posInfo);
 					String keyStr{find.get<1>().str()};
-					NodeData nodeData{parseTag(indent + 1)};
+					NodeData nodeData{parseNode(indent + 1)};
 					nodes.emplace(keyStr, PNode{Node{nodeData, posInfo.mark}});
 					posInfo = getPosInfo();
 					

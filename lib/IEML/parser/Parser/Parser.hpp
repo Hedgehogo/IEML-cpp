@@ -45,17 +45,17 @@ namespace ieml {
 		/// @return Returns node data, the result of parsing.
 		NodeData parse();
 		
+		NodeData parseNode(Size indent);
+		
 		/// @brief Checks for a tag and parses it, then parses the node data.
 		///
 		/// @param indent The current indentation level.
 		/// @param lineBegin Whether the virtual cursor is at the beginning of the line at the moment (Not just at the beginning of the document).
 		///
 		/// @return Returns node data, the result of parsing.
-		NodeData parseTag(Size indent, bool lineBegin = false);
+		Option<TagData> parseTag(Size indent);
 		
-		NodeData parseAnchor(Size indent);
-		
-		NodeData parseNode(Size indent);
+		Option<NodeData> parseAnchor(Size indent);
 		
 		NodeData parseScalar(Size indent);
 		

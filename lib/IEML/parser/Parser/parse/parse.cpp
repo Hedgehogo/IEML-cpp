@@ -14,9 +14,9 @@ namespace ieml {
 		mark_.symbol = indent;
 		
 		if(filePath_.empty()) {
-			return parseTag(indent, true);
+			return parseNode(indent);
 		} else {
-			return FileData{parseTag(indent, true), filePath_};
+			return FileData{parseNode(indent), filePath_};
 		}
 	}
 }

@@ -10,9 +10,11 @@ namespace ieml {
 	bool matchNotEscapedSpecial(String::const_iterator& pos, String::const_iterator end, Mark& mark) {
 		Mark currentMark{mark};
 		String::const_iterator currentPos{pos};
-		if(!matchAndMove<reNotEscapedSpecial>(currentPos, end, currentMark) ||
-		   !skipBlankLine(currentPos, end, currentMark) ||
-		   pos == end || *pos == '\n') return false;
+		if(!matchAndMove<reNotEscapedSpecial>(currentPos, end, currentMark))
+			return false;
+		skipBlankLine(currentPos, end, currentMark);
+		if(!isEnter(currentPos, end))
+			return false;
 		
 		mark = currentMark;
 		pos = currentPos;
