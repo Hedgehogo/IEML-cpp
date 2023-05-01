@@ -1,9 +1,10 @@
-#include "../Parser.hpp"
+//included into ../Parser.hpp
 #include "../../helpers/blankLines/blankLines.hpp"
 #include "../../helpers/match/match.hpp"
 
 namespace ieml {
-	Option<NodeData> Parser::parseNotScalar(Size indent) {
+	template<typename Char_, typename FileInclude_>
+	Option<NodeData> Parser<Char_, FileInclude_>::parseNotScalar(Size indent) {
 		if(skipBlankLinesLn(pos_, end(), mark_)) {
 			if(matchIndent(pos_, end(), mark_, indent)) {
 				if(auto list{parseList(indent)}) {

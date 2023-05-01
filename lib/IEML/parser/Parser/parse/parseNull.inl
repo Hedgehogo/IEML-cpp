@@ -1,10 +1,11 @@
-#include "../Parser.hpp"
+//included into ../Parser.hpp
 #include "../../helpers/match/match.hpp"
 
 namespace ieml {
 	static constexpr auto reNull = ctll::fixed_string{R"(null ?)"};
 	
-	Option<NullData> Parser::parseNull() {
+	template<typename Char_, typename FileInclude_>
+	Option<NullData> Parser<Char_, FileInclude_>::parseNull() {
 		if(matchAndMove<reNull>(pos_, end(), mark_)) {
 			return NullData{};
 		}

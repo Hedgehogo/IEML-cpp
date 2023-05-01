@@ -1,0 +1,11 @@
+//included into ../Parser.hpp
+#include "../../helpers/match/match.hpp"
+
+namespace ieml {
+	static constexpr auto special = ctll::fixed_string{R"([\[\]\"]|, ?)"};
+	
+	template<typename Char_, typename FileInclude_>
+	Option<ListData> Parser<Char_, FileInclude_>::parseShortList(Size indent) {
+		// To do
+	}
+}

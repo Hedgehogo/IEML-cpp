@@ -1,4 +1,4 @@
-#include "../Parser.hpp"
+//included into ../Parser.hpp
 #include "../../../helpers/readFile/readFile.hpp"
 #include "../../helpers/match/match.hpp"
 #include "../../helpers/blankLines/blankLines.hpp"
@@ -6,6 +6,14 @@
 namespace ieml {
 	static constexpr auto reFile = ctll::fixed_string{R"(< [^\n]*)"};
 	
+	template<typename Char_>
+	NodeData FileInclude<Char_>::include(Rc<AnchorKeeper> anchorKeeper, FilePath filePath) {
+		String inputStr{readFile<String::value_type>(filePath)};
+		Parser parser{inputStr, anchorKeeper};
+		return parser.parse();
+	}
+	
+	template<typename Char_>
 	FilePath getFilePath(const FilePath& parentFilePath, FilePath&& newFilePath) {
 		FilePath normalFilePath{newFilePath.concat(".ieml").lexically_normal().make_preferred()};
 		FilePath relativeFilePath{FilePath{parentFilePath}.remove_filename() / normalFilePath};
@@ -14,7 +22,8 @@ namespace ieml {
 		return normalFilePath;
 	}
 	
-	void Parser::parseFileAnchorMap(Rc<AnchorKeeper> loadedAnchorKeeper, Size indent) {
+	template<typename Char_, typename FileInclude_>
+	void Parser<Char_, FileInclude_>::parseFileAnchorMap(Rc<AnchorKeeper> loadedAnchorKeeper, Size indent) {
 		if(pos_ != end()) {
 			PosInfo posInfo{getPosInfo()};
 			skipBlankLinesLn(pos_, end(), mark_);
@@ -30,13 +39,13 @@ namespace ieml {
 		}
 	}
 	
-	Option<FileData> Parser::parseFile(Size indent) {
+	template<typename Char_, typename FileInclude_>
+	Option<FileData> Parser<Char_, FileInclude_>::parseFile(Size indent) {
 		if(auto find{matchAndMove<reFile>(pos_, end(), mark_)}) {
 			Rc<AnchorKeeper> loadedAnchorKeeper{makeRc<AnchorKeeper>(anchorKeeper_)};
-			FilePath loadedFilePath{getFilePath(filePath_, fs::u8path(find.begin() + 2, find.end()))};
+			FilePath loadedFilePath{getFilePath<Char_>(filePath_, fs::u8path(find.begin() + 2, find.end()))};
 			parseFileAnchorMap(loadedAnchorKeeper, indent);
-			Parser loadedParser{readFile<String::value_type>(loadedFilePath), loadedAnchorKeeper};
-			return FileData{loadedParser.parse(), loadedFilePath};
+			return FileData{FileInclude_::include(loadedAnchorKeeper, loadedFilePath), loadedFilePath};
 		}
 		return {};
 	}

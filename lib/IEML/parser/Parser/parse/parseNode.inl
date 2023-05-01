@@ -1,7 +1,8 @@
-#include "../Parser.hpp"
+//included into ../Parser.hpp
 
 namespace ieml {
-	NodeData Parser::parseNode(Size indent) {
+	template<typename Char_, typename FileInclude_>
+	NodeData Parser<Char_, FileInclude_>::parseNode(Size indent) {
 		if(auto tag{parseTag(indent)})
 			return *tag;
 		if(auto anchor{parseAnchor(indent)})

@@ -6,6 +6,10 @@
 #include "../exception/FailedParseException/FailedParseException.hpp"
 
 namespace ieml {
+	template<typename Char_>
+	struct FileInclude;
+	
+	template<typename Char_ = char, typename FileInclude_ = FileInclude<Char_>>
 	class Parser {
 	private:
 		struct PosInfo {
@@ -13,8 +17,8 @@ namespace ieml {
 			Mark mark;
 		};
 		
-		String inputStr_;
 		String::const_iterator pos_;
+		String::const_iterator end_;
 		Mark mark_;
 		Rc<AnchorKeeper> anchorKeeper_;
 		FilePath filePath_;
@@ -73,8 +77,29 @@ namespace ieml {
 		
 		Option<ListData> parseList(Size indent);
 		
-		Option<MapData> parseMap(Size indent);
-		
 		Option<ListData> parseShortList(Size indent);
+		
+		Option<MapData> parseMap(Size indent);
+	};
+	
+	template<typename Char_>
+	struct FileInclude {
+		static NodeData include(Rc<AnchorKeeper> anchorKeeper, FilePath filePath);
 	};
 }
+
+#include "Parser.inl"
+#include "parse/parse.inl"
+#include "parse/parseAnchor.inl"
+#include "parse/parseClassicString.inl"
+#include "parse/parseFile.inl"
+#include "parse/parseList.inl"
+#include "parse/parseMap.inl"
+#include "parse/parseNode.inl"
+#include "parse/parseNotEscapedString.inl"
+#include "parse/parseNotScalar.inl"
+#include "parse/parseNull.inl"
+#include "parse/parseRaw.inl"
+#include "parse/parseScalar.inl"
+#include "parse/parseShortList.inl"
+#include "parse/parseTag.inl"

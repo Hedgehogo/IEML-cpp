@@ -249,7 +249,8 @@ namespace ieml {
 	
 	Node fromFile(FilePath&& filePath, Rc<AnchorKeeper> anchorKeeper) {
 		FilePath normalFilePath{filePath.concat(".ieml").lexically_normal().make_preferred()};
-		Parser parser{readFile<char>(normalFilePath), normalFilePath, anchorKeeper};
+		String inputStr{readFile<char>(normalFilePath)};
+		Parser parser{inputStr, normalFilePath, anchorKeeper};
 		return Node{parser.parse()};
 	}
 	

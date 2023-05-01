@@ -1,11 +1,12 @@
-#include "../Parser.hpp"
+//included into ../Parser.hpp
 #include "../../helpers/blankLines/blankLines.hpp"
 #include "../../helpers/match/match.hpp"
 
 namespace ieml {
 	static constexpr auto reListSpecial = ctll::fixed_string{R"(-( |(?=\n)))"};
 	
-	Option<ListData> Parser::parseList(Size indent) {
+	template<typename Char_, typename FileInclude_>
+	Option<ListData> Parser<Char_, FileInclude_>::parseList(Size indent) {
 		if(ctre::starts_with<reListSpecial>(pos_, end())) {
 			ListData nodes{};
 			PosInfo posInfo{getPosInfo()};

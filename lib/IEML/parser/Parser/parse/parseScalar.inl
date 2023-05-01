@@ -1,8 +1,9 @@
-#include "../Parser.hpp"
+//included into ../Parser.hpp
 #include "../../helpers/blankLines/blankLines.hpp"
 
 namespace ieml {
-	NodeData Parser::parseScalar(Size indent) {
+	template<typename Char_, typename FileInclude_>
+	NodeData Parser<Char_, FileInclude_>::parseScalar(Size indent) {
 		if(auto null{parseNull()}) {
 			skipBlankLine(pos_, end(), mark_);
 			return null.value();
