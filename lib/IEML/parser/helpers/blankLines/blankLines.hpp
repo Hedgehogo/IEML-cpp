@@ -13,8 +13,6 @@ namespace ieml {
 	
 	bool matchIndent(String::const_iterator& pos, String::const_iterator end, Mark& mark, Size indent);
 	
-	bool skipIndent(String::const_iterator& pos, String::const_iterator end, Mark& mark, Size indent);
-	
 	bool skipBlankLine(String::const_iterator& pos, String::const_iterator end, Mark& mark);
 	
 	bool skipBlankLinesLn(String::const_iterator& pos, String::const_iterator end, Mark& mark);

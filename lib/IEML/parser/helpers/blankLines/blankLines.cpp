@@ -28,17 +28,6 @@ namespace ieml {
 		return false;
 	}
 	
-	bool skipIndent(String::const_iterator& pos, String::const_iterator end, Mark& mark, Size indent) {
-		if(auto tabs{ctre::starts_with<reIndent>(pos, end)}) {
-			if(tabs.size() == indent) {
-				mark.symbol += tabs.size();
-				pos = tabs.end();
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	bool skipBlankLine(String::const_iterator& pos, String::const_iterator end, Mark& mark) {
 		if(auto line{ctre::starts_with<reBlankLine>(pos, end)}) {
 			mark.symbol += line.size();
