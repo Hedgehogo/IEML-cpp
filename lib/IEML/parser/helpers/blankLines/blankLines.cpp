@@ -29,7 +29,7 @@ namespace ieml {
 	}
 	
 	bool skipBlankLine(String::const_iterator& pos, String::const_iterator end, Mark& mark) {
-		if(auto line{ctre::starts_with<reBlankLine>(pos, end)}) {
+		if(auto line{ctre::starts_with<reBlankLine>(pos, end)}; line.end() != pos) {
 			mark.symbol += line.size();
 			pos = line.end();
 			return true;
