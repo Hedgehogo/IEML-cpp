@@ -49,36 +49,95 @@ namespace ieml {
 		/// @return Returns node data, the result of parsing.
 		BasicNodeData<Char_> parse();
 		
-		BasicNodeData<Char_> parseNode(Size indent);
-		
-		/// @brief Checks for a tag and parses it, then parses the node data.
+		/// @brief Parses the node data.
 		///
 		/// @param indent The current indentation level.
-		/// @param lineBegin Whether the virtual cursor is at the beginning of the line at the moment (Not just at the beginning of the document).
 		///
 		/// @return Returns node data, the result of parsing.
+		BasicNodeData<Char_> parseNode(Size indent);
+		
+		/// @brief Checks for a <i>Tag</i> and, if there is one, parses it and the node data.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns <i>Tag</i> data, the result of parsing, or nothing.
 		Option<BasicTagData<Char_>> parseTag(Size indent);
 		
+		/// @brief Checks for a <i>Anchor</i> and, if there is one, parses it and the node data.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns <i>Anchor</i> data, the result of parsing, or nothing.
 		Option<BasicNodeData<Char_>> parseAnchor(Size indent);
 		
+		/// @brief Parses one of the <i>Scalar</i> data types.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns node data, the result of the parsing, or throws a FailedParseException if it fails.
 		BasicNodeData<Char_> parseScalar(Size indent);
 		
-		Option<BasicStringData<Char_>> parseClassicString(Size indent);
-		
+		/// @brief Parses the <i>Null</i>.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns <i>Null</i> data or nothing.
 		Option<NullData> parseNull();
 		
+		/// @brief Parses the <i>Raw data</i>.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns <i>Raw data</i> or nothing.
 		Option<BasicRawData<Char_>> parseRaw();
 		
+		/// @brief Parses the <i>Classic string</i>.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns <i>String</i> data or nothing.
+		Option<BasicStringData<Char_>> parseClassicString(Size indent);
+		
+		/// @brief Parses the <i>Not escaped string</i>.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns <i>String</i> data or nothing.
 		Option<BasicStringData<Char_>> parseNotEscapedString(Size indent);
 		
+		/// @brief Parses the file path, then includes the node data parsed from the file.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns node data, the result of the parsing, or throws FailedReadFileException if the file could not be read.
 		Option<BasicFileData<Char_>> parseFile(Size indent);
 		
+		/// @brief Parses the <i>List</i> or <i>Map</i>.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns node data or nothing.
 		Option<BasicNodeData<Char_>> parseNotScalar(Size indent);
 		
+		/// @brief Parses the <i>List</i>.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns <i>List</i> data or nothing.
 		Option<BasicListData<Char_>> parseList(Size indent);
 		
+		/// @brief Parses the <i>List</i> in <i>Short notation</i>.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns <i>List</i> data or nothing.
 		Option<BasicListData<Char_>> parseShortList(Size indent);
 		
+		/// @brief Parses the <i>Map</i>.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns <i>Map</i> data or nothing.
 		Option<BasicMapData<Char_>> parseMap(Size indent);
 	};
 	
