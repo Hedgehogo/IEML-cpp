@@ -12,21 +12,21 @@ namespace ieml {
 			PosInfo posInfo{getPosInfo()};
 			bool rightIndent{true};
 			while(rightIndent) {
-				if(matchAndMove<reListSpecial>(posInfo.pos, end(), posInfo.mark)) {
+				if(matchAndMove<reListSpecial, Char_>(posInfo.pos, end(), posInfo.mark)) {
 					setPosInfo(posInfo);
 					BasicNodeData<Char_> nodeData{parseNode(indent + 1)};
 					nodes.emplace_back(BasicNode{nodeData, posInfo.mark});
 					posInfo = getPosInfo();
 					
-					if(pos_ != end() && *pos_ != '\n')
+					if(pos_ != end() && *pos_ != toChar<Char_>('\n'))
 						except(FailedParseException::Reason::ExpectedListItem);
-					skipBlankLinesLn(posInfo.pos, end(), posInfo.mark);
-					rightIndent = matchIndent(posInfo.pos, end(), posInfo.mark, indent);
+					skipBlankLinesLn<Char_>(posInfo.pos, end(), posInfo.mark);
+					rightIndent = matchIndent<Char_>(posInfo.pos, end(), posInfo.mark, indent);
 				} else if(posInfo.pos == end()) {
 					break;
-				} else if(*posInfo.pos == ' ') {
+				} else if(*posInfo.pos == toChar<Char_>(' ')) {
 					except(FailedParseException::Reason::ImpermissibleSpace);
-				} else if(*posInfo.pos == '\t') {
+				} else if(*posInfo.pos == toChar<Char_>('\t')) {
 					except(FailedParseException::Reason::ImpermissibleTab);
 				} else {
 					except(FailedParseException::Reason::ExpectedListItem);

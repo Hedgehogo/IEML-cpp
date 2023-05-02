@@ -9,7 +9,7 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_>
 	BasicNodeData<Char_> BasicParser<Char_, FileInclude_>::parse() {
-		skipBlankLinesLn(pos_, end(), mark_);
+		skipBlankLinesLn<Char_>(pos_, end(), mark_);
 		
 		Size indent{determineIndent<Char_>(pos_, end())};
 		mark_.symbol = indent;

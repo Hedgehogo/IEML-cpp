@@ -95,7 +95,7 @@ namespace ieml {
 	template<typename Char_>
 	struct BasicTakeAnchorData {
 		Rc<BasicAnchorKeeper<Char_>> keeper;
-		String name;
+		BasicString<Char_> name;
 	};
 	
 	using TakeAnchorData = BasicTakeAnchorData<Char>;
@@ -104,7 +104,7 @@ namespace ieml {
 	template<typename Char_>
 	struct BasicGetAnchorData {
 		Rc<BasicAnchorKeeper<Char_>> keeper;
-		String name;
+		BasicString<Char_> name;
 	};
 	
 	using GetAnchorData = BasicGetAnchorData<Char>;

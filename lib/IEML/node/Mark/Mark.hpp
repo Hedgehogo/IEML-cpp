@@ -10,6 +10,10 @@ namespace ieml {
 		
 		void enter();
 		
-		void enter(String::const_iterator& pos);
+		template<typename Char_ = Char>
+		void enter(BasicStringCIter<Char_>& pos) {
+			++pos;
+			enter();
+		}
 	};
 }

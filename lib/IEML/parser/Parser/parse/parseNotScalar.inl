@@ -5,8 +5,8 @@
 namespace ieml {
 	template<typename Char_, typename FileInclude_>
 	Option<BasicNodeData<Char_>> BasicParser<Char_, FileInclude_>::parseNotScalar(Size indent) {
-		if(skipBlankLinesLn(pos_, end(), mark_)) {
-			if(matchIndent(pos_, end(), mark_, indent)) {
+		if(skipBlankLinesLn<Char_>(pos_, end(), mark_)) {
+			if(matchIndent<Char_>(pos_, end(), mark_, indent)) {
 				if(auto list{parseList(indent)}) {
 					return BasicNodeData<Char_>{list.value()};
 				}

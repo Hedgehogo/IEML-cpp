@@ -6,7 +6,7 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_>
 	Option<NullData> BasicParser<Char_, FileInclude_>::parseNull() {
-		if(matchAndMove<reNull>(pos_, end(), mark_)) {
+		if(matchAndMove<reNull, Char_>(pos_, end(), mark_)) {
 			return NullData{};
 		}
 		return {};

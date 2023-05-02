@@ -5,11 +5,11 @@ namespace ieml {
 	template<typename Char_, typename FileInclude_>
 	BasicNodeData<Char_> BasicParser<Char_, FileInclude_>::parseScalar(Size indent) {
 		if(auto null{parseNull()}) {
-			skipBlankLine(pos_, end(), mark_);
+			skipBlankLine<Char_>(pos_, end(), mark_);
 			return BasicNodeData<Char_>{null.value()};
 		}
 		if(auto classic{parseClassicString(indent)}) {
-			skipBlankLine(pos_, end(), mark_);
+			skipBlankLine<Char_>(pos_, end(), mark_);
 			return BasicNodeData<Char_>{classic.value()};
 		}
 		if(auto notEscaped{parseNotEscapedString(indent)}) {

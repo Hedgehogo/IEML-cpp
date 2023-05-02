@@ -11,10 +11,10 @@ namespace ieml {
 	bool matchNotEscapedSpecial(BasicStringCIter<Char_>& pos, BasicStringCIter<Char_> end, Mark& mark) {
 		Mark currentMark{mark};
 		BasicStringCIter<Char_> currentPos{pos};
-		if(!matchAndMove<reNotEscapedSpecial>(currentPos, end, currentMark))
+		if(!matchAndMove<reNotEscapedSpecial, Char_>(currentPos, end, currentMark))
 			return false;
-		skipBlankLine(currentPos, end, currentMark);
-		if(!isEnter(currentPos, end))
+		skipBlankLine<Char_>(currentPos, end, currentMark);
+		if(!isEnter<Char_>(currentPos, end))
 			return false;
 		
 		mark = currentMark;
@@ -24,10 +24,10 @@ namespace ieml {
 	
 	template<typename Char_>
 	bool matchEnterAndIndent(BasicStringCIter<Char_>& pos, BasicStringCIter<Char_> end, Mark& mark, Size indent) {
-		if(isEnter(pos, end)) {
+		if(isEnter<Char_>(pos, end)) {
 			BasicStringCIter<Char_> currentPos{pos + 1};
 			Mark currentMark{mark.line + 1, 0};
-			if(matchIndent(currentPos, end, currentMark, indent)) {
+			if(matchIndent<Char_>(currentPos, end, currentMark, indent)) {
 				pos = currentPos;
 				mark = currentMark;
 				return true;
@@ -38,15 +38,15 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicStringData<Char_>> BasicParser<Char_, FileInclude_>::parseNotEscapedString(Size indent) {
-		if(auto find{matchAndMove<reNotEscapedString>(pos_, end(), mark_)}) {
+		if(auto find{matchAndMove<reNotEscapedString, Char_>(pos_, end(), mark_)}) {
 			return find.template get<1>().str();
 		}
 		if(matchNotEscapedSpecial<Char_>(pos_, end(), mark_)) {
 			BasicStringData<Char_> result{};
 			PosInfo posInfo{getPosInfo()};
 			while(matchEnterAndIndent<Char_>(posInfo.pos, end(), posInfo.mark, indent)) {
-				auto line = matchAndMove<reLine>(posInfo.pos, end(), posInfo.mark);
-				if(!result.empty()) result.push_back('\n');
+				auto line = matchAndMove<reLine, Char_>(posInfo.pos, end(), posInfo.mark);
+				if(!result.empty()) result.push_back(toChar<Char_>('\n'));
 				result.append(line.begin(), line.end());
 				setPosInfo(posInfo);
 			}

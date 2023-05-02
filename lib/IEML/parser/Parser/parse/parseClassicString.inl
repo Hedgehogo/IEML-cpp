@@ -14,7 +14,7 @@ namespace ieml {
 	bool matchIndent(BasicStringCIter<Char_>& pos, BasicStringCIter<Char_> end, Size indent) {
 		Size currentIndent{0};
 		BasicStringCIter<Char_> currentPos{pos};
-		while(currentIndent < indent && currentPos != end && *currentPos == '\t') {
+		while(currentIndent < indent && currentPos != end && *currentPos == toChar<Char_>('\t')) {
 			currentIndent += 1;
 			currentPos += 1;
 		}
@@ -27,7 +27,7 @@ namespace ieml {
 	
 	template<typename Char_>
 	Option<StringMark<Char_>> isClassicString(BasicStringCIter<Char_> inputPos, BasicStringCIter<Char_> end, Size indent) {
-		if(*inputPos != '\"')
+		if(*inputPos != toChar<Char_>('\"'))
 			return {};
 		
 		StringMark<Char_> mark{inputPos + 1, 1};
@@ -35,23 +35,23 @@ namespace ieml {
 			if(mark.pos == end) {
 				return {};
 			}
-			if(*mark.pos == '\"') {
+			if(*mark.pos == toChar<Char_>('\"')) {
 				break;
 			}
-			if(*mark.pos == '\\') {
+			if(*mark.pos == toChar<Char_>('\\')) {
 				mark.pos += 1;
 				if(mark.pos == end) {
 					return {};
 				}
 				switch (*mark.pos) {
-					case '\\':
-					case '\"':
-					case 't':
-					case 'n':
+					case toChar<Char_>('\\'):
+					case toChar<Char_>('\"'):
+					case toChar<Char_>('t'):
+					case toChar<Char_>('n'):
 						mark.realLength += 1;
 						mark.lastLength += 2;
 						break;
-					case '\n':
+					case toChar<Char_>('\n'):
 						mark.enterCount += 1;
 						mark.lastLength = 0;
 						mark.pos += 1;
@@ -64,7 +64,7 @@ namespace ieml {
 						mark.lastLength += 2;
 						break;
 				}
-			} else if(*mark.pos == '\n') {
+			} else if(*mark.pos == toChar<Char_>('\n')) {
 				mark.enterCount += 1;
 				mark.realLength += 1;
 				mark.lastLength = 0;
@@ -86,16 +86,16 @@ namespace ieml {
 	
 	template<typename Char_>
 	void handleSymbol(BasicStringCIter<Char_>& input, BasicStringIter<Char_>& output, Size indent) {
-		if(*input == '\\') {
+		if(*input == toChar<Char_>('\\')) {
 			input += 1;
-			if(*input != '\n') {
+			if(*input != toChar<Char_>('\n')) {
 				switch(*input) {
-					case  'n': *output = '\n'; break;
-					case  't': *output = '\t'; break;
-					case '\"': *output = '\"'; break;
-					case '\\': *output = '\\'; break;
+					case  toChar<Char_>('n'): *output = toChar<Char_>('\n'); break;
+					case  toChar<Char_>('t'): *output = toChar<Char_>('\t'); break;
+					case toChar<Char_>('\"'): *output = toChar<Char_>('\"'); break;
+					case toChar<Char_>('\\'): *output = toChar<Char_>('\\'); break;
 					default:
-						*output = '\\';
+						*output = toChar<Char_>('\\');
 						output += 1;
 						*output = *input;
 				}
@@ -105,7 +105,7 @@ namespace ieml {
 			*output = *input;
 			output += 1;
 		}
-		if(*input == '\n') {
+		if(*input == toChar<Char_>('\n')) {
 			input += 1 + indent;
 		} else {
 			input += 1;
@@ -114,7 +114,7 @@ namespace ieml {
 	
 	template<typename Char_>
 	BasicString<Char_> handleClassicString(BasicStringCIter<Char_> first, Size realLength, Size indent) {
-		BasicString<Char_> result(realLength, '\0');
+		BasicString<Char_> result(realLength, toChar<Char_>('\0'));
 		for(auto pos = result.begin(); pos < result.end();) {
 			handleSymbol<Char_>(first, pos, indent);
 		}

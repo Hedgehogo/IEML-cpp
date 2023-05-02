@@ -26,8 +26,8 @@ namespace ieml {
 	void BasicParser<Char_, FileInclude_>::parseFileAnchorMap(Rc<BasicAnchorKeeper<Char_>> loadedAnchorKeeper, Size indent) {
 		if(pos_ != end()) {
 			PosInfo posInfo{getPosInfo()};
-			skipBlankLinesLn(pos_, end(), mark_);
-			if(matchIndent(pos_, end(), mark_, indent)) {
+			skipBlankLinesLn<Char_>(pos_, end(), mark_);
+			if(matchIndent<Char_>(pos_, end(), mark_, indent)) {
 				if(auto map{parseMap(indent)}) {
 					for(auto& [key, value]: map.value()) {
 						loadedAnchorKeeper->add(key, value);
@@ -41,9 +41,9 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicFileData<Char_>> BasicParser<Char_, FileInclude_>::parseFile(Size indent) {
-		if(auto find{matchAndMove<reFile>(pos_, end(), mark_)}) {
+		if(auto find{matchAndMove<reFile, Char_>(pos_, end(), mark_)}) {
 			Rc<BasicAnchorKeeper<Char_>> loadedAnchorKeeper{makeRc<BasicAnchorKeeper<Char_>>(anchorKeeper_)};
-			FilePath loadedFilePath{getFilePath<Char_>(filePath_, fs::u8path(find.begin() + 2, find.end()))};
+			FilePath loadedFilePath{getFilePath<Char_>(filePath_, {find.begin() + 2, find.end()})};
 			parseFileAnchorMap(loadedAnchorKeeper, indent);
 			return BasicFileData<Char_>{FileInclude_::include(loadedAnchorKeeper, loadedFilePath), loadedFilePath};
 		}

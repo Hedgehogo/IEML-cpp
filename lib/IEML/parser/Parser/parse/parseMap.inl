@@ -15,22 +15,22 @@ namespace ieml {
 			while(rightIndent) {
 				if(posInfo.pos == end()) {
 					break;
-				} else if(*posInfo.pos == ' ') {
+				} else if(*posInfo.pos == toChar<Char_>(' ')) {
 					BasicString<Char_> str{posInfo.pos, end()};
 					except(FailedParseException::Reason::ImpermissibleSpace);
-				} else if(*posInfo.pos == '\t') {
+				} else if(*posInfo.pos == toChar<Char_>('\t')) {
 					except(FailedParseException::Reason::ImpermissibleTab);
-				} else if(auto find{matchAndMove<reMapKey>(posInfo.pos, end(), posInfo.mark)}) {
+				} else if(auto find{matchAndMove<reMapKey, Char_>(posInfo.pos, end(), posInfo.mark)}) {
 					setPosInfo(posInfo);
 					BasicString<Char_> keyStr{find.template get<1>().str()};
 					BasicNodeData nodeData{parseNode(indent + 1)};
 					nodes.emplace(keyStr, BasicNode < Char_ > {nodeData, posInfo.mark});
 					posInfo = getPosInfo();
 					
-					if(pos_ != end() && *pos_ != '\n')
+					if(pos_ != end() && *pos_ != toChar<Char_>('\n'))
 						except(FailedParseException::Reason::ExpectedMapKey);
-					skipBlankLinesLn(posInfo.pos, end(), posInfo.mark);
-					rightIndent = matchIndent(posInfo.pos, end(), posInfo.mark, indent);
+					skipBlankLinesLn<Char_>(posInfo.pos, end(), posInfo.mark);
+					rightIndent = matchIndent<Char_>(posInfo.pos, end(), posInfo.mark, indent);
 				} else {
 					except(FailedParseException::Reason::ExpectedMapKey);
 				}

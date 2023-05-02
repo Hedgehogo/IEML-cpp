@@ -1,5 +1,7 @@
 //included into Parser.hpp
 
+#include "../helpers/toChar/toChar.hpp"
+
 namespace ieml {
 	template<typename Char_, typename FileInclude_>
 	BasicParser<Char_, FileInclude_>::BasicParser(const BasicString<Char_>& inputStr, Rc<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath) :
@@ -34,7 +36,7 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_>
 	void BasicParser<Char_, FileInclude_>::exceptWithCheckSpace(FailedParseException::Reason reason) {
-		if(pos_ != end() && *pos_ == ' ') {
+		if(pos_ != end() && *pos_ == toChar<Char_>(' ')) {
 			throw FailedParseException{filePath_, FailedParseException::Reason::ImpermissibleSpace, mark_};
 		}
 		throw FailedParseException{filePath_, reason, mark_};

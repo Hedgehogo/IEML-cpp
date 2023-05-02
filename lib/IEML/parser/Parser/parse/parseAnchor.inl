@@ -8,7 +8,7 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicTakeAnchorData<Char_>> BasicParser<Char_, FileInclude_>::parseTakeAnchor(Size indent) {
-		if(auto find{matchAndMove<reTakeAnchor>(pos_, end(), mark_)}) {
+		if(auto find{matchAndMove<reTakeAnchor, Char_>(pos_, end(), mark_)}) {
 			BasicString<Char_> name{find.template get<1>().str()};
 			if(!anchorKeeper_->add(name, parseNode(indent)))
 				throw FailedParseException{filePath_, FailedParseException::Reason::AnchorAlreadyExists, mark_};
@@ -19,10 +19,10 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicGetAnchorData<Char_>> BasicParser<Char_, FileInclude_>::parseGetAnchor(Size indent) {
-		if(auto find{matchAndMove<reGetAnchor>(pos_, end(), mark_)}) {
+		if(auto find{matchAndMove<reGetAnchor, Char_>(pos_, end(), mark_)}) {
 			BasicString<Char_> name{find.template get<1>().str()};
 			
-			skipBlankLine(pos_, end(), mark_);
+			skipBlankLine<Char_>(pos_, end(), mark_);
 			return BasicGetAnchorData<Char_>{anchorKeeper_, name};
 		}
 		return {};

@@ -7,13 +7,20 @@ namespace ieml {
 	static constexpr auto reBlankLine = ctll::fixed_string{R"([\t ]*(#[! ][^\n]*)?)"};
 	static constexpr auto reIndent = ctll::fixed_string{R"(\t*)"};
 	
-	bool isEnter(String::const_iterator pos, String::const_iterator end);
+	template<typename Char_ = Char>
+	bool isEnter(BasicStringCIter<Char_> pos, BasicStringCIter<Char_> end);
 	
-	bool matchEnter(String::const_iterator& pos, String::const_iterator end, Mark& mark);
+	template<typename Char_ = Char>
+	bool matchEnter(BasicStringCIter<Char_>& pos, BasicStringCIter<Char_> end, Mark& mark);
 	
-	bool matchIndent(String::const_iterator& pos, String::const_iterator end, Mark& mark, Size indent);
+	template<typename Char_ = Char>
+	bool matchIndent(BasicStringCIter<Char_>& pos, BasicStringCIter<Char_> end, Mark& mark, Size indent);
 	
-	bool skipBlankLine(String::const_iterator& pos, String::const_iterator end, Mark& mark);
+	template<typename Char_ = Char>
+	bool skipBlankLine(BasicStringCIter<Char_>& pos, BasicStringCIter<Char_> end, Mark& mark);
 	
-	bool skipBlankLinesLn(String::const_iterator& pos, String::const_iterator end, Mark& mark);
+	template<typename Char_ = Char>
+	bool skipBlankLinesLn(BasicStringCIter<Char_>& pos, BasicStringCIter<Char_> end, Mark& mark);
 }
+
+#include "blankLines.inl"
