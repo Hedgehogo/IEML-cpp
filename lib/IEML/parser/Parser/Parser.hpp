@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../node/Node/Node.hpp"
+#include "../../node/NodeData/NodeData.hpp"
 #include "../../anchor/AnchorKeeper/AnchorKeeper.hpp"
 #include "../../usings/usings.hpp"
 #include "../exception/FailedParseException/FailedParseException.hpp"
@@ -9,47 +9,47 @@ namespace ieml {
 	template<typename Char_>
 	struct FileInclude;
 	
-	template<typename Char_ = char, typename FileInclude_ = FileInclude<Char_>>
-	class Parser {
+	template<typename Char_, typename FileInclude_ = FileInclude<Char_>>
+	class BasicParser {
 	private:
 		struct PosInfo {
-			String::const_iterator pos;
+			BasicStringCIter<Char_> pos;
 			Mark mark;
 		};
 		
-		String::const_iterator pos_;
-		String::const_iterator end_;
+		BasicStringCIter<Char_> pos_;
+		BasicStringCIter<Char_> end_;
 		Mark mark_;
-		Rc<AnchorKeeper> anchorKeeper_;
+		Rc<BasicAnchorKeeper<Char_>> anchorKeeper_;
 		FilePath filePath_;
 		
-		String::const_iterator end();
+		BasicStringCIter<Char_> end();
 		
 		PosInfo getPosInfo();
 		
 		void setPosInfo(const PosInfo& posInfo);
 		
-		Option<TakeAnchorData> parseTakeAnchor(Size indent);
+		Option<BasicTakeAnchorData<Char_>> parseTakeAnchor(Size indent);
 		
-		Option<GetAnchorData> parseGetAnchor(Size indent);
+		Option<BasicGetAnchorData<Char_>> parseGetAnchor(Size indent);
 		
-		void parseFileAnchorMap(Rc<AnchorKeeper> loadedAnchorKeeper, Size indent);
+		void parseFileAnchorMap(Rc<BasicAnchorKeeper<Char_>> loadedAnchorKeeper, Size indent);
 		
 		void except(FailedParseException::Reason reason);
 		
 		void exceptWithCheckSpace(FailedParseException::Reason reason);
 		
 	public:
-		Parser(const String& inputStr, Rc<AnchorKeeper> anchorKeeper, FilePath filePath = FilePath{});
+		BasicParser(const BasicString<Char_>& inputStr, Rc<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath = FilePath{});
 		
-		Parser(const String& inputStr, FilePath filePath = FilePath{}, Rc<AnchorKeeper> anchorKeeper = makeRc<AnchorKeeper>());
+		BasicParser(const BasicString<Char_>& inputStr, FilePath filePath = FilePath{}, Rc<BasicAnchorKeeper<Char_>> anchorKeeper = makeRc<BasicAnchorKeeper<Char_>>());
 		
 		/// @brief Parses all input to the node data.
 		///
 		/// @return Returns node data, the result of parsing.
-		NodeData parse();
+		BasicNodeData<Char_> parse();
 		
-		NodeData parseNode(Size indent);
+		BasicNodeData<Char_> parseNode(Size indent);
 		
 		/// @brief Checks for a tag and parses it, then parses the node data.
 		///
@@ -57,49 +57,37 @@ namespace ieml {
 		/// @param lineBegin Whether the virtual cursor is at the beginning of the line at the moment (Not just at the beginning of the document).
 		///
 		/// @return Returns node data, the result of parsing.
-		Option<TagData> parseTag(Size indent);
+		Option<BasicTagData<Char_>> parseTag(Size indent);
 		
-		Option<NodeData> parseAnchor(Size indent);
+		Option<BasicNodeData<Char_>> parseAnchor(Size indent);
 		
-		NodeData parseScalar(Size indent);
+		BasicNodeData<Char_> parseScalar(Size indent);
 		
-		Option<StringData> parseClassicString(Size indent);
+		Option<BasicStringData<Char_>> parseClassicString(Size indent);
 		
 		Option<NullData> parseNull();
 		
-		Option<RawData> parseRaw();
+		Option<BasicRawData<Char_>> parseRaw();
 		
-		Option<StringData> parseNotEscapedString(Size indent);
+		Option<BasicStringData<Char_>> parseNotEscapedString(Size indent);
 		
-		Option<FileData> parseFile(Size indent);
+		Option<BasicFileData<Char_>> parseFile(Size indent);
 		
-		Option<NodeData> parseNotScalar(Size indent);
+		Option<BasicNodeData<Char_>> parseNotScalar(Size indent);
 		
-		Option<ListData> parseList(Size indent);
+		Option<BasicListData<Char_>> parseList(Size indent);
 		
-		Option<ListData> parseShortList(Size indent);
+		Option<BasicListData<Char_>> parseShortList(Size indent);
 		
-		Option<MapData> parseMap(Size indent);
+		Option<BasicMapData<Char_>> parseMap(Size indent);
 	};
+	
+	using Parser = BasicParser<Char>;
 	
 	template<typename Char_>
 	struct FileInclude {
-		static NodeData include(Rc<AnchorKeeper> anchorKeeper, FilePath filePath);
+		static BasicNodeData<Char_> include(Rc<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath);
 	};
 }
 
 #include "Parser.inl"
-#include "parse/parse.inl"
-#include "parse/parseAnchor.inl"
-#include "parse/parseClassicString.inl"
-#include "parse/parseFile.inl"
-#include "parse/parseList.inl"
-#include "parse/parseMap.inl"
-#include "parse/parseNode.inl"
-#include "parse/parseNotEscapedString.inl"
-#include "parse/parseNotScalar.inl"
-#include "parse/parseNull.inl"
-#include "parse/parseRaw.inl"
-#include "parse/parseScalar.inl"
-#include "parse/parseShortList.inl"
-#include "parse/parseTag.inl"

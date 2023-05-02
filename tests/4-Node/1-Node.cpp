@@ -63,7 +63,7 @@ TEST(Node, Node_3_List) {
 	ASSERT_TRUE(node.isList());
 	ASSERT_FALSE(node.isMap());
 	
-	ieml::Node& elem{node.at(0)};
+	ieml::Node & elem{node.at(0)};
 	ASSERT_TRUE(elem.isDefined());
 	ASSERT_EQ(&elem, &node[0]);
 	
@@ -78,12 +78,12 @@ TEST(Node, Node_3_List) {
 	ASSERT_FALSE(elem.isList());
 	ASSERT_FALSE(elem.isMap());
 	
-	ieml::Node& incorrectElem{node.at(1)};
+	ieml::Node & incorrectElem{node.at(1)};
 	ASSERT_FALSE(incorrectElem.isDefined());
 }
 
 TEST(Node, Node_4_Map) {
-	ieml::Node node{ieml::MapData{{ieml::String{"key"}, ieml::PNode{ieml::Node{ieml::NullData{}}}}}};
+	ieml::Node node{ieml::MapData{{ieml::String{"key"}, ieml::Node{ieml::NullData{}}}}};
 	
 	ASSERT_FALSE(node.isFile());
 	ASSERT_FALSE(node.isWithTag());
@@ -96,7 +96,7 @@ TEST(Node, Node_4_Map) {
 	ASSERT_FALSE(node.isList());
 	ASSERT_TRUE(node.isMap());
 	
-	ieml::Node& elem{node.at(ieml::String("key"))};
+	ieml::Node & elem{node.at(ieml::String("key"))};
 	ASSERT_TRUE(elem.isDefined());
 	ASSERT_EQ(&elem, &node[ieml::String("key")]);
 	
@@ -111,7 +111,7 @@ TEST(Node, Node_4_Map) {
 	ASSERT_FALSE(elem.isList());
 	ASSERT_FALSE(elem.isMap());
 	
-	ieml::Node& incorrectElem{node.at(ieml::String("other-key"))};
+	ieml::Node & incorrectElem{node.at(ieml::String("other-key"))};
 	ASSERT_FALSE(incorrectElem.isDefined());
 }
 

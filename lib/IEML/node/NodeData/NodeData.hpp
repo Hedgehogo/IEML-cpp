@@ -12,107 +12,118 @@
 namespace ieml {
 	using llint = long long;
 	
-	class Node;
+	template<typename Char_>
+	class BasicNode;
 	
-	class PNode {
-	public:
-		using Ptr = Box<Node>;
-		
-	private:
-		Ptr node;
-		
-	public:
-		PNode(const Node& node);
-		
-		PNode(PNode&& other);
-		
-		PNode(const PNode& other);
-		
-		Node& operator*() const;
-		
-		Node* operator->() const;
-		
-		PNode& operator=(const PNode& other);
-		
-		operator const Ptr&() const;
-		
-		operator Ptr&();
-	};
-	
-	
-	using Tag = String;
+	template<typename Char_>
+	struct BasicNodeData;
 	
 	/// @brief Node data storing null
 	struct NullData {};
 	
 	/// @brief Node data storing the raw string
-	struct RawData;
+	template<typename Char_>
+	struct BasicRawData {
+		BasicString<Char_> str;
+		
+		operator BasicString<Char_>() const;
+	};
+	
+	using RawData = BasicRawData<Char>;
 	
 	/// @brief Node data storing scalar
-	using StringData = String;
+	template<typename Char_>
+	using BasicStringData = BasicString<Char_>;
+	
+	using StringData = BasicStringData<Char>;
 	
 	/// @brief Node data storing a list of other nodes
-	using ListData = std::vector<Node>;
+	template<typename Char_>
+	using BasicListData = std::vector<BasicNode<Char_>>;
+	
+	using ListData = BasicListData<Char>;
 	
 	/// @brief Node data storing a map of named other nodes
-	using MapData = std::unordered_map<String, PNode>;
+	template<typename Char_>
+	using BasicMapData = std::unordered_map<BasicString<Char_>, BasicNode<Char_>>;
+	
+	using MapData = BasicMapData<Char>;
+	
+	template<typename Char_>
+	using BasicTag = BasicString<Char_>;
+	
+	using Tag = BasicTag<Char>;
 	
 	/// @brief Node data storing tag and other data
-	struct TagData;
+	template<typename Char_>
+	struct BasicTagData {
+		Box<BasicNodeData<Char_>> data;
+		BasicTag<Char_> tag;
+		
+		BasicTagData(Box<BasicNodeData<Char_>> data, const BasicTag<Char_>& tag);
+		
+		BasicTagData(const BasicNodeData<Char_>& data, const BasicTag<Char_>& tag);
+		
+		BasicTagData(const BasicTagData& other);
+		
+		BasicTagData& operator=(const BasicTagData& other);
+	};
+	
+	using TagData = BasicTagData<Char>;
 	
 	/// @brief Node data storing the file path and other data
-	struct FileData;
-	
-	/// @brief Node data storing anchor
-	struct TakeAnchorData;
-	
-	/// @brief Node data storing reference
-	struct GetAnchorData;
-	
-	/// @brief Variant for storing different node data
-	using NodeData = std::variant<NullData, RawData, StringData, ListData, MapData, TagData, FileData, TakeAnchorData, GetAnchorData>;
-	
-	struct RawData {
-		String str;
-		
-		operator String() const;
-	};
-	
-	struct TagData {
-		Box<NodeData> data;
-		Tag tag;
-		
-		TagData(Box<NodeData> data, const Tag& tag);
-		
-		TagData(const NodeData& data, const Tag& tag);
-		
-		TagData(const TagData& other);
-		
-		TagData& operator=(const TagData& other);
-	};
-	
-	struct FileData {
-		Box<NodeData> data;
+	template<typename Char_>
+	struct BasicFileData {
+		Box<BasicNodeData<Char_>> data;
 		FilePath filePath;
 		
-		FileData(Box<NodeData> data, const FilePath& filePath);
+		BasicFileData(Box<BasicNodeData<Char_>> data, const FilePath& filePath);
 		
-		FileData(const NodeData& data, const FilePath& filePath);
+		BasicFileData(const BasicNodeData<Char_>& data, const FilePath& filePath);
 		
-		FileData(const FileData& other);
+		BasicFileData(const BasicFileData& other);
 		
-		FileData& operator=(const FileData& other);
+		BasicFileData& operator=(const BasicFileData& other);
 	};
 	
-	class AnchorKeeper;
+	using FileData = BasicFileData<Char>;
 	
-	struct TakeAnchorData {
-		Rc<AnchorKeeper> keeper;
+	template<typename Char_>
+	class BasicAnchorKeeper;
+	
+	/// @brief Node data storing anchor
+	template<typename Char_>
+	struct BasicTakeAnchorData {
+		Rc<BasicAnchorKeeper<Char_>> keeper;
 		String name;
 	};
 	
-	struct GetAnchorData {
-		Rc<AnchorKeeper> keeper;
+	using TakeAnchorData = BasicTakeAnchorData<Char>;
+	
+	/// @brief Node data storing reference
+	template<typename Char_>
+	struct BasicGetAnchorData {
+		Rc<BasicAnchorKeeper<Char_>> keeper;
 		String name;
 	};
+	
+	using GetAnchorData = BasicGetAnchorData<Char>;
+	
+	/// @brief Variant for storing different node data
+	template<typename Char_>
+	struct BasicNodeData {
+		std::variant<
+			NullData,
+			BasicRawData<Char_>,
+			BasicStringData<Char_>,
+			BasicListData<Char_>,
+			BasicMapData<Char_>,
+			BasicTagData<Char_>,
+			BasicFileData<Char_>,
+			BasicTakeAnchorData<Char_>,
+			BasicGetAnchorData<Char_>
+		> data;
+	};
+	
+	using NodeData = BasicNodeData<Char>;
 }

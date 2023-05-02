@@ -5,7 +5,7 @@ namespace ieml {
 	static constexpr auto reNull = ctll::fixed_string{R"(null ?)"};
 	
 	template<typename Char_, typename FileInclude_>
-	Option<NullData> Parser<Char_, FileInclude_>::parseNull() {
+	Option<NullData> BasicParser<Char_, FileInclude_>::parseNull() {
 		if(matchAndMove<reNull>(pos_, end(), mark_)) {
 			return NullData{};
 		}

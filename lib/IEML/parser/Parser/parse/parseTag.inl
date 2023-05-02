@@ -4,10 +4,10 @@
 
 namespace ieml {
 	template<typename Char_, typename FileInclude_>
-	Option<TagData> Parser<Char_, FileInclude_>::parseTag(Size indent) {
+	Option<BasicTagData<Char_>> BasicParser<Char_, FileInclude_>::parseTag(Size indent) {
 		if(auto find{matchAndMove<reTag>(pos_, end(), mark_)}) {
-			String tagStr{find.template get<1>().str()};
-			return TagData{parseNode(indent), tagStr};
+			BasicString<Char_> tagStr{find.template get<1>().str()};
+			return BasicTagData<Char_>{parseNode(indent), tagStr};
 		} else {
 			return {};
 		}

@@ -46,18 +46,18 @@ TEST(Node, decode_map) {
 		ieml::MapData {
 			{
 				ieml::String{"first"},
-				ieml::PNode{ieml::Node{ieml::NullData{}}}
+				ieml::Node{ieml::NullData{}}
 			}, {
 				ieml::String{"second"},
-				ieml::PNode{ieml::Node{ieml::RawData{""}}}
+				ieml::Node{ieml::RawData{""}}
 			}
 		}
 	};
 	const ieml::MapData& map{node.as<ieml::MapData>()};
 	
 	EXPECT_NO_THROW(map.at(ieml::String{"first"}));
-	ASSERT_TRUE(map.at(ieml::String{"first"})->isNull());
+	ASSERT_TRUE(map.at(ieml::String{"first"}).isNull());
 	EXPECT_NO_THROW(map.at(ieml::String{"second"}));
-	ASSERT_TRUE(map.at(ieml::String{"second"})->isRaw());
+	ASSERT_TRUE(map.at(ieml::String{"second"}).isRaw());
 	EXPECT_ANY_THROW(map.at(ieml::String{"other-key"}));
 }

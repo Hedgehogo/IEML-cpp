@@ -27,10 +27,10 @@ namespace ieml {
 		bool Parser<C, T>::parseMinus() {
 			bool minus{false};
 			if(first_ != last_) {
-				if(*first_ == '-') {
+				if(*first_ == toChar('-')) {
 					minus = true;
 					++first_;
-				} else if(*first_ == '-') {
+				} else if(*first_ == toChar('-')) {
 					++first_;
 				}
 			}

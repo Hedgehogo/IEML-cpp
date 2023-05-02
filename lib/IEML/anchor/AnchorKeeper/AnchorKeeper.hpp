@@ -1,26 +1,29 @@
 #pragma once
 
 #include <map>
-#include "../../node/Node/Node.hpp"
+#include "../../node/NodeData/NodeData.hpp"
 #include "../../usings/usings.hpp"
 
 namespace ieml {
-	class AnchorKeeper {
+	template<typename Char_>
+	class BasicAnchorKeeper {
 	private:
-		using NodeDataMap = std::unordered_map<String, NodeData>;
+		using NodeDataMap = std::unordered_map<BasicString<Char_>, BasicNodeData<Char_>>;
 		
 		NodeDataMap anchors_;
-		Rc<AnchorKeeper> parent_;
+		Rc<BasicAnchorKeeper<Char_>> parent_;
 		
 	public:
-		AnchorKeeper();
+		BasicAnchorKeeper();
 		
-		AnchorKeeper(Rc<AnchorKeeper> parent);
+		BasicAnchorKeeper(Rc<BasicAnchorKeeper> parent);
 		
-		bool add(const String& key, NodeData value);
+		bool add(const BasicString<Char_>& key, BasicNodeData<Char_> value);
 		
-		bool add(const String& key, Node value);
+		bool add(const BasicString<Char_>& key, BasicNode<Char_> value);
 		
-		NodeData* get(const String& key);
+		BasicNodeData<Char_>* get(const BasicString<Char_>& key);
 	};
+	
+	using AnchorKeeper = BasicAnchorKeeper<Char>;
 }

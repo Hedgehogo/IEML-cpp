@@ -2,8 +2,8 @@
 #include "../../../usings/usings.hpp"
 
 namespace ieml {
-	template<typename T>
-	constexpr IStream::char_type toChar(T ch) {
-		return static_cast<IStream::char_type>(ch);
+	template<typename Char_>
+	constexpr Char_ toChar(char ch) {
+		return static_cast<Char_>(ch);
 	}
 }

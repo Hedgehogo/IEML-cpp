@@ -1,44 +1,44 @@
 #pragma once
 
 #include <memory>
-#include "../NodeData/NodeData.hpp"
 #include "../Mark/Mark.hpp"
 #include "../../anchor/AnchorKeeper/AnchorKeeper.hpp"
 #include "decode/decode.hpp"
 
 namespace ieml {
-	class Node {
+	template<typename Char_>
+	class BasicNode {
 	public:
-		template<typename T>
+		template<typename OtherChar_, typename T>
 		friend struct detail::DecodeImpl;
 		
-		friend class AnchorKeeper;
+		friend class BasicAnchorKeeper<Char_>;
 	
 	private:
-		static Node undefined;
+		static BasicNode<Char_> undefined;
 		
-		NodeData data;
+		BasicNodeData<Char_> data;
 		Mark mark;
 		
-		static const NodeData& getDataFrom(const NodeData& data);
+		static const BasicNodeData<Char_>& getDataFrom(const BasicNodeData<Char_>& data);
 		
-		static NodeData& getDataFrom(NodeData& data);
+		static BasicNodeData<Char_>& getDataFrom(BasicNodeData<Char_>& data);
 		
-		static const FileData* getFileFrom(const NodeData& data);
+		static const BasicFileData<Char_>* getFileFrom(const BasicNodeData<Char_>& data);
 		
-		static FileData* getFileFrom(NodeData& data);
+		static BasicFileData<Char_>* getFileFrom(BasicNodeData<Char_>& data);
 		
-		static const TagData* getTagFrom(const NodeData& data);
+		static const BasicTagData<Char_>* getTagFrom(const BasicNodeData<Char_>& data);
 		
-		static TagData* getTagFrom(NodeData& data);
+		static BasicTagData<Char_>* getTagFrom(BasicNodeData<Char_>& data);
 		
-		static const TakeAnchorData* getTakeAnchorFrom(const NodeData& data);
+		static const BasicTakeAnchorData<Char_>* getTakeAnchorFrom(const BasicNodeData<Char_>& data);
 		
-		static TakeAnchorData* getTakeAnchorFrom(NodeData& data);
+		static BasicTakeAnchorData<Char_>* getTakeAnchorFrom(BasicNodeData<Char_>& data);
 		
-		static const GetAnchorData* getGetAnchorFrom(const NodeData& data);
+		static const BasicGetAnchorData<Char_>* getGetAnchorFrom(const BasicNodeData<Char_>& data);
 		
-		static GetAnchorData* getGetAnchorFrom(NodeData& data);
+		static BasicGetAnchorData<Char_>* getGetAnchorFrom(BasicNodeData<Char_>& data);
 		
 		template<typename T, typename E>
 		const T& getType(E e) const;
@@ -47,20 +47,20 @@ namespace ieml {
 		T& getType(E e);
 	
 	public:
-		Node(NodeData data, Mark mark = {0, 0});
+		BasicNode(BasicNodeData<Char_> data, Mark mark = {0, 0});
 		
 		template<typename T>
-		Node(T data, Mark mark = {0, 0});
+		BasicNode(T data, Mark mark = {0, 0});
 		
 		template<typename T>
-		Node(T data, FilePath filePath, Mark mark = {0, 0});
+		BasicNode(T data, FilePath filePath, Mark mark = {0, 0});
 		
 		/// @brief Gets the node defined.
 		///
 		/// @param Node Node to check.
 		///
 		/// @return The node defined.
-		static bool isDefined(const Node& node);
+		static bool isDefined(const BasicNode& node);
 		
 		/// @brief Gets the node defined.
 		///
@@ -70,7 +70,7 @@ namespace ieml {
 		/// @brief Gets the node mark.
 		///
 		/// @return The node mark.
-		Mark getMark();
+		Mark getMark() const;
 		
 		/// @brief Gets the node type.
 		///
@@ -113,22 +113,22 @@ namespace ieml {
 		/// @brief Asks if a node has a tag.
 		///
 		/// @return Value if a node has a tag.
-		bool isWithTag();
+		bool isWithTag() const;
 		
 		/// @brief Gets the tag.
 		///
 		/// @return A tag.
-		Option<Tag> getTag();
+		Option<BasicTag<Char_>> getTag() const;
 		
 		/// @brief Asks if a node has a file path.
 		///
 		/// @return Value if a node has a file path.
-		bool isFile();
+		bool isFile() const;
 		
 		/// @brief Gets the file path.
 		///
 		/// @return A file path.
-		Option<FilePath> getFilePath();
+		Option<FilePath> getFilePath() const;
 		
 		/// @brief Asks if the node is take anchor.
 		///
@@ -138,7 +138,7 @@ namespace ieml {
 		/// @brief Gets the take anchor name.
 		///
 		/// @return A take anchor name.
-		Option<String> getTakeAnchorName() const;
+		Option<BasicString<Char_>> getTakeAnchorName() const;
 		
 		/// @brief Asks if the node is get anchor.
 		///
@@ -148,12 +148,12 @@ namespace ieml {
 		/// @brief Gets the get anchor name.
 		///
 		/// @return A get anchor name.
-		Option<String> getGetAnchorName() const;
+		Option<BasicString<Char_>> getGetAnchorName() const;
 		
 		/// @brief Gets the anchor name.
 		///
 		/// @return A anchor name.
-		Option<String> getAnchorName() const;
+		Option<BasicString<Char_>> getAnchorName() const;
 		
 		/// @brief Gets the size.
 		///
@@ -163,12 +163,12 @@ namespace ieml {
 		/// @brief Gets the node list.
 		///
 		/// @return A node list or throws an exception NodeAnotherTypeException.
-		const ListData& getList() const;
+		const BasicListData<Char_>& getList() const;
 		
 		/// @brief Gets the node map.
 		///
 		/// @return A node map or throws an exception NodeAnotherTypeException.
-		const MapData& getMap() const;
+		const BasicMapData<Char_>& getMap() const;
 		
 		/// @brief Gets the T value.
 		///
@@ -204,18 +204,18 @@ namespace ieml {
 		/// @param index Index of the requested node.
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
-		Node& at(Size index);
+		BasicNode<Char_>& at(Size index);
 		
-		const Node& at(Size index) const;
+		const BasicNode<Char_>& at(Size index) const;
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
-		Node& at(String key);
+		BasicNode<Char_>& at(const BasicString<Char_>& key);
 		
-		const Node& at(String key) const;
+		const BasicNode<Char_>& at(const BasicString<Char_>& key) const;
 		
 		/// @brief Gets the node defined.
 		///
@@ -227,23 +227,30 @@ namespace ieml {
 		/// @param index Index of the requested node.
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
-		Node& operator[](Size index);
+		BasicNode<Char_>& operator[](Size index);
 		
-		const Node& operator[](Size index) const;
+		const BasicNode<Char_>& operator[](Size index) const;
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
-		Node& operator[](String key);
+		BasicNode<Char_>& operator[](const BasicString<Char_>& key);
 		
-		const Node& operator[](String key) const;
+		const BasicNode<Char_>& operator[](const BasicString<Char_>& key) const;
 	};
 	
-	Node fromFile(FilePath&& filePath, Rc<AnchorKeeper> anchorKeeper = makeRc<AnchorKeeper>());
+	using Node = BasicNode<Char>;
 	
-	Node from(const String& inputStr, Rc<AnchorKeeper> anchorKeeper = makeRc<AnchorKeeper>());
+	template<typename Char_ = Char>
+	BasicNode<Char_> fromFile(FilePath&& filePath, Rc<BasicAnchorKeeper<Char_>> anchorKeeper = makeRc<BasicAnchorKeeper<Char_>>());
+	
+	template<typename Char_ = Char>
+	BasicNode<Char_> from(const BasicString<Char_>& inputStr, Rc<BasicAnchorKeeper<Char_>> anchorKeeper = makeRc<BasicAnchorKeeper<Char_>>());
 }
 
+#include "../../anchor/AnchorKeeper/AnchorKeeper.inl"
+#include "../NodeData/NodeData.inl"
+#include "decode/decode.inl"
 #include "Node.inl"

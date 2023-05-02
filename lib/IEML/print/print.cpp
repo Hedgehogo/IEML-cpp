@@ -11,7 +11,7 @@ namespace ieml {
 		return stream;
 	}
 	
-	void printNode(Size startIndent, std::ostream& stream, Node& node) {
+	void printNode(Size startIndent, std::ostream& stream, const BasicNode<Char>& node) {
 		IndentOut indent{startIndent};
 		auto type{node.getType()};
 		stream << indent << "<" << node.getMark().line << ":" << node.getMark().symbol;
@@ -31,7 +31,7 @@ namespace ieml {
 				stream << indent << "null\n";
 				break;
 			case NodeType::Raw:
-				stream << indent << "\"" << node.as<RawData>().str << "\"\n";
+				stream << indent << "\"" << node.as<BasicRawData<Char>>().str << "\"\n";
 				break;
 			case NodeType::String:
 				stream << indent << "\"" << node.as<String>() << "\"\n";
@@ -45,13 +45,13 @@ namespace ieml {
 			case NodeType::Map:
 				for(auto& [key, value]: node.getMap()) {
 					stream << indent << key << ": \n";
-					printNode(startIndent + 1, stream, *value);
+					printNode(startIndent + 1, stream, value);
 				}
 				break;
 		}
 	}
 	
-	std::ostream& operator<<(std::ostream& stream, Node& node) {
+	std::ostream& operator<<(std::ostream& stream, BasicNode<Char>& node) {
 		printNode(0, stream, node);
 		return stream;
 	}

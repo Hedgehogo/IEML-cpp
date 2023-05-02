@@ -8,9 +8,9 @@ namespace ieml {
 	static constexpr auto reLine = ctll::fixed_string{R"([^\n]*)"};
 	
 	template<typename Char_>
-	bool matchNotEscapedSpecial(String::const_iterator& pos, String::const_iterator end, Mark& mark) {
+	bool matchNotEscapedSpecial(BasicStringCIter<Char_>& pos, BasicStringCIter<Char_> end, Mark& mark) {
 		Mark currentMark{mark};
-		String::const_iterator currentPos{pos};
+		BasicStringCIter<Char_> currentPos{pos};
 		if(!matchAndMove<reNotEscapedSpecial>(currentPos, end, currentMark))
 			return false;
 		skipBlankLine(currentPos, end, currentMark);
@@ -23,9 +23,9 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	bool matchEnterAndIndent(String::const_iterator& pos, String::const_iterator end, Mark& mark, Size indent) {
+	bool matchEnterAndIndent(BasicStringCIter<Char_>& pos, BasicStringCIter<Char_> end, Mark& mark, Size indent) {
 		if(isEnter(pos, end)) {
-			String::const_iterator currentPos{pos + 1};
+			BasicStringCIter<Char_> currentPos{pos + 1};
 			Mark currentMark{mark.line + 1, 0};
 			if(matchIndent(currentPos, end, currentMark, indent)) {
 				pos = currentPos;
@@ -37,12 +37,12 @@ namespace ieml {
 	}
 	
 	template<typename Char_, typename FileInclude_>
-	Option<StringData> Parser<Char_, FileInclude_>::parseNotEscapedString(Size indent) {
+	Option<BasicStringData<Char_>> BasicParser<Char_, FileInclude_>::parseNotEscapedString(Size indent) {
 		if(auto find{matchAndMove<reNotEscapedString>(pos_, end(), mark_)}) {
 			return find.template get<1>().str();
 		}
 		if(matchNotEscapedSpecial<Char_>(pos_, end(), mark_)) {
-			StringData result{};
+			BasicStringData<Char_> result{};
 			PosInfo posInfo{getPosInfo()};
 			while(matchEnterAndIndent<Char_>(posInfo.pos, end(), posInfo.mark, indent)) {
 				auto line = matchAndMove<reLine>(posInfo.pos, end(), posInfo.mark);

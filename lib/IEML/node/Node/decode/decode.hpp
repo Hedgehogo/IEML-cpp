@@ -3,41 +3,42 @@
 #include <map>
 
 namespace ieml {
-	class Node;
+	template<typename Char_>
+	class BasicNode;
 	
 	/// @brief Structure to implement the conversion functions from a node to T
-	template <typename T>
+	template<typename Char_, typename T>
 	struct Decode;
 	
 	namespace detail {
 		/// @brief Help structure to implement the conversion functions from a node to T
-		template <typename T>
+		template<typename Char_, typename T>
 		struct DecodeImpl {
-			static bool decode(const Node& node, T& object);
+			static bool decode(const BasicNode<Char_>& node, T& object);
 		};
 		
 		/// @brief Help structure to implement the conversion functions from a node to raw data
-		template <>
-		struct DecodeImpl<RawData> {
-			static bool decode(const Node& node, RawData& object);
+		template<typename Char_>
+		struct DecodeImpl<Char_, BasicRawData<Char_>> {
+			static bool decode(const BasicNode<Char_>& node, BasicRawData<Char_>& object);
 		};
 		
 		/// @brief Help structure to implement the conversion functions from a node to string
-		template <>
-		struct DecodeImpl<StringData> {
-			static bool decode(const Node& node, StringData& object);
+		template<typename Char_>
+		struct DecodeImpl<Char_, BasicStringData<Char_>> {
+			static bool decode(const BasicNode<Char_>& node, BasicStringData<Char_>& object);
 		};
 		
 		/// @brief Help structure to implement the conversion functions from a node to list
-		template <>
-		struct DecodeImpl<ListData> {
-			static bool decode(const Node& node, ListData& object);
+		template<typename Char_>
+		struct DecodeImpl<Char_, BasicListData<Char_>> {
+			static bool decode(const BasicNode<Char_>& node, BasicListData<Char_>& object);
 		};
 		
 		/// @brief Help structure to implement the conversion functions from a node to map
-		template <>
-		struct DecodeImpl<MapData> {
-			static bool decode(const Node& node, MapData& object);
+		template<typename Char_>
+		struct DecodeImpl<Char_, BasicMapData<Char_>> {
+			static bool decode(const BasicNode<Char_>& node, BasicMapData<Char_>& object);
 		};
 	}
 }

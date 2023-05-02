@@ -4,38 +4,38 @@ namespace ieml {
 	template<typename D, typename T>
 	struct GetFromStep {};
 	
-	template<typename D>
-	struct GetFromStep<D, TagData> {
+	template<typename Char_, typename D>
+	struct GetFromStep<D, BasicTagData<Char_>> {
 		static D* get(D& data) {
-			if(auto tagData = std::get_if<TagData>(&data))
+			if(auto tagData = std::get_if<BasicTagData<Char_>>(&data.data))
 				return tagData->data.get();
 			return nullptr;
 		}
 	};
 	
-	template<typename D>
-	struct GetFromStep<D, FileData> {
+	template<typename Char_, typename D>
+	struct GetFromStep<D, BasicFileData<Char_>> {
 		static D* get(D& data) {
-			if(auto fileData = std::get_if<FileData>(&data))
+			if(auto fileData = std::get_if<BasicFileData<Char_>>(&data.data))
 				return fileData->data.get();
 			return nullptr;
 		}
 	};
 	
-	template<typename D>
-	struct GetFromStep<D, TakeAnchorData> {
+	template<typename Char_, typename D>
+	struct GetFromStep<D, BasicTakeAnchorData<Char_>> {
 		static D* get(D& data) {
-			if(auto takeAnchorData = std::get_if<TakeAnchorData>(&data))
+			if(auto takeAnchorData = std::get_if<BasicTakeAnchorData<Char_>>(&data.data))
 				if(auto anchorData{takeAnchorData->keeper->get(takeAnchorData->name)})
 					return anchorData;
 			return nullptr;
 		}
 	};
 	
-	template<typename D>
-	struct GetFromStep<D, GetAnchorData> {
+	template<typename Char_, typename D>
+	struct GetFromStep<D, BasicGetAnchorData<Char_>> {
 		static D* get(D& data) {
-			if(auto getAnchorData = std::get_if<GetAnchorData>(&data))
+			if(auto getAnchorData = std::get_if<BasicGetAnchorData<Char_>>(&data.data))
 				if(auto anchorData{getAnchorData->keeper->get(getAnchorData->name)})
 					return anchorData;
 			return nullptr;

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <IEML/anchor/AnchorKeeper/AnchorKeeper.hpp>
+#include <IEML/node/Node/Node.hpp>
 
 TEST(anchor, AnchorKeeper) {
 	ieml::AnchorKeeper anchorKeeper{};
@@ -10,7 +10,7 @@ TEST(anchor, AnchorKeeper) {
 	ieml::NodeData* dataPtr{anchorKeeper.get(ieml::String{"key"})};
 	ASSERT_FALSE(dataPtr == nullptr);
 	
-	ieml::StringData* stringPtr{std::get_if<ieml::StringData>(dataPtr)};
+	ieml::StringData* stringPtr{std::get_if<ieml::StringData>(&dataPtr->data)};
 	ASSERT_FALSE(stringPtr == nullptr);
 	
 	ieml::StringData& string{*stringPtr};
@@ -29,7 +29,7 @@ TEST(anchor, AnchorKeeper_parent) {
 	ieml::NodeData* parentDataPtr{anchorKeeper.get(ieml::String{"key"})};
 	ASSERT_FALSE(parentDataPtr == nullptr);
 	
-	ieml::StringData* parentStringPtr{std::get_if<ieml::StringData>(parentDataPtr)};
+	ieml::StringData* parentStringPtr{std::get_if<ieml::StringData>(&parentDataPtr->data)};
 	ASSERT_FALSE(parentStringPtr == nullptr);
 	
 	ieml::StringData& parentString{*parentStringPtr};
@@ -45,7 +45,7 @@ TEST(anchor, AnchorKeeper_parent) {
 	ieml::NodeData* dataPtr{anchorKeeper.get(ieml::String{"key"})};
 	ASSERT_FALSE(dataPtr == nullptr);
 	
-	ieml::StringData* stringPtr{std::get_if<ieml::StringData>(dataPtr)};
+	ieml::StringData* stringPtr{std::get_if<ieml::StringData>(&dataPtr->data)};
 	ASSERT_FALSE(stringPtr == nullptr);
 	
 	ieml::StringData& string{*stringPtr};

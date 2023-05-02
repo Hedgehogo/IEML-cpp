@@ -1,5 +1,5 @@
 #include "isValue.hpp"
-#include <ctre.hpp>
+#include <ctre-unicode.hpp>
 
 namespace ieml {
 	static constexpr auto shortList = ctll::fixed_string{R"(\[.*\] *)"};

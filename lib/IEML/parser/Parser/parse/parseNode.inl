@@ -2,17 +2,17 @@
 
 namespace ieml {
 	template<typename Char_, typename FileInclude_>
-	NodeData Parser<Char_, FileInclude_>::parseNode(Size indent) {
+	BasicNodeData<Char_> BasicParser<Char_, FileInclude_>::parseNode(Size indent) {
 		if(auto tag{parseTag(indent)})
-			return *tag;
+			return BasicNodeData<Char_>{*tag};
 		if(auto anchor{parseAnchor(indent)})
 			return *anchor;
 		if(auto file{parseFile(indent)})
-			return *file;
+			return BasicNodeData<Char_>{*file};
 		if(auto list{parseList(indent)})
-			return *list;
+			return BasicNodeData<Char_>{*list};
 		if(auto map{parseMap(indent)})
-			return *map;
+			return BasicNodeData<Char_>{*map};
 		if(auto notScalar{parseNotScalar(indent)})
 			return *notScalar;
 		return parseScalar(indent);

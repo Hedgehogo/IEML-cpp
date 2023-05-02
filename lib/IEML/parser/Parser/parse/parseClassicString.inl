@@ -4,16 +4,16 @@
 namespace ieml {
 	template<typename Char_>
 	struct StringMark {
-		String::const_iterator pos;
+		BasicStringCIter<Char_> pos;
 		Size lastLength{0};
 		Size enterCount{0};
 		Size realLength{0};
 	};
 	
 	template<typename Char_>
-	bool matchIndent(String::const_iterator& pos, String::const_iterator end, Size indent) {
+	bool matchIndent(BasicStringCIter<Char_>& pos, BasicStringCIter<Char_> end, Size indent) {
 		Size currentIndent{0};
-		String::const_iterator currentPos{pos};
+		BasicStringCIter<Char_> currentPos{pos};
 		while(currentIndent < indent && currentPos != end && *currentPos == '\t') {
 			currentIndent += 1;
 			currentPos += 1;
@@ -26,7 +26,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	Option<StringMark<Char_>> isClassicString(String::const_iterator inputPos, String::const_iterator end, Size indent) {
+	Option<StringMark<Char_>> isClassicString(BasicStringCIter<Char_> inputPos, BasicStringCIter<Char_> end, Size indent) {
 		if(*inputPos != '\"')
 			return {};
 		
@@ -85,7 +85,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	void handleSymbol(String::const_iterator& input, String::iterator& output, Size indent) {
+	void handleSymbol(BasicStringCIter<Char_>& input, BasicStringIter<Char_>& output, Size indent) {
 		if(*input == '\\') {
 			input += 1;
 			if(*input != '\n') {
@@ -113,8 +113,8 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	String handleClassicString(String::const_iterator first, String::const_iterator last, Size realLength, Size indent) {
-		String result(realLength, '\0');
+	BasicString<Char_> handleClassicString(BasicStringCIter<Char_> first, Size realLength, Size indent) {
+		BasicString<Char_> result(realLength, '\0');
 		for(auto pos = result.begin(); pos < result.end();) {
 			handleSymbol<Char_>(first, pos, indent);
 		}
@@ -122,13 +122,13 @@ namespace ieml {
 	}
 	
 	template<typename Char_, typename FileInclude_>
-	Option<StringData> Parser<Char_, FileInclude_>::parseClassicString(Size indent) {
+	Option<BasicStringData<Char_>> BasicParser<Char_, FileInclude_>::parseClassicString(Size indent) {
 		if(auto stringMark{isClassicString<Char_>(pos_, end(), indent)}) {
-			String result{handleClassicString<Char_>(pos_ + 1, stringMark->pos - 1, stringMark->realLength, indent)};
+			BasicString<Char_> result{handleClassicString<Char_>(pos_ + 1, stringMark->realLength, indent)};
 			pos_ = stringMark->pos;
 			mark_.symbol = stringMark->lastLength;
 			mark_.line += stringMark->enterCount;
-			return StringData{result};
+			return BasicStringData<Char_>{result};
 		}
 		return {};
 	}

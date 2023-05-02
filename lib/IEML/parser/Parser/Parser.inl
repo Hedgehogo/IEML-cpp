@@ -2,41 +2,56 @@
 
 namespace ieml {
 	template<typename Char_, typename FileInclude_>
-	Parser<Char_, FileInclude_>::Parser(const String& inputStr, Rc<AnchorKeeper> anchorKeeper, FilePath filePath) :
+	BasicParser<Char_, FileInclude_>::BasicParser(const BasicString<Char_>& inputStr, Rc<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath) :
 		pos_(inputStr.cbegin()), end_(inputStr.cend()), mark_(), anchorKeeper_(anchorKeeper), filePath_(filePath) {
 	}
 	
 	template<typename Char_, typename FileInclude_>
-	Parser<Char_, FileInclude_>::Parser(const String& inputStr, FilePath filePath, Rc<AnchorKeeper> anchorKeeper) :
+	BasicParser<Char_, FileInclude_>::BasicParser(const BasicString<Char_>& inputStr, FilePath filePath, Rc<BasicAnchorKeeper<Char_>> anchorKeeper) :
 		pos_(inputStr.cbegin()), end_(inputStr.cend()), mark_(), anchorKeeper_(anchorKeeper), filePath_(filePath) {
 	}
 	
 	template<typename Char_, typename FileInclude_>
-	String::const_iterator Parser<Char_, FileInclude_>::end() {
+	BasicStringCIter<Char_> BasicParser<Char_, FileInclude_>::end() {
 		return end_;
 	}
 	
 	template<typename Char_, typename FileInclude_>
-	typename Parser<Char_, FileInclude_>::PosInfo Parser<Char_, FileInclude_>::getPosInfo() {
+	typename BasicParser<Char_, FileInclude_>::PosInfo BasicParser<Char_, FileInclude_>::getPosInfo() {
 		return PosInfo{pos_, mark_};
 	}
 	
 	template<typename Char_, typename FileInclude_>
-	void Parser<Char_, FileInclude_>::setPosInfo(const PosInfo& posInfo) {
+	void BasicParser<Char_, FileInclude_>::setPosInfo(const PosInfo& posInfo) {
 		pos_ = posInfo.pos;
 		mark_ = posInfo.mark;
 	}
 	
 	template<typename Char_, typename FileInclude_>
-	void Parser<Char_, FileInclude_>::except(FailedParseException::Reason reason) {
+	void BasicParser<Char_, FileInclude_>::except(FailedParseException::Reason reason) {
 		throw FailedParseException{filePath_, reason, mark_};
 	}
 	
 	template<typename Char_, typename FileInclude_>
-	void Parser<Char_, FileInclude_>::exceptWithCheckSpace(FailedParseException::Reason reason) {
+	void BasicParser<Char_, FileInclude_>::exceptWithCheckSpace(FailedParseException::Reason reason) {
 		if(pos_ != end() && *pos_ == ' ') {
 			throw FailedParseException{filePath_, FailedParseException::Reason::ImpermissibleSpace, mark_};
 		}
 		throw FailedParseException{filePath_, reason, mark_};
 	}
 }
+
+#include "parse/parse.inl"
+#include "parse/parseAnchor.inl"
+#include "parse/parseClassicString.inl"
+#include "parse/parseFile.inl"
+#include "parse/parseList.inl"
+#include "parse/parseMap.inl"
+#include "parse/parseNode.inl"
+#include "parse/parseNotEscapedString.inl"
+#include "parse/parseNotScalar.inl"
+#include "parse/parseNull.inl"
+#include "parse/parseRaw.inl"
+#include "parse/parseScalar.inl"
+#include "parse/parseShortList.inl"
+#include "parse/parseTag.inl"

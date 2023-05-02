@@ -7,24 +7,24 @@ namespace ieml {
 	static constexpr auto reMapKey = ctll::fixed_string{R"(([^\"\n<>]*?):( |(?=\n)))"};
 	
 	template<typename Char_, typename FileInclude_>
-	Option<MapData> Parser<Char_, FileInclude_>::parseMap(Size indent) {
+	Option<BasicMapData<Char_>> BasicParser<Char_, FileInclude_>::parseMap(Size indent) {
 		if(ctre::starts_with<reMapKey>(pos_, end())) {
-			MapData nodes{};
+			BasicMapData<Char_> nodes{};
 			PosInfo posInfo{getPosInfo()};
 			bool rightIndent{true};
 			while(rightIndent) {
 				if(posInfo.pos == end()) {
 					break;
 				} else if(*posInfo.pos == ' ') {
-					std::string str{posInfo.pos, end()};
+					BasicString<Char_> str{posInfo.pos, end()};
 					except(FailedParseException::Reason::ImpermissibleSpace);
 				} else if(*posInfo.pos == '\t') {
 					except(FailedParseException::Reason::ImpermissibleTab);
 				} else if(auto find{matchAndMove<reMapKey>(posInfo.pos, end(), posInfo.mark)}) {
 					setPosInfo(posInfo);
-					String keyStr{find.template get<1>().str()};
-					NodeData nodeData{parseNode(indent + 1)};
-					nodes.emplace(keyStr, PNode{Node{nodeData, posInfo.mark}});
+					BasicString<Char_> keyStr{find.template get<1>().str()};
+					BasicNodeData nodeData{parseNode(indent + 1)};
+					nodes.emplace(keyStr, BasicNode < Char_ > {nodeData, posInfo.mark});
 					posInfo = getPosInfo();
 					
 					if(pos_ != end() && *pos_ != '\n')
