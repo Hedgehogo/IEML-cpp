@@ -3,16 +3,12 @@
 #include <IEML/parser/exception/FailedParseException/FailedParseException.hpp>
 
 TEST(parser, exception) {
-	ieml::FailedParseException exception0{ieml::FilePath{"file.ieml"}, ieml::FailedParseException::Reason::ExpectedScalar, ieml::Mark{2, 5}};
+	ieml::FailedParseException exception0{ieml::FilePath{"file.ieml"}, ieml::FailedParseException::Reason::FailedDetermineType, ieml::Mark{2, 5}};
 	ASSERT_EQ(exception0.getFilePath(), ieml::FilePath{"file.ieml"});
-	ASSERT_EQ(exception0.getReason(), ieml::FailedParseException::Reason::ExpectedScalar);
+	ASSERT_EQ(exception0.getReason(), ieml::FailedParseException::Reason::FailedDetermineType);
 	ASSERT_EQ(exception0.getMark().line, 2);
 	ASSERT_EQ(exception0.getMark().symbol, 5);
-	ASSERT_EQ(exception0.getFullDescription(), ieml::String("2:5: Failed to determine the type of data in the file 'file.ieml'. Expected Scalar."));
-	
-	ieml::FailedParseException exception1{ieml::FilePath{}, ieml::FailedParseException::Reason::ExpectedNotScalar, ieml::Mark{0, 0}};
-	ASSERT_EQ(exception1.getReason(), ieml::FailedParseException::Reason::ExpectedNotScalar);
-	ASSERT_EQ(exception1.getFullDescription(), ieml::String("0:0: Failed to determine the type of data. Expected List or Map."));
+	ASSERT_EQ(exception0.getFullDescription(), ieml::String("2:5: Failed to determine the type of data in the file 'file.ieml'. Failed to determine data type."));
 	
 	ieml::FailedParseException exception2{ieml::FilePath{}, ieml::FailedParseException::Reason::ExpectedMapKey, ieml::Mark{0, 0}};
 	ASSERT_EQ(exception2.getReason(), ieml::FailedParseException::Reason::ExpectedMapKey);
@@ -33,5 +29,4 @@ TEST(parser, exception) {
 	ieml::FailedParseException exception6{ieml::FilePath{}, ieml::FailedParseException::Reason::IncompleteString, ieml::Mark{0, 0}};
 	ASSERT_EQ(exception6.getReason(), ieml::FailedParseException::Reason::IncompleteString);
 	ASSERT_EQ(exception6.getFullDescription(), ieml::String("0:0: Failed to determine the type of data. The end of the file has been reached, but the String is not completed."));
-	
 }

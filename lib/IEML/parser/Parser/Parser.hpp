@@ -115,13 +115,6 @@ namespace ieml {
 		/// @return Returns node data, the result of the parsing, or throws FailedReadFileException if the file could not be read.
 		Option<BasicFileData<Char_>> parseFile(Size indent);
 		
-		/// @brief Parses the <i>List</i> or <i>Map</i>.
-		///
-		/// @param indent The current indentation level.
-		///
-		/// @return Returns node data or nothing.
-		Option<BasicNodeData<Char_>> parseNotScalar(Size indent);
-		
 		/// @brief Parses the <i>List</i>.
 		///
 		/// @param indent The current indentation level.

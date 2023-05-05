@@ -51,7 +51,6 @@ namespace ieml {
 #include "parse/parseMap.inl"
 #include "parse/parseNode.inl"
 #include "parse/parseNotEscapedString.inl"
-#include "parse/parseNotScalar.inl"
 #include "parse/parseNull.inl"
 #include "parse/parseRaw.inl"
 #include "parse/parseScalar.inl"
