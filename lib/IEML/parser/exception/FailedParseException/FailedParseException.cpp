@@ -12,10 +12,8 @@ namespace ieml {
 	}
 	
 	String getReasonDescription(FailedParseException::Reason reason) {
-		if(reason == FailedParseException::Reason::ExpectedScalar) {
-			return "Expected Scalar.";
-		} else if (reason == FailedParseException::Reason::ExpectedNotScalar) {
-			return "Expected List or Map.";
+		if(reason == FailedParseException::Reason::FailedDetermineType) {
+			return "Failed to determine data type.";
 		} else if (reason == FailedParseException::Reason::ExpectedMapKey) {
 			return "Expected Map Key.";
 		} else if (reason == FailedParseException::Reason::ExpectedListItem) {

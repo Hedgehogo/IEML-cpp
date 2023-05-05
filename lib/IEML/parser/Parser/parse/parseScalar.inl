@@ -18,6 +18,6 @@ namespace ieml {
 		if(auto raw{parseRaw()}) {
 			return BasicNodeData<Char_>{raw.value()};
 		}
-		throw FailedParseException{filePath_, FailedParseException::ExpectedScalar, mark_};
+		throw FailedParseException{filePath_, FailedParseException::FailedDetermineType, mark_};
 	}
 }

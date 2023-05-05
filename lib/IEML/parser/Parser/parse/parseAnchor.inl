@@ -27,15 +27,4 @@ namespace ieml {
 		}
 		return {};
 	}
-	
-	template<typename Char_, typename FileInclude_>
-	Option<BasicNodeData<Char_>> BasicParser<Char_, FileInclude_>::parseAnchor(Size indent) {
-		if(auto takeAnchor{parseTakeAnchor(indent)}) {
-			return BasicNodeData<Char_>{takeAnchor.value()};
-		}
-		if(auto getAnchor{parseGetAnchor(indent)}) {
-			return BasicNodeData<Char_>{getAnchor.value()};
-		}
-		return {};
-	}
 }

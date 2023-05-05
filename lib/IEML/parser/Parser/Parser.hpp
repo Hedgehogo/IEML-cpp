@@ -29,10 +29,6 @@ namespace ieml {
 		
 		void setPosInfo(const PosInfo& posInfo);
 		
-		Option<BasicTakeAnchorData<Char_>> parseTakeAnchor(Size indent);
-		
-		Option<BasicGetAnchorData<Char_>> parseGetAnchor(Size indent);
-		
 		void parseFileAnchorMap(Rc<BasicAnchorKeeper<Char_>> loadedAnchorKeeper, Size indent);
 		
 		void except(FailedParseException::Reason reason);
@@ -63,12 +59,19 @@ namespace ieml {
 		/// @return Returns <i>Tag</i> data, the result of parsing, or nothing.
 		Option<BasicTagData<Char_>> parseTag(Size indent);
 		
-		/// @brief Checks for a <i>Anchor</i> and, if there is one, parses it and the node data.
+		/// @brief Checks for a take <i>Anchor</i> and, if there is one, parses it and the node data.
 		///
 		/// @param indent The current indentation level.
 		///
-		/// @return Returns <i>Anchor</i> data, the result of parsing, or nothing.
-		Option<BasicNodeData<Char_>> parseAnchor(Size indent);
+		/// @return Returns take <i>Anchor</i> data, the result of parsing, or nothing.
+		Option<BasicTakeAnchorData<Char_>> parseTakeAnchor(Size indent);
+		
+		/// @brief Checks for a get <i>Anchor</i> and, if there is one, parses it and the node data.
+		///
+		/// @param indent The current indentation level.
+		///
+		/// @return Returns get <i>Anchor</i> data, the result of parsing, or nothing.
+		Option<BasicGetAnchorData<Char_>> parseGetAnchor(Size indent);
 		
 		/// @brief Parses one of the <i>Scalar</i> data types.
 		///

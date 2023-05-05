@@ -7,8 +7,7 @@ namespace ieml {
 	class FailedParseException : public WithMarkException {
 	public:
 		enum Reason {
-			ExpectedScalar,
-			ExpectedNotScalar,
+			FailedDetermineType,
 			ExpectedMapKey,
 			ExpectedListItem,
 			ImpermissibleSpace,
