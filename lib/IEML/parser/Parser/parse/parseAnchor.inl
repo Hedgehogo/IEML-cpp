@@ -8,10 +8,11 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicTakeAnchorData<Char_>> BasicParser<Char_, FileInclude_>::parseTakeAnchor(Size indent) {
+		Mark mark{mark_};
 		if(auto find{matchAndMove<reTakeAnchor, Char_>(pos_, end(), mark_)}) {
 			BasicString<Char_> name{find.template get<1>().str()};
-			if(!anchorKeeper_->add(name, parseNode(indent)))
-				throw FailedParseException{filePath_, FailedParseException::Reason::AnchorAlreadyExists, mark_};
+			if(!anchorKeeper_->add(name, BasicNode<Char_>{parseNode(indent), mark}))
+				throw FailedParseException{filePath_, FailedParseException::Reason::AnchorAlreadyExists, mark};
 			return BasicTakeAnchorData<Char_>{anchorKeeper_, name};
 		}
 		return {};

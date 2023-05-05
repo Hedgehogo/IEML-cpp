@@ -20,7 +20,7 @@ namespace ieml {
 		BasicStringCIter<Char_> pos_;
 		BasicStringCIter<Char_> end_;
 		Mark mark_;
-		Rc<BasicAnchorKeeper<Char_>> anchorKeeper_;
+		RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper_;
 		FilePath filePath_;
 		
 		BasicStringCIter<Char_> end();
@@ -29,16 +29,16 @@ namespace ieml {
 		
 		void setPosInfo(const PosInfo& posInfo);
 		
-		void parseFileAnchorMap(Rc<BasicAnchorKeeper<Char_>> loadedAnchorKeeper, Size indent);
+		void parseFileAnchorMap(RcPtr<BasicAnchorKeeper<Char_>> loadedAnchorKeeper, Size indent);
 		
 		void except(FailedParseException::Reason reason);
 		
 		void exceptWithCheckSpace(FailedParseException::Reason reason);
 		
 	public:
-		BasicParser(const BasicString<Char_>& inputStr, Rc<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath = FilePath{});
+		BasicParser(const BasicString<Char_>& inputStr, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath = FilePath{});
 		
-		BasicParser(const BasicString<Char_>& inputStr, FilePath filePath = FilePath{}, Rc<BasicAnchorKeeper<Char_>> anchorKeeper = makeRc<BasicAnchorKeeper<Char_>>());
+		BasicParser(const BasicString<Char_>& inputStr, FilePath filePath = FilePath{}, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper = makeRcPtr<BasicAnchorKeeper<Char_>>());
 		
 		/// @brief Parses all input to the node data.
 		///
@@ -141,7 +141,7 @@ namespace ieml {
 	
 	template<typename Char_>
 	struct FileInclude {
-		static BasicNodeData<Char_> include(Rc<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath);
+		static BasicNodeData<Char_> include(RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath);
 	};
 }
 

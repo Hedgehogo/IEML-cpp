@@ -54,36 +54,41 @@ namespace ieml {
 	
 	using Tag = BasicTag<Char>;
 	
+	template<typename Char_>
+	struct BaseMetaData {
+		BoxPtr<BasicNode<Char_>> data;
+		
+		BaseMetaData(BoxPtr<BasicNode<Char_>> data);
+		
+		BaseMetaData(const BasicNode<Char_>& data);
+		
+		BaseMetaData(BaseMetaData<Char_>&& other);
+		
+		BaseMetaData(const BaseMetaData<Char_>& other);
+		
+		BaseMetaData<Char_>& operator=(const BaseMetaData<Char_>& other);
+	};
+	
 	/// @brief Node data storing tag and other data
 	template<typename Char_>
-	struct BasicTagData {
-		Box<BasicNodeData<Char_>> data;
+	struct BasicTagData : public BaseMetaData<Char_> {
 		BasicTag<Char_> tag;
 		
-		BasicTagData(Box<BasicNodeData<Char_>> data, const BasicTag<Char_>& tag);
+		BasicTagData(BoxPtr<BasicNode<Char_>> data, const BasicTag<Char_>& tag);
 		
-		BasicTagData(const BasicNodeData<Char_>& data, const BasicTag<Char_>& tag);
-		
-		BasicTagData(const BasicTagData& other);
-		
-		BasicTagData& operator=(const BasicTagData& other);
+		BasicTagData(const BasicNode<Char_>& data, const BasicTag<Char_>& tag);
 	};
 	
 	using TagData = BasicTagData<Char>;
 	
 	/// @brief Node data storing the file path and other data
 	template<typename Char_>
-	struct BasicFileData {
-		Box<BasicNodeData<Char_>> data;
+	struct BasicFileData : public BaseMetaData<Char_> {
 		FilePath filePath;
 		
-		BasicFileData(Box<BasicNodeData<Char_>> data, const FilePath& filePath);
+		BasicFileData(BoxPtr<BasicNode<Char_>> data, const FilePath& filePath);
 		
-		BasicFileData(const BasicNodeData<Char_>& data, const FilePath& filePath);
-		
-		BasicFileData(const BasicFileData& other);
-		
-		BasicFileData& operator=(const BasicFileData& other);
+		BasicFileData(const BasicNode<Char_>& data, const FilePath& filePath);
 	};
 	
 	using FileData = BasicFileData<Char>;
@@ -91,21 +96,21 @@ namespace ieml {
 	template<typename Char_>
 	class BasicAnchorKeeper;
 	
-	/// @brief Node data storing anchor
 	template<typename Char_>
-	struct BasicTakeAnchorData {
-		Rc<BasicAnchorKeeper<Char_>> keeper;
+	struct BaseAnchorData {
+		RcPtr<BasicAnchorKeeper<Char_>> keeper;
 		BasicString<Char_> name;
 	};
+	
+	/// @brief Node data storing anchor
+	template<typename Char_>
+	struct BasicTakeAnchorData : public BaseAnchorData<Char_> {};
 	
 	using TakeAnchorData = BasicTakeAnchorData<Char>;
 	
 	/// @brief Node data storing reference
 	template<typename Char_>
-	struct BasicGetAnchorData {
-		Rc<BasicAnchorKeeper<Char_>> keeper;
-		BasicString<Char_> name;
-	};
+	struct BasicGetAnchorData : public BaseAnchorData<Char_> {};
 	
 	using GetAnchorData = BasicGetAnchorData<Char>;
 	

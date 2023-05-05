@@ -6,21 +6,16 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	BasicAnchorKeeper<Char_>::BasicAnchorKeeper(Rc<BasicAnchorKeeper> parent) : parent_(parent) {
-	}
-	
-	template<typename Char_>
-	bool BasicAnchorKeeper<Char_>::add(const BasicString<Char_>& key, BasicNodeData<Char_> value) {
-		return anchors_.emplace(key, value).second;
+	BasicAnchorKeeper<Char_>::BasicAnchorKeeper(RcPtr<BasicAnchorKeeper> parent) : parent_(parent) {
 	}
 	
 	template<typename Char_>
 	bool BasicAnchorKeeper<Char_>::add(const BasicString<Char_>& key, BasicNode<Char_> value) {
-		return anchors_.emplace(key, value.data).second;
+		return anchors_.emplace(key, value).second;
 	}
 	
 	template<typename Char_>
-	BasicNodeData<Char_>* BasicAnchorKeeper<Char_>::get(const BasicString<Char_>& key) {
+	BasicNode<Char_>* BasicAnchorKeeper<Char_>::get(const BasicString<Char_>& key) {
 		if(auto find{anchors_.find(key)}; find != anchors_.end())
 			return &find->second;
 		if(parent_)

@@ -149,7 +149,7 @@ TEST(Node, Node_6_Tag) {
 }
 
 TEST(Node, Node_7_TakeAnchor) {
-	ieml::Rc<ieml::AnchorKeeper> anchorKeeper{std::make_shared<ieml::AnchorKeeper>()};
+	ieml::RcPtr<ieml::AnchorKeeper> anchorKeeper{std::make_shared<ieml::AnchorKeeper>()};
 	anchorKeeper->add(ieml::String{"take_anchor"}, ieml::NodeData{ieml::NullData{}});
 	ieml::Node node{ieml::TakeAnchorData{anchorKeeper, ieml::String{"take_anchor"}}};
 	
@@ -168,7 +168,7 @@ TEST(Node, Node_7_TakeAnchor) {
 }
 
 TEST(Node, Node_8_GetAnchor) {
-	ieml::Rc<ieml::AnchorKeeper> anchorKeeper{std::make_shared<ieml::AnchorKeeper>()};
+	ieml::RcPtr<ieml::AnchorKeeper> anchorKeeper{std::make_shared<ieml::AnchorKeeper>()};
 	anchorKeeper->add(ieml::String{"get_anchor"}, ieml::NodeData{ieml::NullData{}});
 	ieml::Node node{ieml::GetAnchorData{anchorKeeper, ieml::String{"get_anchor"}}};
 	

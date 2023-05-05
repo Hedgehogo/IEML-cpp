@@ -7,7 +7,7 @@ namespace ieml {
 	static constexpr auto reFile = ctll::fixed_string{R"(< [^\n]*)"};
 	
 	template<typename Char_>
-	BasicNodeData<Char_> FileInclude<Char_>::include(Rc<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath) {
+	BasicNodeData<Char_> FileInclude<Char_>::include(RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath) {
 		BasicString<Char_> inputStr{readFile<Char_>(filePath)};
 		BasicParser<Char_> parser{inputStr, anchorKeeper};
 		return parser.parse();
@@ -23,7 +23,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_, typename FileInclude_>
-	void BasicParser<Char_, FileInclude_>::parseFileAnchorMap(Rc<BasicAnchorKeeper<Char_>> loadedAnchorKeeper, Size indent) {
+	void BasicParser<Char_, FileInclude_>::parseFileAnchorMap(RcPtr<BasicAnchorKeeper<Char_>> loadedAnchorKeeper, Size indent) {
 		if(pos_ != end()) {
 			PosInfo posInfo{getPosInfo()};
 			skipBlankLinesLn<Char_>(pos_, end(), mark_);
@@ -41,11 +41,12 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicFileData<Char_>> BasicParser<Char_, FileInclude_>::parseFile(Size indent) {
+		Mark mark{mark_};
 		if(auto find{matchAndMove<reFile, Char_>(pos_, end(), mark_)}) {
-			Rc<BasicAnchorKeeper<Char_>> loadedAnchorKeeper{makeRc<BasicAnchorKeeper<Char_>>(anchorKeeper_)};
+			RcPtr<BasicAnchorKeeper<Char_>> loadedAnchorKeeper{makeRcPtr<BasicAnchorKeeper<Char_>>(anchorKeeper_)};
 			FilePath loadedFilePath{getFilePath<Char_>(filePath_, {find.begin() + 2, find.end()})};
 			parseFileAnchorMap(loadedAnchorKeeper, indent);
-			return BasicFileData<Char_>{FileInclude_::include(loadedAnchorKeeper, loadedFilePath), loadedFilePath};
+			return BasicFileData<Char_>{BasicNode<Char_>{FileInclude_::include(loadedAnchorKeeper, loadedFilePath), mark}, loadedFilePath};
 		}
 		return {};
 	}

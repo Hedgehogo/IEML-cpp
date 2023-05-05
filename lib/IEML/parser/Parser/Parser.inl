@@ -4,12 +4,12 @@
 
 namespace ieml {
 	template<typename Char_, typename FileInclude_>
-	BasicParser<Char_, FileInclude_>::BasicParser(const BasicString<Char_>& inputStr, Rc<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath) :
+	BasicParser<Char_, FileInclude_>::BasicParser(const BasicString<Char_>& inputStr, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath) :
 		pos_(inputStr.cbegin()), end_(inputStr.cend()), mark_(), anchorKeeper_(anchorKeeper), filePath_(filePath) {
 	}
 	
 	template<typename Char_, typename FileInclude_>
-	BasicParser<Char_, FileInclude_>::BasicParser(const BasicString<Char_>& inputStr, FilePath filePath, Rc<BasicAnchorKeeper<Char_>> anchorKeeper) :
+	BasicParser<Char_, FileInclude_>::BasicParser(const BasicString<Char_>& inputStr, FilePath filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper) :
 		pos_(inputStr.cbegin()), end_(inputStr.cend()), mark_(), anchorKeeper_(anchorKeeper), filePath_(filePath) {
 	}
 	

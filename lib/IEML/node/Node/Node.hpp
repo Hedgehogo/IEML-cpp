@@ -9,44 +9,6 @@ namespace ieml {
 	template<typename Char_>
 	class BasicNode {
 	public:
-		template<typename OtherChar_, typename T>
-		friend struct detail::DecodeImpl;
-		
-		friend class BasicAnchorKeeper<Char_>;
-	
-	private:
-		static BasicNode<Char_> undefined;
-		
-		BasicNodeData<Char_> data;
-		Mark mark;
-		
-		static const BasicNodeData<Char_>& getDataFrom(const BasicNodeData<Char_>& data);
-		
-		static BasicNodeData<Char_>& getDataFrom(BasicNodeData<Char_>& data);
-		
-		static const BasicFileData<Char_>* getFileFrom(const BasicNodeData<Char_>& data);
-		
-		static BasicFileData<Char_>* getFileFrom(BasicNodeData<Char_>& data);
-		
-		static const BasicTagData<Char_>* getTagFrom(const BasicNodeData<Char_>& data);
-		
-		static BasicTagData<Char_>* getTagFrom(BasicNodeData<Char_>& data);
-		
-		static const BasicTakeAnchorData<Char_>* getTakeAnchorFrom(const BasicNodeData<Char_>& data);
-		
-		static BasicTakeAnchorData<Char_>* getTakeAnchorFrom(BasicNodeData<Char_>& data);
-		
-		static const BasicGetAnchorData<Char_>* getGetAnchorFrom(const BasicNodeData<Char_>& data);
-		
-		static BasicGetAnchorData<Char_>* getGetAnchorFrom(BasicNodeData<Char_>& data);
-		
-		template<typename T, typename E>
-		const T& getType(E e) const;
-		
-		template<typename T, typename E>
-		T& getType(E e);
-	
-	public:
 		BasicNode(BasicNodeData<Char_> data, Mark mark = {0, 0});
 		
 		template<typename T>
@@ -239,15 +201,55 @@ namespace ieml {
 		BasicNode<Char_>& operator[](const BasicString<Char_>& key);
 		
 		const BasicNode<Char_>& operator[](const BasicString<Char_>& key) const;
+	
+		template<typename OtherChar_, typename T>
+		friend struct detail::DecodeImpl;
+		
+		template<typename D, typename T>
+		friend struct GetFromStep;
+		
+		friend class BasicAnchorKeeper<Char_>;
+		
+	private:
+		static const BasicNodeData<Char_>& getDataFrom(const BasicNodeData<Char_>& data);
+		
+		static BasicNodeData<Char_>& getDataFrom(BasicNodeData<Char_>& data);
+		
+		static const BasicFileData<Char_>* getFileFrom(const BasicNodeData<Char_>& data);
+		
+		static BasicFileData<Char_>* getFileFrom(BasicNodeData<Char_>& data);
+		
+		static const BasicTagData<Char_>* getTagFrom(const BasicNodeData<Char_>& data);
+		
+		static BasicTagData<Char_>* getTagFrom(BasicNodeData<Char_>& data);
+		
+		static const BasicTakeAnchorData<Char_>* getTakeAnchorFrom(const BasicNodeData<Char_>& data);
+		
+		static BasicTakeAnchorData<Char_>* getTakeAnchorFrom(BasicNodeData<Char_>& data);
+		
+		static const BasicGetAnchorData<Char_>* getGetAnchorFrom(const BasicNodeData<Char_>& data);
+		
+		static BasicGetAnchorData<Char_>* getGetAnchorFrom(BasicNodeData<Char_>& data);
+		
+		template<typename T, typename E>
+		const T& getType(E e) const;
+		
+		template<typename T, typename E>
+		T& getType(E e);
+		
+		static BasicNode<Char_> undefined;
+		
+		BasicNodeData<Char_> data;
+		Mark mark;
 	};
 	
 	using Node = BasicNode<Char>;
 	
 	template<typename Char_ = Char>
-	BasicNode<Char_> fromFile(FilePath&& filePath, Rc<BasicAnchorKeeper<Char_>> anchorKeeper = makeRc<BasicAnchorKeeper<Char_>>());
+	BasicNode<Char_> fromFile(FilePath&& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper = makeRcPtr<BasicAnchorKeeper<Char_>>());
 	
 	template<typename Char_ = Char>
-	BasicNode<Char_> from(const BasicString<Char_>& inputStr, Rc<BasicAnchorKeeper<Char_>> anchorKeeper = makeRc<BasicAnchorKeeper<Char_>>());
+	BasicNode<Char_> from(const BasicString<Char_>& inputStr, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper = makeRcPtr<BasicAnchorKeeper<Char_>>());
 }
 
 #include "../../anchor/AnchorKeeper/AnchorKeeper.inl"

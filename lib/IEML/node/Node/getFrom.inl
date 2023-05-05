@@ -8,7 +8,7 @@ namespace ieml {
 	struct GetFromStep<D, BasicTagData<Char_>> {
 		static D* get(D& data) {
 			if(auto tagData = std::get_if<BasicTagData<Char_>>(&data.data))
-				return tagData->data.get();
+				return &tagData->data->data;
 			return nullptr;
 		}
 	};
@@ -17,7 +17,7 @@ namespace ieml {
 	struct GetFromStep<D, BasicFileData<Char_>> {
 		static D* get(D& data) {
 			if(auto fileData = std::get_if<BasicFileData<Char_>>(&data.data))
-				return fileData->data.get();
+				return &fileData->data->data;
 			return nullptr;
 		}
 	};
@@ -27,7 +27,7 @@ namespace ieml {
 		static D* get(D& data) {
 			if(auto takeAnchorData = std::get_if<BasicTakeAnchorData<Char_>>(&data.data))
 				if(auto anchorData{takeAnchorData->keeper->get(takeAnchorData->name)})
-					return anchorData;
+					return &anchorData->data;
 			return nullptr;
 		}
 	};
@@ -37,7 +37,7 @@ namespace ieml {
 		static D* get(D& data) {
 			if(auto getAnchorData = std::get_if<BasicGetAnchorData<Char_>>(&data.data))
 				if(auto anchorData{getAnchorData->keeper->get(getAnchorData->name)})
-					return anchorData;
+					return &anchorData->data;
 			return nullptr;
 		}
 	};

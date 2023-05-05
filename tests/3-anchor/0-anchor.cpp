@@ -7,50 +7,38 @@ TEST(anchor, AnchorKeeper) {
 	ASSERT_TRUE(anchorKeeper.add(ieml::String{"key"}, ieml::NodeData{ieml::StringData{"value"}}));
 	ASSERT_FALSE(anchorKeeper.add(ieml::String{"key"}, ieml::NodeData{ieml::StringData{"value"}}));
 	
-	ieml::NodeData* dataPtr{anchorKeeper.get(ieml::String{"key"})};
-	ASSERT_FALSE(dataPtr == nullptr);
+	ieml::Node* nodePtr{anchorKeeper.get(ieml::String{"key"})};
+	ASSERT_FALSE(nodePtr == nullptr);
+	ASSERT_TRUE(nodePtr->isString());
+	ASSERT_EQ(nodePtr->as<ieml::StringData>(), ieml::StringData{"value"});
 	
-	ieml::StringData* stringPtr{std::get_if<ieml::StringData>(&dataPtr->data)};
-	ASSERT_FALSE(stringPtr == nullptr);
-	
-	ieml::StringData& string{*stringPtr};
-	ASSERT_EQ(string, ieml::StringData{"value"});
-	
-	ieml::NodeData* incorrectDataPtr{anchorKeeper.get(ieml::String{"other-key"})};
-	ASSERT_TRUE(incorrectDataPtr == nullptr);
+	ieml::Node* incorrectNodePtr{anchorKeeper.get(ieml::String{"other-key"})};
+	ASSERT_TRUE(incorrectNodePtr == nullptr);
 }
 
 TEST(anchor, AnchorKeeper_parent) {
-	ieml::Rc<ieml::AnchorKeeper> parentAnchorKeeper{std::make_shared<ieml::AnchorKeeper>()};
+	ieml::RcPtr<ieml::AnchorKeeper> parentAnchorKeeper{std::make_shared<ieml::AnchorKeeper>()};
 	ASSERT_TRUE(parentAnchorKeeper->add(ieml::String{"key"}, ieml::NodeData{ieml::StringData{"value"}}));
 	ASSERT_FALSE(parentAnchorKeeper->add(ieml::String{"key"}, ieml::NodeData{ieml::StringData{"value"}}));
 	
 	ieml::AnchorKeeper anchorKeeper{parentAnchorKeeper};
-	ieml::NodeData* parentDataPtr{anchorKeeper.get(ieml::String{"key"})};
-	ASSERT_FALSE(parentDataPtr == nullptr);
+	ieml::Node* parentNodePtr{anchorKeeper.get(ieml::String{"key"})};
+	ASSERT_FALSE(parentNodePtr == nullptr);
+	ASSERT_TRUE(parentNodePtr->isString());
+	ASSERT_EQ(parentNodePtr->as<ieml::StringData>(), ieml::StringData{"value"});
 	
-	ieml::StringData* parentStringPtr{std::get_if<ieml::StringData>(&parentDataPtr->data)};
-	ASSERT_FALSE(parentStringPtr == nullptr);
-	
-	ieml::StringData& parentString{*parentStringPtr};
-	ASSERT_EQ(parentString, ieml::StringData{"value"});
-	
-	ieml::NodeData* parentIncorrectDataPtr{anchorKeeper.get(ieml::String{"other-key"})};
-	ASSERT_TRUE(parentIncorrectDataPtr == nullptr);
+	ieml::Node* parentIncorrectNodePtr{anchorKeeper.get(ieml::String{"other-key"})};
+	ASSERT_TRUE(parentIncorrectNodePtr == nullptr);
 	
 	ASSERT_TRUE(anchorKeeper.add(ieml::String{"key"}, ieml::NodeData{ieml::StringData{"other-value"}}));
 	ASSERT_FALSE(anchorKeeper.add(ieml::String{"key"}, ieml::NodeData{ieml::StringData{"other-value"}}));
 	ASSERT_FALSE(parentAnchorKeeper->add(ieml::String{"key"}, ieml::NodeData{ieml::StringData{"value"}}));
 	
-	ieml::NodeData* dataPtr{anchorKeeper.get(ieml::String{"key"})};
-	ASSERT_FALSE(dataPtr == nullptr);
+	ieml::Node* nodePtr{anchorKeeper.get(ieml::String{"key"})};
+	ASSERT_FALSE(nodePtr == nullptr);
+	ASSERT_TRUE(nodePtr->isString());
+	ASSERT_EQ(nodePtr->as<ieml::StringData>(), ieml::StringData{"other-value"});
 	
-	ieml::StringData* stringPtr{std::get_if<ieml::StringData>(&dataPtr->data)};
-	ASSERT_FALSE(stringPtr == nullptr);
-	
-	ieml::StringData& string{*stringPtr};
-	ASSERT_EQ(string, ieml::StringData{"other-value"});
-	
-	ieml::NodeData* incorrectDataPtr{anchorKeeper.get(ieml::String{"other-key"})};
-	ASSERT_TRUE(incorrectDataPtr == nullptr);
+	ieml::Node* incorrectNodePtr{anchorKeeper.get(ieml::String{"other-key"})};
+	ASSERT_TRUE(incorrectNodePtr == nullptr);
 }

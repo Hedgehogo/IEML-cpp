@@ -323,7 +323,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	BasicNode<Char_> fromFile(FilePath&& filePath, Rc<BasicAnchorKeeper<Char_>> anchorKeeper) {
+	BasicNode<Char_> fromFile(FilePath&& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper) {
 		FilePath normalFilePath{filePath.concat(".ieml").lexically_normal().make_preferred()};
 		BasicString<Char_> inputStr{readFile<Char_>(normalFilePath)};
 		BasicParser<Char_> parser{inputStr, normalFilePath, anchorKeeper};
@@ -331,7 +331,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	BasicNode<Char_> from(const BasicString<Char_>& inputStr, Rc<BasicAnchorKeeper<Char_>> anchorKeeper) {
+	BasicNode<Char_> from(const BasicString<Char_>& inputStr, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper) {
 		BasicParser<Char_> parser{inputStr, anchorKeeper};
 		return BasicNode(parser.parse());
 	}
