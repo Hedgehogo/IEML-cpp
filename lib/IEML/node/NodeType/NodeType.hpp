@@ -11,6 +11,10 @@ namespace ieml {
 		String,
 		List,
 		Map,
+		Tag,
+		File,
+		TakeAnchor,
+		GetAnchor
 	};
 	
 	/// @brief Creates a string from a node type.
@@ -35,7 +39,7 @@ namespace ieml {
 	///
 	/// @return The node type.
 	constexpr NodeType getNodeTypeFromIndex(Size index) {
-		if(index < 5)
+		if(index < 9)
 			return static_cast<NodeType>(index);
 		return NodeType::Null;
 	}

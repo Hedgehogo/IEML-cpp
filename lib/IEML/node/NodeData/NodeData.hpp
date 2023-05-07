@@ -45,7 +45,11 @@ namespace ieml {
 	
 	/// @brief Node data storing a map of named other nodes
 	template<typename Char_>
+#if (defined(__clang__) && (__clang_major__ >= 11)) || defined(_MSC_VER)
 	using BasicMapData = std::unordered_map<BasicString<Char_>, BasicNode<Char_>>;
+#else
+	using BasicMapData = std::map<BasicString<Char_>, BasicNode<Char_>>;
+#endif
 	
 	using MapData = BasicMapData<Char>;
 	
@@ -56,11 +60,11 @@ namespace ieml {
 	
 	template<typename Char_>
 	struct BaseMetaData {
-		BoxPtr<BasicNode<Char_>> data;
+		BoxPtr<BasicNode<Char_>> node_;
 		
-		BaseMetaData(BoxPtr<BasicNode<Char_>> data);
+		BaseMetaData(BoxPtr<BasicNode<Char_>> node);
 		
-		BaseMetaData(const BasicNode<Char_>& data);
+		BaseMetaData(const BasicNode<Char_>& node);
 		
 		BaseMetaData(BaseMetaData<Char_>&& other);
 		
@@ -72,11 +76,11 @@ namespace ieml {
 	/// @brief Node data storing tag and other data
 	template<typename Char_>
 	struct BasicTagData : public BaseMetaData<Char_> {
-		BasicTag<Char_> tag;
+		BasicTag<Char_> tag_;
 		
-		BasicTagData(BoxPtr<BasicNode<Char_>> data, const BasicTag<Char_>& tag);
+		BasicTagData(BoxPtr<BasicNode<Char_>> node, const BasicTag<Char_>& tag);
 		
-		BasicTagData(const BasicNode<Char_>& data, const BasicTag<Char_>& tag);
+		BasicTagData(const BasicNode<Char_>& node, const BasicTag<Char_>& tag);
 	};
 	
 	using TagData = BasicTagData<Char>;
@@ -84,11 +88,11 @@ namespace ieml {
 	/// @brief Node data storing the file path and other data
 	template<typename Char_>
 	struct BasicFileData : public BaseMetaData<Char_> {
-		FilePath filePath;
+		FilePath filePath_;
 		
-		BasicFileData(BoxPtr<BasicNode<Char_>> data, const FilePath& filePath);
+		BasicFileData(BoxPtr<BasicNode<Char_>> node, const FilePath& filePath);
 		
-		BasicFileData(const BasicNode<Char_>& data, const FilePath& filePath);
+		BasicFileData(const BasicNode<Char_>& node, const FilePath& filePath);
 	};
 	
 	using FileData = BasicFileData<Char>;
@@ -98,8 +102,8 @@ namespace ieml {
 	
 	template<typename Char_>
 	struct BaseAnchorData {
-		RcPtr<BasicAnchorKeeper<Char_>> keeper;
-		BasicString<Char_> name;
+		RcPtr<BasicAnchorKeeper<Char_>> keeper_;
+		BasicString<Char_> name_;
 	};
 	
 	/// @brief Node data storing anchor
@@ -127,8 +131,39 @@ namespace ieml {
 			BasicFileData<Char_>,
 			BasicTakeAnchorData<Char_>,
 			BasicGetAnchorData<Char_>
-		> data;
+		> data_;
 	};
 	
 	using NodeData = BasicNodeData<Char>;
+	
+	namespace detail {
+		template<typename T>
+		struct MetaFn {
+			using type = T;
+		};
+		
+		template<NodeType Type, typename Char_>
+		struct ToNodeData;
+		template<typename Char_>
+		struct ToNodeData<NodeType::Null, Char_> : MetaFn<NullData> {};
+		template<typename Char_>
+		struct ToNodeData<NodeType::Raw, Char_> : MetaFn<BasicRawData<Char_>> {};
+		template<typename Char_>
+		struct ToNodeData<NodeType::String, Char_> : MetaFn<BasicStringData<Char_>> {};
+		template<typename Char_>
+		struct ToNodeData<NodeType::List, Char_> : MetaFn<BasicListData<Char_>> {};
+		template<typename Char_>
+		struct ToNodeData<NodeType::Map, Char_> : MetaFn<BasicMapData<Char_>> {};
+		template<typename Char_>
+		struct ToNodeData<NodeType::Tag, Char_> : MetaFn<BasicTagData<Char_>> {};
+		template<typename Char_>
+		struct ToNodeData<NodeType::File, Char_> : MetaFn<BasicFileData<Char_>> {};
+		template<typename Char_>
+		struct ToNodeData<NodeType::TakeAnchor, Char_> : MetaFn<BasicTakeAnchorData<Char_>> {};
+		template<typename Char_>
+		struct ToNodeData<NodeType::GetAnchor, Char_> : MetaFn<BasicGetAnchorData<Char_>> {};
+	}
+	
+	template<NodeType Type, typename Char_>
+	using ToNodeData = typename detail::ToNodeData<Type, Char_>::type;
 }

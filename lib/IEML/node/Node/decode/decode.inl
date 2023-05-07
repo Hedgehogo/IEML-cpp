@@ -22,8 +22,7 @@ namespace ieml {
 		
 		template<typename Char_>
 		bool DecodeImpl<Char_, BasicRawData<Char_>>::decode(const BasicNode<Char_>& node, BasicRawData<Char_>& object) {
-			auto& clearData = BasicNode<Char_>::getDataFrom(node.data);
-			if(auto strData = std::get_if<BasicRawData<Char_>>(&clearData.data)) {
+			if(auto strData = std::get_if<BasicRawData<Char_>>(&node.data_.data_)) {
 				object = *strData;
 				return true;
 			}
@@ -32,8 +31,7 @@ namespace ieml {
 		
 		template<typename Char_>
 		bool DecodeImpl<Char_, BasicString<Char_>>::decode(const BasicNode<Char_>& node, BasicString<Char_>& object) {
-			auto& clearData = BasicNode<Char_>::getDataFrom(node.data);
-			if(auto strData = std::get_if<BasicStringData<Char_>>(&clearData.data)) {
+			if(auto strData = std::get_if<BasicStringData<Char_>>(&node.data_.data_)) {
 				object = *strData;
 				return true;
 			}
@@ -42,8 +40,7 @@ namespace ieml {
 		
 		template<typename Char_>
 		bool DecodeImpl<Char_, BasicListData<Char_>>::decode(const BasicNode<Char_>& node, BasicListData<Char_>& object) {
-			auto& clearData = BasicNode<Char_>::getDataFrom(node.data);
-			if(auto listData = std::get_if<BasicListData<Char_>>(&clearData.data)) {
+			if(auto listData = std::get_if<BasicListData<Char_>>(&node.data_.data_)) {
 				object = *listData;
 				return true;
 			}
@@ -52,8 +49,7 @@ namespace ieml {
 		
 		template<typename Char_>
 		bool DecodeImpl<Char_, BasicMapData<Char_>>::decode(const BasicNode<Char_>& node, BasicMapData<Char_>& object) {
-			auto& clearData = BasicNode<Char_>::getDataFrom(node.data);
-			if(auto mapData = std::get_if<BasicMapData<Char_>>(&clearData.data)) {
+			if(auto mapData = std::get_if<BasicMapData<Char_>>(&node.data_.data_)) {
 				object = *mapData;
 				return true;
 			}

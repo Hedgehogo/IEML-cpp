@@ -12,84 +12,25 @@ namespace ieml {
 	
 	template<typename Char_>
 	BasicNode<Char_>::BasicNode(BasicNodeData<Char_> data, Mark mark) :
-		data(BasicNodeData<Char_>{std::move(data)}), mark(mark) {
+		data_(BasicNodeData<Char_>{std::move(data)}), mark_(mark) {
 	}
 	
 	template<typename Char_>
 	template<typename T>
 	BasicNode<Char_>::BasicNode(T data, Mark mark) :
-		data(BasicNodeData<Char_>{std::move(data)}), mark(mark) {
+		data_(BasicNodeData<Char_>{std::move(data)}), mark_(mark) {
 	}
 	
 	template<typename Char_>
 	template<typename T>
 	BasicNode<Char_>::BasicNode(T data, FilePath filePath, Mark mark) :
-		data(BasicNodeData<Char_>{BasicFileData<Char_>{BasicNodeData<Char_>{std::move(data)}, filePath}}), mark(mark) {
-	}
-	
-	template<typename Char_>
-	const BasicNodeData<Char_>& BasicNode<Char_>::getDataFrom(const BasicNodeData<Char_>& data) {
-		return getFrom<const BasicNodeData<Char_>, BasicTagData<Char_>, BasicFileData<Char_>, BasicTakeAnchorData<Char_>, BasicGetAnchorData<Char_>>(data);
-	}
-	
-	template<typename Char_>
-	BasicNodeData<Char_>& BasicNode<Char_>::getDataFrom(BasicNodeData<Char_>& data) {
-		return getFrom<BasicNodeData<Char_>, BasicTagData<Char_>, BasicFileData<Char_>, BasicTakeAnchorData<Char_>, BasicGetAnchorData<Char_>>(data);
-	}
-	
-	template<typename Char_>
-	const BasicFileData<Char_>* BasicNode<Char_>::getFileFrom(const BasicNodeData<Char_>& data) {
-		auto& getData{getFrom<const BasicNodeData<Char_>, BasicTagData<Char_>, BasicTakeAnchorData<Char_>, BasicGetAnchorData<Char_>>(data)};
-		return std::get_if<BasicFileData<Char_>>(&getData.data);
-	}
-	
-	template<typename Char_>
-	BasicFileData<Char_>* BasicNode<Char_>::getFileFrom(BasicNodeData<Char_>& data) {
-		auto& getData{getFrom<BasicNodeData<Char_>, BasicTagData<Char_>, BasicTakeAnchorData<Char_>, BasicGetAnchorData<Char_>>(data)};
-		return std::get_if<BasicFileData<Char_>>(&getData.data);
-	}
-	
-	template<typename Char_>
-	const BasicTagData<Char_>* BasicNode<Char_>::getTagFrom(const BasicNodeData<Char_>& data) {
-		auto& getData{getFrom<const BasicNodeData<Char_>, BasicFileData<Char_>, BasicTakeAnchorData<Char_>, BasicGetAnchorData<Char_>>(data)};
-		return std::get_if<BasicTagData<Char_>>(&getData.data);
-	}
-	
-	template<typename Char_>
-	BasicTagData<Char_>* BasicNode<Char_>::getTagFrom(BasicNodeData<Char_>& data) {
-		auto& getData{getFrom<BasicNodeData<Char_>, BasicFileData<Char_>, BasicTakeAnchorData<Char_>, BasicGetAnchorData<Char_>>(data)};
-		return std::get_if<BasicTagData<Char_>>(&getData.data);
-	}
-	
-	template<typename Char_>
-	const BasicTakeAnchorData<Char_>* BasicNode<Char_>::getTakeAnchorFrom(const BasicNodeData<Char_>& data) {
-		auto& getData{getFrom<const BasicNodeData<Char_>, BasicTagData<Char_>, BasicFileData<Char_>, BasicGetAnchorData<Char_>>(data)};
-		return std::get_if<BasicTakeAnchorData<Char_>>(&getData.data);
-	}
-	
-	template<typename Char_>
-	BasicTakeAnchorData<Char_>* BasicNode<Char_>::getTakeAnchorFrom(BasicNodeData<Char_>& data) {
-		auto& getData{getFrom<BasicNodeData<Char_>, BasicTagData<Char_>, BasicFileData<Char_>, BasicGetAnchorData<Char_>>(data)};
-		return std::get_if<BasicTakeAnchorData<Char_>>(&getData.data);
-	}
-	
-	template<typename Char_>
-	const BasicGetAnchorData<Char_>* BasicNode<Char_>::getGetAnchorFrom(const BasicNodeData<Char_>& data) {
-		auto& getData{getFrom<const BasicNodeData<Char_>, BasicTagData<Char_>, BasicFileData<Char_>, BasicTakeAnchorData<Char_>>(data)};
-		return std::get_if<BasicGetAnchorData<Char_>>(&getData.data);
-	}
-	
-	template<typename Char_>
-	BasicGetAnchorData<Char_>* BasicNode<Char_>::getGetAnchorFrom(BasicNodeData<Char_>& data) {
-		auto& getData{getFrom<BasicNodeData<Char_>, BasicTagData<Char_>, BasicFileData<Char_>, BasicTakeAnchorData<Char_>>(data)};
-		return std::get_if<BasicGetAnchorData<Char_>>(&getData.data);
+		data_(BasicNodeData<Char_>{BasicFileData<Char_>{BasicNodeData<Char_>{std::move(data)}, filePath}}), mark_(mark) {
 	}
 	
 	template<typename Char_>
 	template<typename T, typename E>
 	const T& BasicNode<Char_>::getType(E e) const {
-		auto& clearData = getDataFrom(data);
-		if(auto typeData = std::get_if<T>(&clearData.data))
+		if(auto typeData = std::get_if<T>(&data_.data_))
 			return *typeData;
 		throw e;
 	}
@@ -97,8 +38,7 @@ namespace ieml {
 	template<typename Char_>
 	template<typename T, typename E>
 	T& BasicNode<Char_>::getType(E e) {
-		auto& clearData = getDataFrom(data);
-		if(auto typeData = std::get_if<T>(&clearData.data))
+		if(auto typeData = std::get_if<T>(&data_.data_))
 			return *typeData;
 		throw e;
 	}
@@ -115,123 +55,239 @@ namespace ieml {
 	
 	template<typename Char_>
 	Mark BasicNode<Char_>::getMark() const {
-		return mark;
+		return mark_;
 	}
 	
 	template<typename Char_>
 	NodeType BasicNode<Char_>::getType() const {
-		auto& clearData = getDataFrom(data);
-		return getNodeTypeFromIndex(clearData.data.index());
+		return getNodeTypeFromIndex(data_.data_.index());
 	}
 	
 	template<typename Char_>
 	template<NodeType Type>
 	bool BasicNode<Char_>::is() const {
-		auto& clearData = getDataFrom(data);
-		return clearData.data.index() == getIndexFromNodeType(Type);
+		return data_.data_.index() == getIndexFromNodeType(Type);
 	}
 	
 	template<typename Char_>
 	bool BasicNode<Char_>::isNull() const {
-		return this->is<NodeType::Null>();
+		return getClear().template is<NodeType::Null>();
 	}
 	
 	template<typename Char_>
 	bool BasicNode<Char_>::isRaw() const {
-		return this->is<NodeType::Raw>();
+		return getClear().template is<NodeType::Raw>();
 	}
 	
 	template<typename Char_>
 	bool BasicNode<Char_>::isString() const {
-		return this->is<NodeType::String>();
+		return getClear().template is<NodeType::String>();
 	}
 	
 	template<typename Char_>
 	bool BasicNode<Char_>::isList() const {
-		return this->is<NodeType::List>();
+		return getClear().template is<NodeType::List>();
 	}
 	
 	template<typename Char_>
 	bool BasicNode<Char_>::isMap() const {
-		return this->is<NodeType::Map>();
+		return getClear().template is<NodeType::Map>();
+	}
+	
+	template<typename Char_>
+	bool BasicNode<Char_>::isWithTag() const {
+		auto& clear{getClear<NodeType::File, NodeType::TakeAnchor, NodeType::GetAnchor>()};
+		return clear.template is<NodeType::Tag>();
+	}
+	
+	template<typename Char_>
+	bool BasicNode<Char_>::isFile() const {
+		auto& clear{getClear<NodeType::Tag, NodeType::TakeAnchor, NodeType::GetAnchor>()};
+		return clear.template is<NodeType::File>();
 	}
 	
 	template<typename Char_>
 	bool BasicNode<Char_>::isTakeAnchor() const {
-		return getTakeAnchorFrom(data) != nullptr;
-	}
-	
-	template<typename Char_>
-	Option<BasicString<Char_>> BasicNode<Char_>::getTakeAnchorName() const {
-		if(auto tagData = getTakeAnchorFrom(data))
-			return tagData->name;
-		return {};
+		auto& clear{getClear<NodeType::Tag, NodeType::File, NodeType::GetAnchor>()};
+		return clear.template is<NodeType::TakeAnchor>();
 	}
 	
 	template<typename Char_>
 	bool BasicNode<Char_>::isGetAnchor() const {
-		return getGetAnchorFrom(data) != nullptr;
+		auto& clear{getClear<NodeType::Tag, NodeType::File, NodeType::TakeAnchor>()};
+		return clear.template is<NodeType::GetAnchor>();
+	}
+	
+	template<typename Char_>
+	template<NodeType... Types>
+	BasicNode<Char_>& BasicNode<Char_>::getClear() {
+		return getFrom<BasicNode<Char_>, ToNodeData<Types, Char_>...>(*this);
+	}
+	
+	template<typename Char_>
+	template<NodeType... Types>
+	const BasicNode<Char_>& BasicNode<Char_>::getClear() const {
+		return getFrom<const BasicNode<Char_>, ToNodeData<Types, Char_>...>(*this);
+	}
+	
+	template<typename Char_>
+	BasicNode<Char_>& BasicNode<Char_>::getClear() {
+		return getClear<NodeType::Tag, NodeType::File, NodeType::TakeAnchor, NodeType::GetAnchor>();
+	}
+	
+	template<typename Char_>
+	const BasicNode<Char_>& BasicNode<Char_>::getClear() const {
+		return getClear<NodeType::Tag, NodeType::File, NodeType::TakeAnchor, NodeType::GetAnchor>();
+	}
+	
+	template<typename Char_>
+	template<NodeType... Types>
+	const BasicNode<Char_>& BasicNode<Char_>::getClearData() const {
+		if(auto clearData{getFromStep<const BasicNode<Char_>, ToNodeData<Types, Char_>...>(*this)}) {
+			return *clearData;
+		}
+		return *this;
+	}
+	
+	template<typename Char_>
+	template<NodeType... Types>
+	BasicNode<Char_>& BasicNode<Char_>::getClearData() {
+		if(auto clearData{getFromStep<const BasicNode<Char_>, ToNodeData<Types, Char_>...>(*this)}) {
+			return *clearData;
+		}
+		return *this;
+	}
+	
+	template<typename Char_>
+	BasicNode<Char_>& BasicNode<Char_>::getClearTag() {
+		return getClearData<NodeType::Tag>();
+	}
+	
+	template<typename Char_>
+	const BasicNode<Char_>& BasicNode<Char_>::getClearTag() const {
+		return getClearData<NodeType::Tag>();
+	}
+	
+	template<typename Char_>
+	BasicNode<Char_>& BasicNode<Char_>::getClearFile() {
+		return getClearData<NodeType::File>();
+	}
+	
+	template<typename Char_>
+	const BasicNode<Char_>& BasicNode<Char_>::getClearFile() const {
+		return getClearData<NodeType::File>();
+	}
+	
+	template<typename Char_>
+	BasicNode<Char_>& BasicNode<Char_>::getClearTakeAnchor() {
+		return getClearData<NodeType::TakeAnchor>();
+	}
+	
+	template<typename Char_>
+	const BasicNode<Char_>& BasicNode<Char_>::getClearTakeAnchor() const {
+		return getClearData<NodeType::TakeAnchor>();
+	}
+	
+	template<typename Char_>
+	BasicNode<Char_>& BasicNode<Char_>::getClearGetAnchor() {
+		return getClearData<NodeType::GetAnchor>();
+	}
+	
+	template<typename Char_>
+	const BasicNode<Char_>& BasicNode<Char_>::getClearGetAnchor() const {
+		return getClearData<NodeType::GetAnchor>();
+	}
+	
+	template<typename Char_>
+	BasicNode<Char_>& BasicNode<Char_>::getClearAnchor() {
+		return getClearData<NodeType::TakeAnchor, NodeType::GetAnchor>();
+	}
+	
+	template<typename Char_>
+	const BasicNode<Char_>& BasicNode<Char_>::getClearAnchor() const {
+		return getClearData<NodeType::TakeAnchor, NodeType::GetAnchor>();
+	}
+	
+	template<typename Char_>
+	Option<BasicTag<Char_>> BasicNode<Char_>::getTag() const {
+		auto& clear{getClear<NodeType::File, NodeType::TakeAnchor, NodeType::GetAnchor>()};
+		if(auto tagData{std::get_if<BasicTagData<Char_>>(&clear.data_.data_)}) {
+			return tagData->tag_;
+		}
+		return {};
+	}
+	
+	template<typename Char_>
+	Option<FilePath> BasicNode<Char_>::getFilePath() const {
+		auto& clear{getClear<NodeType::Tag, NodeType::TakeAnchor, NodeType::GetAnchor>()};
+		if(auto fileData{std::get_if<BasicFileData<Char_>>(&clear.data_.data_)}) {
+			return fileData->filePath_;
+		}
+		return {};
+	}
+	
+	template<typename Char_>
+	Option<BasicString<Char_>> BasicNode<Char_>::getTakeAnchorName() const {
+		auto& clear{getClear<NodeType::Tag, NodeType::File, NodeType::GetAnchor>()};
+		if(auto takeAnchorData{std::get_if<BasicTakeAnchorData<Char_>>(&clear.data_.data_)}) {
+			return takeAnchorData->name_;
+		}
+		return {};
 	}
 	
 	template<typename Char_>
 	Option<BasicString<Char_>> BasicNode<Char_>::getGetAnchorName() const {
-		if(auto tagData = getGetAnchorFrom(data))
-			return tagData->name;
+		auto& clear{getClear<NodeType::Tag, NodeType::File, NodeType::TakeAnchor>()};
+		if(auto getAnchorData{std::get_if<BasicGetAnchorData<Char_>>(&clear.data_.data_)}) {
+			return getAnchorData->name_;
+		}
 		return {};
 	}
 	
 	template<typename Char_>
 	Option<BasicString<Char_>> BasicNode<Char_>::getAnchorName() const {
-		auto getData{getFrom<const BasicNodeData<Char_>, BasicTagData<Char_>, BasicFileData<Char_>>(data)};
-		if(auto takeAnchorData{std::get_if<BasicTakeAnchorData<Char_>>(&getData.data)})
-			return takeAnchorData->name;
-		if(auto getAnchorData{std::get_if<BasicTakeAnchorData<Char_>>(&getData.data)})
-			return getAnchorData->name;
+		auto& clear{getClear<NodeType::Tag, NodeType::File>()};
+		if(auto takeAnchorData{std::get_if<BasicTakeAnchorData<Char_>>(&clear.data_.data_)}) {
+			return takeAnchorData->name_;
+		}
+		if(auto getAnchorData{std::get_if<BasicGetAnchorData<Char_>>(&clear.data_.data_)}) {
+			return getAnchorData->name_;
+		}
 		return {};
 	}
 	
 	template<typename Char_>
-	bool BasicNode<Char_>::isWithTag() const {
-		return getTagFrom(data) != nullptr;
+	Size BasicNode<Char_>::getListSize() const {
+		if(auto listData{std::get_if<BasicListData<Char_>>(&getClear().data_.data_)})
+			return listData->size();
+		throw NodeAnotherTypeException{NodeType::Map, getType()};
 	}
 	
 	template<typename Char_>
-	Option<BasicTag<Char_>> BasicNode<Char_>::getTag() const {
-		if(auto tagData = getTagFrom(data))
-			return tagData->tag;
-		return {};
-	}
-	
-	template<typename Char_>
-	bool BasicNode<Char_>::isFile() const {
-		return getFileFrom(data) != nullptr;
-	}
-	
-	template<typename Char_>
-	Option<FilePath> BasicNode<Char_>::getFilePath() const {
-		if(auto fileData = getFileFrom(data))
-			return fileData->filePath;
-		return {};
+	Size BasicNode<Char_>::getMapSize() const {
+		if(auto mapData{std::get_if<BasicMapData<Char_>>(&getClear().data_.data_)})
+			return mapData->size();
+		throw NodeAnotherTypeException{NodeType::List, getType()};
 	}
 	
 	template<typename Char_>
 	Size BasicNode<Char_>::getSize() const {
-		auto& clearData = getDataFrom(data);
-		if(auto listData = std::get_if<BasicListData<Char_>>(&clearData.data))
+		auto& clear{getClear()};
+		if(auto listData{std::get_if<BasicListData<Char_>>(&clear.data_.data_)})
 			return listData->size();
-		if(auto mapData = std::get_if<BasicMapData<Char_>>(&clearData.data))
+		if(auto mapData{std::get_if<BasicMapData<Char_>>(&clear.data_.data_)})
 			return mapData->size();
 		throw NodeAnotherTypeException{NodeType::List, getType()};
 	}
 	
 	template<typename Char_>
 	const BasicListData<Char_>& BasicNode<Char_>::getList() const {
-		return getType<BasicListData<Char_>>(NodeAnotherTypeException{NodeType::List, getType()});
+		return getClear().template getType<BasicListData<Char_>>(NodeAnotherTypeException{NodeType::List, getType()});
 	}
 	
 	template<typename Char_>
 	const BasicMapData<Char_>& BasicNode<Char_>::getMap() const {
-		return getType<BasicMapData<Char_>>(NodeAnotherTypeException{NodeType::Map, getType()});
+		return getClear().template getType<BasicMapData<Char_>>(NodeAnotherTypeException{NodeType::Map, getType()});
 	}
 	
 	template<typename Char_>
@@ -240,7 +296,7 @@ namespace ieml {
 		T object;
 		if(detail::DecodeImpl<Char_, T>::decode(*this, object))
 			return object;
-		throw FailedConvertDataException{mark, getTypeInfo<T>()};
+		throw FailedConvertDataException{mark_, getTypeInfo<T>()};
 	}
 	
 	template<typename Char_>
@@ -267,7 +323,7 @@ namespace ieml {
 	
 	template<typename Char_>
 	BasicNode<Char_>& BasicNode<Char_>::at(Size index) {
-		auto& list = getType<BasicListData<Char_>>(NodeAnotherTypeException{NodeType::List, getType()});
+		auto& list{getClear().template getType<BasicListData<Char_>>(NodeAnotherTypeException{NodeType::List, getType()})};
 		if(index < list.size())
 			return list.at(index);
 		return undefined;
@@ -275,7 +331,7 @@ namespace ieml {
 	
 	template<typename Char_>
 	const BasicNode<Char_>& BasicNode<Char_>::at(Size index) const {
-		auto& list = getType<BasicListData<Char_>>(NodeAnotherTypeException{NodeType::List, getType()});
+		auto& list{getClear().template getType<BasicListData<Char_>>(NodeAnotherTypeException{NodeType::List, getType()})};
 		if(index < list.size())
 			return list.at(index);
 		return undefined;
@@ -283,7 +339,7 @@ namespace ieml {
 	
 	template<typename Char_>
 	BasicNode<Char_>& BasicNode<Char_>::at(const BasicString<Char_>& key) {
-		auto& map = getType<BasicMapData<Char_>>(NodeAnotherTypeException{NodeType::Map, getType()});
+		auto& map{getClear().template getType<BasicMapData<Char_>>(NodeAnotherTypeException{NodeType::Map, getType()})};
 		if(auto find{map.find(key)}; find != map.end())
 			return find->second;
 		return undefined;
@@ -291,9 +347,9 @@ namespace ieml {
 	
 	template<typename Char_>
 	const BasicNode<Char_>& BasicNode<Char_>::at(const BasicString<Char_>& key) const {
-		auto& map = getType<BasicMapData<Char_>>(NodeAnotherTypeException{NodeType::Map, getType()});
+		auto& map{getClear().template getType<BasicMapData<Char_>>(NodeAnotherTypeException{NodeType::Map, getType()})};
 		if(auto find{map.find(key)}; find != map.end())
-			return *find->second;
+			return find->second;
 		return undefined;
 	}
 	
@@ -304,22 +360,34 @@ namespace ieml {
 	
 	template<typename Char_>
 	BasicNode<Char_>& BasicNode<Char_>::operator[](Size index) {
-		return this->at(index);
+		auto& list{getType<BasicListData<Char_>>(NodeAnotherTypeException{NodeType::List, getType()})};
+		if(index < list.size())
+			return list.at(index);
+		return undefined;
 	}
 	
 	template<typename Char_>
 	const BasicNode<Char_>& BasicNode<Char_>::operator[](Size index) const {
-		return this->at(index);
+		auto& list{getType<BasicListData<Char_>>(NodeAnotherTypeException{NodeType::List, getType()})};
+		if(index < list.size())
+			return list.at(index);
+		return undefined;
 	}
 	
 	template<typename Char_>
 	BasicNode<Char_>& BasicNode<Char_>::operator[](const BasicString<Char_>& key) {
-		return this->at(key);
+		auto& map{getType<BasicMapData<Char_>>(NodeAnotherTypeException{NodeType::Map, getType()})};
+		if(auto find{map.find(key)}; find != map.end())
+			return find->second;
+		return undefined;
 	}
 	
 	template<typename Char_>
 	const BasicNode<Char_>& BasicNode<Char_>::operator[](const BasicString<Char_>& key) const {
-		return this->at(key);
+		auto& map{getType<BasicMapData<Char_>>(NodeAnotherTypeException{NodeType::Map, getType()})};
+		if(auto find{map.find(key)}; find != map.end())
+			return find->second;
+		return undefined;
 	}
 	
 	template<typename Char_>

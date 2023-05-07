@@ -77,35 +77,87 @@ namespace ieml {
 		/// @return Value if a node has a tag.
 		bool isWithTag() const;
 		
-		/// @brief Gets the tag.
-		///
-		/// @return A tag.
-		Option<BasicTag<Char_>> getTag() const;
-		
 		/// @brief Asks if a node has a file path.
 		///
 		/// @return Value if a node has a file path.
 		bool isFile() const;
-		
-		/// @brief Gets the file path.
-		///
-		/// @return A file path.
-		Option<FilePath> getFilePath() const;
 		
 		/// @brief Asks if the node is take anchor.
 		///
 		/// @return Value whether a node is take anchor.
 		bool isTakeAnchor() const;
 		
-		/// @brief Gets the take anchor name.
-		///
-		/// @return A take anchor name.
-		Option<BasicString<Char_>> getTakeAnchorName() const;
-		
 		/// @brief Asks if the node is get anchor.
 		///
 		/// @return Value whether a node is get anchor.
 		bool isGetAnchor() const;
+		
+		/// @brief Recursively gets a child node, excluding Tag, File, take Anchor and get Anchor.
+		///
+		/// @return A node.
+		template<NodeType... Types>
+		BasicNode<Char_>& getClear();
+		template<NodeType... Types>
+		const BasicNode<Char_>& getClear() const;
+		
+		/// @brief Recursively gets a child node, excluding Types.
+		///
+		/// @return A node.
+		BasicNode<Char_>& getClear();
+		const BasicNode<Char_>& getClear() const;
+		
+		/// @brief Gets a child node if the node type is Type, otherwise the current node.
+		///
+		/// @return A node.
+		template<NodeType... Types>
+		BasicNode<Char_>& getClearData();
+		template<NodeType... Types>
+		const BasicNode<Char_>& getClearData() const;
+		
+		/// @brief Gets the node under the tag if the node type is with the tag, otherwise the current node.
+		///
+		/// @return A node.
+		BasicNode<Char_>& getClearTag();
+		const BasicNode<Char_>& getClearTag() const;
+		
+		/// @brief Gets the node contained in the file, if the node type is a file, otherwise the current node.
+		///
+		/// @return A node.
+		BasicNode<Char_>& getClearFile();
+		const BasicNode<Char_>& getClearFile() const;
+		
+		/// @brief Gets the node contained in the anchor if the node type is take anchor, otherwise the current node
+		///
+		/// @return A node.
+		BasicNode<Char_>& getClearTakeAnchor();
+		const BasicNode<Char_>& getClearTakeAnchor() const;
+		
+		/// @brief Gets the node contained in the anchor if the node type is get anchor, otherwise the current node
+		///
+		/// @return A node.
+		BasicNode<Char_>& getClearGetAnchor();
+		const BasicNode<Char_>& getClearGetAnchor() const;
+		
+		/// @brief Gets the node contained in the anchor if the node type is anchor, otherwise the current node
+		///
+		/// @return A node.
+		BasicNode<Char_>& getClearAnchor();
+		const BasicNode<Char_>& getClearAnchor() const;
+		
+		/// @brief Gets the tag.
+		///
+		/// @return A tag.
+		Option<BasicTag<Char_>> getTag() const;
+		
+		/// @brief Gets the file path.
+		///
+		/// @return A file path.
+		Option<FilePath> getFilePath() const;
+		
+		/// @brief Gets the take anchor name.
+		///
+		/// @return A take anchor name.
+		Option<BasicString<Char_>> getTakeAnchorName() const;
 		
 		/// @brief Gets the get anchor name.
 		///
@@ -116,6 +168,16 @@ namespace ieml {
 		///
 		/// @return A anchor name.
 		Option<BasicString<Char_>> getAnchorName() const;
+		
+		/// @brief Gets the list size.
+		///
+		/// @return A size or throws an exception NodeAnotherTypeException.
+		Size getListSize() const;
+		
+		/// @brief Gets the map size.
+		///
+		/// @return A size or throws an exception NodeAnotherTypeException.
+		Size getMapSize() const;
 		
 		/// @brief Gets the size.
 		///
@@ -176,7 +238,6 @@ namespace ieml {
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
 		BasicNode<Char_>& at(const BasicString<Char_>& key);
-		
 		const BasicNode<Char_>& at(const BasicString<Char_>& key) const;
 		
 		/// @brief Gets the node defined.
@@ -190,7 +251,6 @@ namespace ieml {
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
 		BasicNode<Char_>& operator[](Size index);
-		
 		const BasicNode<Char_>& operator[](Size index) const;
 		
 		/// @brief Gets a node from the map by key.
@@ -199,7 +259,6 @@ namespace ieml {
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
 		BasicNode<Char_>& operator[](const BasicString<Char_>& key);
-		
 		const BasicNode<Char_>& operator[](const BasicString<Char_>& key) const;
 	
 		template<typename OtherChar_, typename T>
@@ -208,29 +267,7 @@ namespace ieml {
 		template<typename D, typename T>
 		friend struct GetFromStep;
 		
-		friend class BasicAnchorKeeper<Char_>;
-		
 	private:
-		static const BasicNodeData<Char_>& getDataFrom(const BasicNodeData<Char_>& data);
-		
-		static BasicNodeData<Char_>& getDataFrom(BasicNodeData<Char_>& data);
-		
-		static const BasicFileData<Char_>* getFileFrom(const BasicNodeData<Char_>& data);
-		
-		static BasicFileData<Char_>* getFileFrom(BasicNodeData<Char_>& data);
-		
-		static const BasicTagData<Char_>* getTagFrom(const BasicNodeData<Char_>& data);
-		
-		static BasicTagData<Char_>* getTagFrom(BasicNodeData<Char_>& data);
-		
-		static const BasicTakeAnchorData<Char_>* getTakeAnchorFrom(const BasicNodeData<Char_>& data);
-		
-		static BasicTakeAnchorData<Char_>* getTakeAnchorFrom(BasicNodeData<Char_>& data);
-		
-		static const BasicGetAnchorData<Char_>* getGetAnchorFrom(const BasicNodeData<Char_>& data);
-		
-		static BasicGetAnchorData<Char_>* getGetAnchorFrom(BasicNodeData<Char_>& data);
-		
 		template<typename T, typename E>
 		const T& getType(E e) const;
 		
@@ -239,8 +276,8 @@ namespace ieml {
 		
 		static BasicNode<Char_> undefined;
 		
-		BasicNodeData<Char_> data;
-		Mark mark;
+		BasicNodeData<Char_> data_;
+		Mark mark_;
 	};
 	
 	using Node = BasicNode<Char>;

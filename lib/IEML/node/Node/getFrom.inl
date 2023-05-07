@@ -1,64 +1,64 @@
 //included into Node.cpp
 
 namespace ieml {
-	template<typename D, typename T>
+	template<typename N, typename T>
 	struct GetFromStep {};
 	
-	template<typename Char_, typename D>
-	struct GetFromStep<D, BasicTagData<Char_>> {
-		static D* get(D& data) {
-			if(auto tagData = std::get_if<BasicTagData<Char_>>(&data.data))
-				return &tagData->data->data;
+	template<typename Char_, typename N>
+	struct GetFromStep<N, BasicTagData<Char_>> {
+		static N* get(N& node) {
+			if(auto tagData = std::get_if<BasicTagData<Char_>>(&node.data_.data_))
+				return tagData->node_.get();
 			return nullptr;
 		}
 	};
 	
-	template<typename Char_, typename D>
-	struct GetFromStep<D, BasicFileData<Char_>> {
-		static D* get(D& data) {
-			if(auto fileData = std::get_if<BasicFileData<Char_>>(&data.data))
-				return &fileData->data->data;
+	template<typename Char_, typename N>
+	struct GetFromStep<N, BasicFileData<Char_>> {
+		static N* get(N& node) {
+			if(auto fileData = std::get_if<BasicFileData<Char_>>(&node.data_.data_))
+				return fileData->node_.get();
 			return nullptr;
 		}
 	};
 	
-	template<typename Char_, typename D>
-	struct GetFromStep<D, BasicTakeAnchorData<Char_>> {
-		static D* get(D& data) {
-			if(auto takeAnchorData = std::get_if<BasicTakeAnchorData<Char_>>(&data.data))
-				if(auto anchorData{takeAnchorData->keeper->get(takeAnchorData->name)})
-					return &anchorData->data;
+	template<typename Char_, typename N>
+	struct GetFromStep<N, BasicTakeAnchorData<Char_>> {
+		static N* get(N& node) {
+			if(auto takeAnchorData = std::get_if<BasicTakeAnchorData<Char_>>(&node.data_.data_))
+				if(auto anchorData{takeAnchorData->keeper_->get(takeAnchorData->name_)})
+					return anchorData;
 			return nullptr;
 		}
 	};
 	
-	template<typename Char_, typename D>
-	struct GetFromStep<D, BasicGetAnchorData<Char_>> {
-		static D* get(D& data) {
-			if(auto getAnchorData = std::get_if<BasicGetAnchorData<Char_>>(&data.data))
-				if(auto anchorData{getAnchorData->keeper->get(getAnchorData->name)})
-					return &anchorData->data;
+	template<typename Char_, typename N>
+	struct GetFromStep<N, BasicGetAnchorData<Char_>> {
+		static N* get(N& node) {
+			if(auto getAnchorData = std::get_if<BasicGetAnchorData<Char_>>(&node.data_.data_))
+				if(auto anchorData{getAnchorData->keeper_->get(getAnchorData->name_)})
+					return anchorData;
 			return nullptr;
 		}
 	};
 	
-	template<typename D>
-	D* getFromStep(D& data) {
+	template<typename N>
+	N* getFromStep(N& data) {
 		return nullptr;
 	}
 	
-	template<typename D, typename F, typename... T>
-	D* getFromStep(D& data) {
-		if(auto getData = GetFromStep<D, F>::get(data)) {
+	template<typename N, typename F, typename... T>
+	N* getFromStep(N& data) {
+		if(auto getData = GetFromStep<N, F>::get(data)) {
 			return getData;
 		}
-		return getFromStep<D, T...>(data);
+		return getFromStep<N, T...>(data);
 	}
 	
-	template<typename D, typename... T>
-	D& getFrom(D& data) {
-		if(auto getData = getFromStep<D, T...>(data)) {
-			return getFrom<D, T...>(*getData);
+	template<typename N, typename... T>
+	N& getFrom(N& data) {
+		if(auto getData = getFromStep<N, T...>(data)) {
+			return getFrom<N, T...>(*getData);
 		}
 		return data;
 	}

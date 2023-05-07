@@ -4,6 +4,6 @@
 
 int main() {
 	ieml::Node node{ieml::fromFile("../exampleSrc/test")};
-	std::cout << node["second"][0].as<double>() << "\n";
+	std::cout << node.at("second").at(0).getClear().as<double>() << "\n";
 	std::cout << node;
 }
