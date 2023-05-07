@@ -27,7 +27,8 @@ namespace ieml {
 		template<Size Key>
 		static constexpr Size get_index() {
 			for(Size i = 0; i < variant_size; ++i) {
-				if(Key == keys[i]) return i;
+				if(Key == keys[i])
+					return i;
 			}
 			return 0;
 		}

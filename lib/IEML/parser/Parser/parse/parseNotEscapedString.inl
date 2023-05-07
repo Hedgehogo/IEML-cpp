@@ -46,7 +46,8 @@ namespace ieml {
 			PosInfo posInfo{getPosInfo()};
 			while(matchEnterAndIndent<Char_>(posInfo.pos, end(), posInfo.mark, indent)) {
 				auto line = matchAndMove<reLine, Char_>(posInfo.pos, end(), posInfo.mark);
-				if(!result.empty()) result.push_back(toChar<Char_>('\n'));
+				if(!result.empty())
+					result.push_back(toChar<Char_>('\n'));
 				result.append(line.begin(), line.end());
 				setPosInfo(posInfo);
 			}

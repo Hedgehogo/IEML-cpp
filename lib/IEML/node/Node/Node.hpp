@@ -238,6 +238,7 @@ namespace ieml {
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
 		BasicNode<Char_>& at(const BasicString<Char_>& key);
+		
 		const BasicNode<Char_>& at(const BasicString<Char_>& key) const;
 		
 		/// @brief Gets the node defined.
@@ -251,6 +252,7 @@ namespace ieml {
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
 		BasicNode<Char_>& operator[](Size index);
+		
 		const BasicNode<Char_>& operator[](Size index) const;
 		
 		/// @brief Gets a node from the map by key.
@@ -259,14 +261,17 @@ namespace ieml {
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
 		BasicNode<Char_>& operator[](const BasicString<Char_>& key);
+		
 		const BasicNode<Char_>& operator[](const BasicString<Char_>& key) const;
-	
+		
 		template<typename OtherChar_, typename T>
-		friend struct detail::DecodeImpl;
+		friend
+		struct detail::DecodeImpl;
 		
 		template<typename D, typename T>
-		friend struct GetFromStep;
-		
+		friend
+		struct GetFromStep;
+	
 	private:
 		template<typename T, typename E>
 		const T& getType(E e) const;

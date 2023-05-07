@@ -43,7 +43,7 @@ namespace ieml {
 				if(mark.pos == end) {
 					return {};
 				}
-				switch (*mark.pos) {
+				switch(*mark.pos) {
 					case toChar<Char_>('\\'):
 					case toChar<Char_>('\"'):
 					case toChar<Char_>('t'):
@@ -90,10 +90,18 @@ namespace ieml {
 			input += 1;
 			if(*input != toChar<Char_>('\n')) {
 				switch(*input) {
-					case  toChar<Char_>('n'): *output = toChar<Char_>('\n'); break;
-					case  toChar<Char_>('t'): *output = toChar<Char_>('\t'); break;
-					case toChar<Char_>('\"'): *output = toChar<Char_>('\"'); break;
-					case toChar<Char_>('\\'): *output = toChar<Char_>('\\'); break;
+					case toChar<Char_>('n'):
+						*output = toChar<Char_>('\n');
+						break;
+					case toChar<Char_>('t'):
+						*output = toChar<Char_>('\t');
+						break;
+					case toChar<Char_>('\"'):
+						*output = toChar<Char_>('\"');
+						break;
+					case toChar<Char_>('\\'):
+						*output = toChar<Char_>('\\');
+						break;
 					default:
 						*output = toChar<Char_>('\\');
 						output += 1;

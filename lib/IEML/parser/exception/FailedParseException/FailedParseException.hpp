@@ -15,7 +15,7 @@ namespace ieml {
 			AnchorAlreadyExists,
 			IncompleteString,
 		};
-		
+	
 	private:
 		FilePath file_path;
 		Reason reason;

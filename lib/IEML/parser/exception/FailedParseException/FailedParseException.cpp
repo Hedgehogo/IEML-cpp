@@ -14,15 +14,15 @@ namespace ieml {
 	String getReasonDescription(FailedParseException::Reason reason) {
 		if(reason == FailedParseException::Reason::FailedDetermineType) {
 			return "Failed to determine data type.";
-		} else if (reason == FailedParseException::Reason::ExpectedMapKey) {
+		} else if(reason == FailedParseException::Reason::ExpectedMapKey) {
 			return "Expected Map Key.";
-		} else if (reason == FailedParseException::Reason::ExpectedListItem) {
+		} else if(reason == FailedParseException::Reason::ExpectedListItem) {
 			return "Expected List Item.";
-		} else if (reason == FailedParseException::Reason::ImpermissibleSpace) {
+		} else if(reason == FailedParseException::Reason::ImpermissibleSpace) {
 			return "A space was detected. Perhaps you meant to write a tab as an indentation.";
-		} else if (reason == FailedParseException::Reason::ImpermissibleTab) {
+		} else if(reason == FailedParseException::Reason::ImpermissibleTab) {
 			return "A tab was detected. A lower level of indentation was expected.";
-		} else if (reason == FailedParseException::Reason::AnchorAlreadyExists) {
+		} else if(reason == FailedParseException::Reason::AnchorAlreadyExists) {
 			return "An attempt was made to take an anchor with the name of an anchor that already exists.";
 		}
 		return "The end of the file has been reached, but the String is not completed.";
