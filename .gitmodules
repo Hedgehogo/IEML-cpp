@@ -1,6 +1,3 @@
 [submodule "modules/compile_time_regex"]
 	path = modules/compile_time_regex
 	url = https://github.com/hanickadot/compile-time-regular-expressions.git
-[submodule "modules/option_result_cpp"]
-	path = modules/option_result_cpp
-	url = https://github.com/Hedgehogo/option-result-cpp.git
