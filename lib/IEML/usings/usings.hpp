@@ -6,6 +6,8 @@
 namespace ieml {
 	template<typename T>
 	using Option = orl::Option<T>;
+	template<typename T, typename E>
+	using Result = orl::Result<T, E>;
 	template<typename Char_>
 	using BasicString = std::basic_string<Char_>;
 	template<typename Char_>

@@ -1,14 +1,22 @@
 #pragma once
 
 #include <memory>
-#include "../Mark/Mark.hpp"
 #include "../../anchor/AnchorKeeper/AnchorKeeper.hpp"
+#include "../Mark/Mark.hpp"
+#include "../exception/NodeAnotherTypeException.hpp"
+#include "exception/FailedConvertDataException.hpp"
 #include "decode/decode.hpp"
 
 namespace ieml {
 	template<typename Char_>
 	class BasicNode {
 	public:
+		template<typename T>
+		using TypeResult = Result<T, NodeAnotherTypeException>;
+		
+		template<typename T>
+		using ConvertResult = Result<T, FailedConvertDataException>;
+		
 		BasicNode(BasicNodeData<Char_> data, Mark mark = {0, 0});
 		
 		template<typename T>
@@ -172,27 +180,27 @@ namespace ieml {
 		/// @brief Gets the list size.
 		///
 		/// @return A size or throws an exception NodeAnotherTypeException.
-		Size getListSize() const;
+		TypeResult<Size> getListSize() const;
 		
 		/// @brief Gets the map size.
 		///
 		/// @return A size or throws an exception NodeAnotherTypeException.
-		Size getMapSize() const;
+		TypeResult<Size> getMapSize() const;
 		
 		/// @brief Gets the size.
 		///
 		/// @return A size or throws an exception NodeAnotherTypeException.
-		Size getSize() const;
+		TypeResult<Size> getSize() const;
 		
 		/// @brief Gets the node list.
 		///
 		/// @return A node list or throws an exception NodeAnotherTypeException.
-		const BasicListData<Char_>& getList() const;
+		TypeResult<const BasicListData<Char_>&> getList() const;
 		
 		/// @brief Gets the node map.
 		///
 		/// @return A node map or throws an exception NodeAnotherTypeException.
-		const BasicMapData<Char_>& getMap() const;
+		TypeResult<const BasicMapData<Char_>&> getMap() const;
 		
 		/// @brief Gets the T value.
 		///
@@ -200,46 +208,25 @@ namespace ieml {
 		///
 		/// @return A T value or throws an exception FailedConvertDataException.
 		template<typename T>
-		T as() const;
-		
-		/// @brief Gets the T value.
-		///
-		/// @tparam T Value type.
-		///
-		/// @param defaultValue Default value.
-		///
-		/// @return A T value or default T value.
-		template<typename T>
-		T asOr(T&& defaultValue) const;
-		
-		/// @brief Gets the T pointer value.
-		///
-		/// @tparam Type Value pointer type.
-		/// @tparam ArgsTypes Types of arguments for constructor call.
-		///
-		/// @param args Arguments to call the constructor.
-		///
-		/// @return Pointer to an object or to an object created using the default constructors.
-		template<typename Type, typename... ArgsTypes>
-		Type* asPtrOr(ArgsTypes... args) const;
+		ConvertResult<T> as() const;
 		
 		/// @brief Gets a node from the list by index.
 		///
 		/// @param index Index of the requested node.
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
-		BasicNode<Char_>& at(Size index);
+		Option<BasicNode<Char_>&> at(Size index);
 		
-		const BasicNode<Char_>& at(Size index) const;
+		Option<const BasicNode<Char_>&> at(Size index) const;
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
-		BasicNode<Char_>& at(const BasicString<Char_>& key);
+		Option<BasicNode<Char_>&> at(const BasicString<Char_>& key);
 		
-		const BasicNode<Char_>& at(const BasicString<Char_>& key) const;
+		Option<const BasicNode<Char_>&> at(const BasicString<Char_>& key) const;
 		
 		/// @brief Gets the node defined.
 		///
@@ -251,18 +238,18 @@ namespace ieml {
 		/// @param index Index of the requested node.
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
-		BasicNode<Char_>& operator[](Size index);
+		Option<BasicNode<Char_>&> operator[](Size index);
 		
-		const BasicNode<Char_>& operator[](Size index) const;
+		Option<const BasicNode<Char_>&> operator[](Size index) const;
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or throws an exception NodeAnotherTypeException.
-		BasicNode<Char_>& operator[](const BasicString<Char_>& key);
+		Option<BasicNode<Char_>&> operator[](const BasicString<Char_>& key);
 		
-		const BasicNode<Char_>& operator[](const BasicString<Char_>& key) const;
+		Option<const BasicNode<Char_>&> operator[](const BasicString<Char_>& key) const;
 		
 		template<typename OtherChar_, typename T>
 		friend
@@ -274,10 +261,16 @@ namespace ieml {
 	
 	private:
 		template<typename T, typename E>
-		const T& getType(E e) const;
+		Result<const T&, E> getType(E e) const;
 		
 		template<typename T, typename E>
-		T& getType(E e);
+		Result<T&, E> getType(E e);
+		
+		template<typename T>
+		Option<const T&> getType() const;
+		
+		template<typename T>
+		Option<T&> getType();
 		
 		static BasicNode<Char_> undefined;
 		

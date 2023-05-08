@@ -11,7 +11,7 @@ namespace ieml {
 		return stream;
 	}
 	
-	void printNode(Size indentSize, std::ostream& stream, const BasicNode<Char>& node) {
+	void printNode(Size indentSize, std::ostream& stream, const Node& node) {
 		IndentOut indent{indentSize};
 		auto& clearNode{node.getClear()};
 		auto type{clearNode.getType()};
@@ -33,19 +33,19 @@ namespace ieml {
 				stream << indent << "null\n";
 				break;
 			case NodeType::Raw:
-				stream << indent << "\"" << clearNode.as<BasicRawData<Char>>().str << "\"\n";
+				stream << indent << "\"" << clearNode.as<RawData>().ok().str << "\"\n";
 				break;
 			case NodeType::String:
-				stream << indent << "\"" << clearNode.as<String>() << "\"\n";
+				stream << indent << "\"" << clearNode.as<String>().ok() << "\"\n";
 				break;
 			case NodeType::List:
-				for(Size i{0}; i < clearNode.getListSize(); ++i) {
+				for(Size i{0}; i < clearNode.getListSize().ok(); ++i) {
 					stream << indent << "- \n";
-					printNode(indentSize + 1, stream, clearNode.at(i));
+					printNode(indentSize + 1, stream, clearNode.at(i).some());
 				}
 				break;
 			case NodeType::Map:
-				for(auto& [key, value]: clearNode.getMap()) {
+				for(auto& [key, value]: clearNode.getMap().ok()) {
 					stream << indent << key << ": \n";
 					printNode(indentSize + 1, stream, value);
 				}

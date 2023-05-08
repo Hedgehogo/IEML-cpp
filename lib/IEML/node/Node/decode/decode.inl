@@ -8,7 +8,7 @@ namespace ieml {
 		bool DecodeImpl<Char_, T>::decode(const BasicNode<Char_>& node, T& object) {
 			if constexpr(std::is_arithmetic_v<T>) {
 				if(node.isRaw()) {
-					BasicString<Char_> str{node.template as<BasicRawData<Char_>>()};
+					BasicString<Char_> str{node.template as<BasicRawData<Char_>>().ok()};
 					if(auto number{toNumber<T, Char_>(str.cbegin(), str.cend())}) {
 						object = number.some();
 						return true;
