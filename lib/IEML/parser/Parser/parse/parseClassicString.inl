@@ -132,11 +132,11 @@ namespace ieml {
 	template<typename Char_, typename FileInclude_>
 	Option<BasicStringData<Char_>> BasicParser<Char_, FileInclude_>::parseClassicString(Size indent) {
 		if(auto stringMark{isClassicString<Char_>(pos_, end(), indent)}) {
-			BasicString<Char_> result{handleClassicString<Char_>(pos_ + 1, stringMark->realLength, indent)};
-			pos_ = stringMark->pos;
-			mark_.symbol = stringMark->lastLength;
-			mark_.line += stringMark->enterCount;
-			return BasicStringData<Char_>{result};
+			BasicString<Char_> result{handleClassicString<Char_>(pos_ + 1, stringMark.some().realLength, indent)};
+			pos_ = stringMark.some().pos;
+			mark_.symbol = stringMark.some().lastLength;
+			mark_.line += stringMark.some().enterCount;
+			return {BasicStringData<Char_>{result}};
 		}
 		return {};
 	}

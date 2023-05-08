@@ -127,12 +127,11 @@ TEST(Node, Node_5_Tag) {
 	ASSERT_FALSE(node.isTakeAnchor());
 	ASSERT_FALSE(node.isGetAnchor());
 	
-	ASSERT_EQ(*node.getTag(), ieml::Tag{"tag"});
+	ASSERT_EQ(node.getTag().some(), ieml::Tag{"tag"});
 }
 
 TEST(Node, Node_6_File) {
 	ieml::Node node{ieml::NullData{}, ieml::FilePath{"file.ieml"}};
-	ASSERT_EQ(*node.getFilePath(), ieml::FilePath{"file.ieml"});
 	
 	ASSERT_TRUE(node.isNull());
 	ASSERT_FALSE(node.isRaw());
@@ -143,6 +142,8 @@ TEST(Node, Node_6_File) {
 	ASSERT_FALSE(node.isWithTag());
 	ASSERT_FALSE(node.isTakeAnchor());
 	ASSERT_FALSE(node.isGetAnchor());
+	
+	ASSERT_EQ(node.getFilePath().some(), ieml::FilePath{"file.ieml"});
 }
 
 TEST(Node, Node_7_TakeAnchor) {
@@ -160,8 +161,8 @@ TEST(Node, Node_7_TakeAnchor) {
 	ASSERT_TRUE(node.isTakeAnchor());
 	ASSERT_FALSE(node.isGetAnchor());
 	
-	ASSERT_EQ(*node.getTakeAnchorName(), ieml::String{"take_anchor"});
-	ASSERT_EQ(*node.getAnchorName(), ieml::String{"take_anchor"});
+	ASSERT_EQ(node.getTakeAnchorName().some(), ieml::String{"take_anchor"});
+	ASSERT_EQ(node.getAnchorName().some(), ieml::String{"take_anchor"});
 }
 
 TEST(Node, Node_8_GetAnchor) {
@@ -179,6 +180,6 @@ TEST(Node, Node_8_GetAnchor) {
 	ASSERT_FALSE(node.isTakeAnchor());
 	ASSERT_TRUE(node.isGetAnchor());
 	
-	ASSERT_EQ(*node.getGetAnchorName(), ieml::String{"get_anchor"});
-	ASSERT_EQ(*node.getAnchorName(), ieml::String{"get_anchor"});
+	ASSERT_EQ(node.getGetAnchorName().some(), ieml::String{"get_anchor"});
+	ASSERT_EQ(node.getAnchorName().some(), ieml::String{"get_anchor"});
 }

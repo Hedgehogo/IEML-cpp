@@ -10,7 +10,7 @@ namespace ieml {
 				if(node.isRaw()) {
 					BasicString<Char_> str{node.template as<BasicRawData<Char_>>()};
 					if(auto number{toNumber<T, Char_>(str.cbegin(), str.cend())}) {
-						object = *number;
+						object = number.some();
 						return true;
 					}
 				}

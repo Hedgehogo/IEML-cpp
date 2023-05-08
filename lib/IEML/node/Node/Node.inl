@@ -212,7 +212,7 @@ namespace ieml {
 	Option<BasicTag<Char_>> BasicNode<Char_>::getTag() const {
 		auto& clear{getClear<NodeType::File, NodeType::TakeAnchor, NodeType::GetAnchor>()};
 		if(auto tagData{std::get_if<BasicTagData<Char_>>(&clear.data_.data_)}) {
-			return tagData->tag_;
+			return {tagData->tag_};
 		}
 		return {};
 	}
@@ -221,7 +221,7 @@ namespace ieml {
 	Option<FilePath> BasicNode<Char_>::getFilePath() const {
 		auto& clear{getClear<NodeType::Tag, NodeType::TakeAnchor, NodeType::GetAnchor>()};
 		if(auto fileData{std::get_if<BasicFileData<Char_>>(&clear.data_.data_)}) {
-			return fileData->filePath_;
+			return {fileData->filePath_};
 		}
 		return {};
 	}
@@ -230,7 +230,7 @@ namespace ieml {
 	Option<BasicString<Char_>> BasicNode<Char_>::getTakeAnchorName() const {
 		auto& clear{getClear<NodeType::Tag, NodeType::File, NodeType::GetAnchor>()};
 		if(auto takeAnchorData{std::get_if<BasicTakeAnchorData<Char_>>(&clear.data_.data_)}) {
-			return takeAnchorData->name_;
+			return {takeAnchorData->name_};
 		}
 		return {};
 	}
@@ -239,7 +239,7 @@ namespace ieml {
 	Option<BasicString<Char_>> BasicNode<Char_>::getGetAnchorName() const {
 		auto& clear{getClear<NodeType::Tag, NodeType::File, NodeType::TakeAnchor>()};
 		if(auto getAnchorData{std::get_if<BasicGetAnchorData<Char_>>(&clear.data_.data_)}) {
-			return getAnchorData->name_;
+			return {getAnchorData->name_};
 		}
 		return {};
 	}
@@ -248,10 +248,10 @@ namespace ieml {
 	Option<BasicString<Char_>> BasicNode<Char_>::getAnchorName() const {
 		auto& clear{getClear<NodeType::Tag, NodeType::File>()};
 		if(auto takeAnchorData{std::get_if<BasicTakeAnchorData<Char_>>(&clear.data_.data_)}) {
-			return takeAnchorData->name_;
+			return {takeAnchorData->name_};
 		}
 		if(auto getAnchorData{std::get_if<BasicGetAnchorData<Char_>>(&clear.data_.data_)}) {
-			return getAnchorData->name_;
+			return {getAnchorData->name_};
 		}
 		return {};
 	}

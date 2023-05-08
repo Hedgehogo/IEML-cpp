@@ -85,8 +85,8 @@ TEST(helpers_number, parseNumber) {
 		ieml::number::Parser<char, int> parser{str.cbegin(), str.cend()};
 		
 		ieml::Option<int> number{parser.parseNumber(10)};
-		ASSERT_TRUE(number.has_value());
-		ASSERT_EQ(number.value(), 120);
+		ASSERT_TRUE(number.is_some());
+		ASSERT_EQ(number.some(), 120);
 	}
 	
 	{
@@ -94,8 +94,8 @@ TEST(helpers_number, parseNumber) {
 		ieml::number::Parser<char, int> parser{str.cbegin(), str.cend()};
 		
 		ieml::Option<int> number{parser.parseNumber(10)};
-		ASSERT_TRUE(number.has_value());
-		ASSERT_EQ(number.value(), 120);
+		ASSERT_TRUE(number.is_some());
+		ASSERT_EQ(number.some(), 120);
 	}
 	
 	{
@@ -103,8 +103,8 @@ TEST(helpers_number, parseNumber) {
 		ieml::number::Parser<char, double> parser{str.cbegin(), str.cend()};
 		
 		ieml::Option<double> number{parser.parseNumber(10)};
-		ASSERT_TRUE(number.has_value());
-		ASSERT_FLOAT_EQ(number.value(), 120.5);
+		ASSERT_TRUE(number.is_some());
+		ASSERT_FLOAT_EQ(number.some(), 120.5);
 	}
 	
 	{
@@ -112,8 +112,8 @@ TEST(helpers_number, parseNumber) {
 		ieml::number::Parser<char, int> parser{str.cbegin(), str.cend()};
 		
 		ieml::Option<int> number{parser.parseNumber(16)};
-		ASSERT_TRUE(number.has_value());
-		ASSERT_EQ(number.value(), 0xF8);
+		ASSERT_TRUE(number.is_some());
+		ASSERT_EQ(number.some(), 0xF8);
 	}
 	
 	{
@@ -121,7 +121,7 @@ TEST(helpers_number, parseNumber) {
 		ieml::number::Parser<char, int> parser{str.cbegin(), str.cend()};
 		
 		ieml::Option<int> number{parser.parseNumber(10)};
-		ASSERT_FALSE(number.has_value());
+		ASSERT_FALSE(number.is_some());
 	}
 }
 
@@ -169,8 +169,8 @@ TEST(helpers_number, parseNumberScientific) {
 		ieml::number::Parser<char, int> parser{str.cbegin(), str.cend()};
 		
 		ieml::Option<int> number{parser.parseNumberScientific()};
-		ASSERT_TRUE(number.has_value());
-		ASSERT_EQ(*number, 120);
+		ASSERT_TRUE(number.is_some());
+		ASSERT_EQ(number.some(), 120);
 	}
 	
 	{
@@ -178,8 +178,8 @@ TEST(helpers_number, parseNumberScientific) {
 		ieml::number::Parser<char, double> parser{str.cbegin(), str.cend()};
 		
 		ieml::Option<double> number{parser.parseNumberScientific()};
-		ASSERT_TRUE(number.has_value());
-		ASSERT_FLOAT_EQ(*number, 5.5);
+		ASSERT_TRUE(number.is_some());
+		ASSERT_FLOAT_EQ(number.some(), 5.5);
 	}
 	
 	{
@@ -187,8 +187,8 @@ TEST(helpers_number, parseNumberScientific) {
 		ieml::number::Parser<char, int> parser{str.cbegin(), str.cend()};
 		
 		ieml::Option<int> number{parser.parseNumberScientific()};
-		ASSERT_TRUE(number.has_value());
-		ASSERT_EQ(*number, 12000);
+		ASSERT_TRUE(number.is_some());
+		ASSERT_EQ(number.some(), 12000);
 	}
 	
 	{
@@ -196,8 +196,8 @@ TEST(helpers_number, parseNumberScientific) {
 		ieml::number::Parser<char, double> parser{str.cbegin(), str.cend()};
 		
 		ieml::Option<double> number{parser.parseNumberScientific()};
-		ASSERT_TRUE(number.has_value());
-		ASSERT_FLOAT_EQ(*number, 0.6875);
+		ASSERT_TRUE(number.is_some());
+		ASSERT_FLOAT_EQ(number.some(), 0.6875);
 	}
 }
 
@@ -205,13 +205,13 @@ TEST(helpers, toNumber) {
 	{
 		ieml::String str{"2'10e1"};
 		ieml::Option<int> number{ieml::toNumber<int, ieml::String::value_type>(str.cbegin(), str.cend())};
-		ASSERT_TRUE(number.has_value());
-		ASSERT_EQ(*number, 4);
+		ASSERT_TRUE(number.is_some());
+		ASSERT_EQ(number.some(), 4);
 	}
 	
 	{
 		ieml::String str{"2'10e1k"};
 		ieml::Option<int> number{ieml::toNumber<int, ieml::String::value_type>(str.cbegin(), str.cend())};
-		ASSERT_FALSE(number.has_value());
+		ASSERT_FALSE(number.is_some());
 	}
 }

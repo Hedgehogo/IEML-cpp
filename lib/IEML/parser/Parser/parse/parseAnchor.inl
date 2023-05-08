@@ -13,7 +13,7 @@ namespace ieml {
 			BasicString<Char_> name{find.template get<1>().str()};
 			if(!anchorKeeper_->add(name, BasicNode<Char_>{parseNode(indent), mark}))
 				throw FailedParseException{filePath_, FailedParseException::Reason::AnchorAlreadyExists, mark};
-			return BasicTakeAnchorData<Char_>{anchorKeeper_, name};
+			return {BasicTakeAnchorData<Char_>{anchorKeeper_, name}};
 		}
 		return {};
 	}
@@ -24,7 +24,7 @@ namespace ieml {
 			BasicString<Char_> name{find.template get<1>().str()};
 			
 			skipBlankLine<Char_>(pos_, end(), mark_);
-			return BasicGetAnchorData<Char_>{anchorKeeper_, name};
+			return {BasicGetAnchorData < Char_ > {anchorKeeper_, name}};
 		}
 		return {};
 	}

@@ -9,17 +9,17 @@ namespace ieml {
 			}
 		}
 		if(auto tag{parseTag(indent)})
-			return BasicNodeData<Char_>{*tag};
+			return BasicNodeData<Char_>{tag.some()};
 		if(auto takeAnchor{parseTakeAnchor(indent)})
-			return BasicNodeData<Char_>{*takeAnchor};
+			return BasicNodeData<Char_>{takeAnchor.some()};
 		if(auto getAnchor{parseGetAnchor(indent)})
-			return BasicNodeData<Char_>{*getAnchor};
+			return BasicNodeData<Char_>{getAnchor.some()};
 		if(auto file{parseFile(indent)})
-			return BasicNodeData<Char_>{*file};
+			return BasicNodeData<Char_>{file.some()};
 		if(auto list{parseList(indent)})
-			return BasicNodeData<Char_>{*list};
+			return BasicNodeData<Char_>{list.some()};
 		if(auto map{parseMap(indent)})
-			return BasicNodeData<Char_>{*map};
+			return BasicNodeData<Char_>{map.some()};
 		return parseScalar(indent);
 	}
 }

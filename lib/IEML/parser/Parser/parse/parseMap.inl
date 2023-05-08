@@ -35,7 +35,7 @@ namespace ieml {
 					except(FailedParseException::Reason::ExpectedMapKey);
 				}
 			}
-			return nodes;
+			return {nodes};
 		}
 		return {};
 	}

@@ -29,7 +29,7 @@ namespace ieml {
 			skipBlankLinesLn<Char_>(pos_, end(), mark_);
 			if(matchIndent<Char_>(pos_, end(), mark_, indent)) {
 				if(auto map{parseMap(indent)}) {
-					for(auto& [key, value]: map.value()) {
+					for(auto& [key, value]: map.some()) {
 						loadedAnchorKeeper->add(key, value);
 					}
 					return;
@@ -46,7 +46,7 @@ namespace ieml {
 			RcPtr<BasicAnchorKeeper<Char_>> loadedAnchorKeeper{makeRcPtr<BasicAnchorKeeper<Char_>>(anchorKeeper_)};
 			FilePath loadedFilePath{getFilePath<Char_>(filePath_, {find.begin() + 2, find.end()})};
 			parseFileAnchorMap(loadedAnchorKeeper, indent);
-			return BasicFileData<Char_>{BasicNode<Char_>{FileInclude_::include(loadedAnchorKeeper, loadedFilePath), mark}, loadedFilePath};
+			return {BasicFileData<Char_>{BasicNode<Char_>{FileInclude_::include(loadedAnchorKeeper, loadedFilePath), mark}, loadedFilePath}};
 		}
 		return {};
 	}

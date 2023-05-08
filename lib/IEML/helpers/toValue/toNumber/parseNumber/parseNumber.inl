@@ -84,7 +84,7 @@ namespace ieml {
 		Option<R> Parser<C, T>::parseNumber(BaseType base) {
 			auto integerPart{parseNumberPart(base)};
 			if(!integerPart.notEmpty()) {
-				return {};
+				return Option<R>{};
 			}
 			if constexpr(!std::numeric_limits<R>::is_integer) {
 				R number = integerPart.value;
@@ -96,9 +96,9 @@ namespace ieml {
 					}
 					number += static_cast<R>(fractionalPart.value) / fractionalPart.factor;
 				}
-				return number;
+				return Option<R>{number};
 			} else {
-				return integerPart.value;
+				return Option<R>{integerPart.value};
 			}
 		}
 		
@@ -118,7 +118,7 @@ namespace ieml {
 				if(integerPartOrBase.value >= 1 && integerPartOrBase.value <= 36) {
 					auto number{parseNumber<R>(integerPartOrBase.value)};
 					if(number) {
-						return {addMinus(*number, minus), static_cast<uint8_t>(integerPartOrBase.value)};
+						return {addMinus(number.some(), minus), static_cast<uint8_t>(integerPartOrBase.value)};
 					}
 				}
 				return {0, 0};
@@ -142,17 +142,17 @@ namespace ieml {
 		Option<T> Parser<C, T>::parseNumberScientific() {
 			auto number{parseNumberBase()};
 			if(!number.correct()) {
-				return {};
+				return Option<T>{};
 			}
 			if(first_ != last_ && *first_ == toChar('e')) {
 				++first_;
 				auto exponent{parseNumberBase<long long>()};
 				if(!number.correct()) {
-					return {};
+					return Option<T>{};
 				}
-				return number.value * static_cast<T>(powl(static_cast<long double>(number.base), static_cast<long double>(exponent.value)));
+				return Option<T>{number.value * static_cast<T>(powl(static_cast<long double>(number.base), static_cast<long double>(exponent.value)))};
 			}
-			return number.value;
+			return Option<T>{number.value};
 		}
 		
 		template<typename C, typename T>
@@ -174,7 +174,7 @@ namespace ieml {
 		auto number{parser.parseNumberScientific()};
 		parser.skipSpaces();
 		if(number && parser.isComplete()) {
-			return std::move(*number);
+			return std::move(number.some());
 		}
 		return {};
 	}

@@ -32,7 +32,7 @@ namespace ieml {
 					except(FailedParseException::Reason::ExpectedListItem);
 				}
 			}
-			return nodes;
+			return {nodes};
 		}
 		return {};
 	}

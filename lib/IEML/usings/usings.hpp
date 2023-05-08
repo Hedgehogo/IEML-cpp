@@ -1,11 +1,11 @@
 #pragma once
 
-#include <optional>
+#include <option_result.hpp>
 #include "../helpers/fileSystem/fileSystem.hpp"
 
 namespace ieml {
 	template<typename T>
-	using Option = std::optional<T>;
+	using Option = orl::Option<T>;
 	template<typename Char_>
 	using BasicString = std::basic_string<Char_>;
 	template<typename Char_>

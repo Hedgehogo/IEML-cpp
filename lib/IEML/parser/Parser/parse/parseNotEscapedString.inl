@@ -39,7 +39,7 @@ namespace ieml {
 	template<typename Char_, typename FileInclude_>
 	Option<BasicStringData<Char_>> BasicParser<Char_, FileInclude_>::parseNotEscapedString(Size indent) {
 		if(auto find{matchAndMove<reNotEscapedString, Char_>(pos_, end(), mark_)}) {
-			return find.template get<1>().str();
+			return {find.template get<1>().str()};
 		}
 		if(matchNotEscapedSpecial<Char_>(pos_, end(), mark_)) {
 			BasicStringData<Char_> result{};
@@ -51,7 +51,7 @@ namespace ieml {
 				result.append(line.begin(), line.end());
 				setPosInfo(posInfo);
 			}
-			return result;
+			return {result};
 		}
 		return {};
 	}

@@ -19,13 +19,13 @@ namespace ieml {
 		stream << indent << "<" << node.getMark().line << ":" << node.getMark().symbol;
 		stream << ", " << getStringFromNodeType(type);
 		if(auto tag{node.getTag()})
-			stream << ", tag: " << tag.value();
+			stream << ", tag: " << tag.some();
 		if(auto filePath{node.getFilePath()})
-			stream << ", file-path: " << filePath.value();
+			stream << ", file-path: " << filePath.some();
 		if(auto getAnchorName{node.getGetAnchorName()})
-			stream << ", get-anchor-name: " << getAnchorName.value();
+			stream << ", get-anchor-name: " << getAnchorName.some();
 		if(auto takeAnchorName{node.getTakeAnchorName()})
-			stream << ", take-anchor-name: " << takeAnchorName.value();
+			stream << ", take-anchor-name: " << takeAnchorName.some();
 		stream << ">\n";
 		
 		switch(type) {
