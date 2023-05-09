@@ -5,11 +5,16 @@ include(FetchContent)
 
 set(CMAKE_CXX_STANDARD 17)
 
+
 file(GLOB_RECURSE src "lib/*.hpp" "lib/*.cpp")
 
 add_subdirectory(modules/compile_time_regex)
 
+add_subdirectory(modules/option_result_cpp)
+
 add_library(${PROJECT_NAME} ${src})
+
+target_link_libraries(${PROJECT_NAME} PUBLIC option_result_cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC modules/compile_time_regex/include modules/option_result_cpp/lib)
 

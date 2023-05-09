@@ -179,34 +179,34 @@ namespace ieml {
 		
 		/// @brief Gets the list size.
 		///
-		/// @return A size or throws an exception NodeAnotherTypeException.
+		/// @return A size or NodeAnotherTypeException.
 		TypeResult<Size> getListSize() const;
 		
 		/// @brief Gets the map size.
 		///
-		/// @return A size or throws an exception NodeAnotherTypeException.
+		/// @return A size or NodeAnotherTypeException.
 		TypeResult<Size> getMapSize() const;
 		
 		/// @brief Gets the size.
 		///
-		/// @return A size or throws an exception NodeAnotherTypeException.
+		/// @return A size or NodeAnotherTypeException.
 		TypeResult<Size> getSize() const;
 		
 		/// @brief Gets the node list.
 		///
-		/// @return A node list or throws an exception NodeAnotherTypeException.
+		/// @return A node list or NodeAnotherTypeException.
 		TypeResult<const BasicListData<Char_>&> getList() const;
 		
 		/// @brief Gets the node map.
 		///
-		/// @return A node map or throws an exception NodeAnotherTypeException.
+		/// @return A node map or NodeAnotherTypeException.
 		TypeResult<const BasicMapData<Char_>&> getMap() const;
 		
 		/// @brief Gets the T value.
 		///
 		/// @tparam T Value type.
 		///
-		/// @return A T value or throws an exception FailedConvertDataException.
+		/// @return A T value or FailedConvertDataException.
 		template<typename T>
 		ConvertResult<T> as() const;
 		
@@ -214,19 +214,48 @@ namespace ieml {
 		///
 		/// @param index Index of the requested node.
 		///
-		/// @return A node or throws an exception NodeAnotherTypeException.
-		Option<BasicNode<Char_>&> at(Size index);
+		/// @return A node or NodeAnotherTypeException.
+		TypeResult<BasicNode<Char_>&> at(Size index);
 		
-		Option<const BasicNode<Char_>&> at(Size index) const;
+		TypeResult<const BasicNode<Char_>&> at(Size index) const;
+		
+		/// @brief Gets a node from the list by index.
+		///
+		/// @param index Index of the requested node.
+		///
+		/// @return A node or undefined node.
+		BasicNode<Char_>& at_or(Size index);
+		
+		const BasicNode<Char_>& at_or(Size index) const;
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
-		/// @return A node or throws an exception NodeAnotherTypeException.
-		Option<BasicNode<Char_>&> at(const BasicString<Char_>& key);
+		/// @return A node or NodeAnotherTypeException.
+		TypeResult<BasicNode<Char_>&> at(const BasicString<Char_>& key);
 		
-		Option<const BasicNode<Char_>&> at(const BasicString<Char_>& key) const;
+		TypeResult<const BasicNode<Char_>&> at(const BasicString<Char_>& key) const;
+		
+		/// @brief Gets a node from the map by key.
+		///
+		/// @param key Key of the requested node.
+		///
+		/// @return A node or undefined node.
+		BasicNode<Char_>& at_or(const BasicString<Char_>& key);
+		
+		const BasicNode<Char_>& at_or(const BasicString<Char_>& key) const;
+		
+		/// @brief Gets a node from the map by key.
+		///
+		/// @param key Key of the requested node.
+		///
+		/// @return A node or NodeAnotherTypeException.
+		template<typename... A>
+		TypeResult<BasicNode<Char_>&> get(A&&... args);
+		
+		template<typename... A>
+		TypeResult<const BasicNode<Char_>&> get(A&&... args) const;
 		
 		/// @brief Gets the node defined.
 		///
@@ -237,19 +266,19 @@ namespace ieml {
 		///
 		/// @param index Index of the requested node.
 		///
-		/// @return A node or throws an exception NodeAnotherTypeException.
-		Option<BasicNode<Char_>&> operator[](Size index);
+		/// @return A node or NodeAnotherTypeException.
+		TypeResult<BasicNode<Char_>&> operator[](Size index);
 		
-		Option<const BasicNode<Char_>&> operator[](Size index) const;
+		TypeResult<const BasicNode<Char_>&> operator[](Size index) const;
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
-		/// @return A node or throws an exception NodeAnotherTypeException.
-		Option<BasicNode<Char_>&> operator[](const BasicString<Char_>& key);
+		/// @return A node or NodeAnotherTypeException.
+		TypeResult<BasicNode<Char_>&> operator[](const BasicString<Char_>& key);
 		
-		Option<const BasicNode<Char_>&> operator[](const BasicString<Char_>& key) const;
+		TypeResult<const BasicNode<Char_>&> operator[](const BasicString<Char_>& key) const;
 		
 		template<typename OtherChar_, typename T>
 		friend
@@ -261,16 +290,16 @@ namespace ieml {
 	
 	private:
 		template<typename T, typename E>
-		Result<const T&, E> getType(E e) const;
+		Result<const T&, E> getTypedDataOr(E e) const;
 		
 		template<typename T, typename E>
-		Result<T&, E> getType(E e);
+		Result<T&, E> getTypedDataOr(E e);
 		
 		template<typename T>
-		Option<const T&> getType() const;
+		Option<const T&> getTypedData() const;
 		
 		template<typename T>
-		Option<T&> getType();
+		Option<T&> getTypedData();
 		
 		static BasicNode<Char_> undefined;
 		

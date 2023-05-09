@@ -63,21 +63,21 @@ TEST(Node, Node_3_List) {
 	ASSERT_EQ(node.getSize(), 1);
 	
 	auto elem{node.at(0)};
-	ASSERT_TRUE(elem.is_some());
-	ASSERT_EQ(&elem.some(), &node[0].some());
+	ASSERT_TRUE(elem.is_ok());
+	ASSERT_EQ(&elem.ok(), &node[0].ok());
 	
-	ASSERT_TRUE(elem.some().isNull());
-	ASSERT_FALSE(elem.some().isRaw());
-	ASSERT_FALSE(elem.some().isString());
-	ASSERT_FALSE(elem.some().isList());
-	ASSERT_FALSE(elem.some().isMap());
-	ASSERT_FALSE(elem.some().isFile());
-	ASSERT_FALSE(elem.some().isWithTag());
-	ASSERT_FALSE(elem.some().isTakeAnchor());
-	ASSERT_FALSE(elem.some().isGetAnchor());
+	ASSERT_TRUE(elem.ok().isNull());
+	ASSERT_FALSE(elem.ok().isRaw());
+	ASSERT_FALSE(elem.ok().isString());
+	ASSERT_FALSE(elem.ok().isList());
+	ASSERT_FALSE(elem.ok().isMap());
+	ASSERT_FALSE(elem.ok().isFile());
+	ASSERT_FALSE(elem.ok().isWithTag());
+	ASSERT_FALSE(elem.ok().isTakeAnchor());
+	ASSERT_FALSE(elem.ok().isGetAnchor());
 	
 	auto incorrectElem{node.at(1)};
-	ASSERT_FALSE(incorrectElem.is_some());
+	ASSERT_FALSE(incorrectElem.is_ok());
 }
 
 TEST(Node, Node_4_Map) {
@@ -97,21 +97,21 @@ TEST(Node, Node_4_Map) {
 	ASSERT_EQ(node.getSize(), 1);
 	
 	auto elem{node.at(ieml::String("key"))};
-	ASSERT_TRUE(elem.is_some());
-	ASSERT_EQ(&elem.some(), &node[ieml::String("key")].some());
+	ASSERT_TRUE(elem.is_ok());
+	ASSERT_EQ(&elem.ok(), &node[ieml::String("key")].ok());
 	
-	ASSERT_TRUE(elem.some().isNull());
-	ASSERT_FALSE(elem.some().isRaw());
-	ASSERT_FALSE(elem.some().isString());
-	ASSERT_FALSE(elem.some().isList());
-	ASSERT_FALSE(elem.some().isMap());
-	ASSERT_FALSE(elem.some().isFile());
-	ASSERT_FALSE(elem.some().isWithTag());
-	ASSERT_FALSE(elem.some().isTakeAnchor());
-	ASSERT_FALSE(elem.some().isGetAnchor());
+	ASSERT_TRUE(elem.ok().isNull());
+	ASSERT_FALSE(elem.ok().isRaw());
+	ASSERT_FALSE(elem.ok().isString());
+	ASSERT_FALSE(elem.ok().isList());
+	ASSERT_FALSE(elem.ok().isMap());
+	ASSERT_FALSE(elem.ok().isFile());
+	ASSERT_FALSE(elem.ok().isWithTag());
+	ASSERT_FALSE(elem.ok().isTakeAnchor());
+	ASSERT_FALSE(elem.ok().isGetAnchor());
 	
 	auto incorrectElem{node.at(ieml::String("other-key"))};
-	ASSERT_FALSE(incorrectElem.is_some());
+	ASSERT_FALSE(incorrectElem.is_ok());
 }
 
 TEST(Node, Node_5_Tag) {

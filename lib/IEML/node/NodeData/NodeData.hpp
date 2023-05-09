@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include "../../helpers/fileSystem/fileSystem.hpp"
 #include "../../helpers/pointers/pointers.hpp"
+#include "../../helpers/MetaFn/MetaFn.hpp"
 #include "../NodeType/NodeType.hpp"
 
 namespace ieml {
@@ -137,11 +138,6 @@ namespace ieml {
 	using NodeData = BasicNodeData<Char>;
 	
 	namespace detail {
-		template<typename T>
-		struct MetaFn {
-			using type = T;
-		};
-		
 		template<NodeType Type, typename Char_>
 		struct ToNodeData;
 		template<typename Char_>

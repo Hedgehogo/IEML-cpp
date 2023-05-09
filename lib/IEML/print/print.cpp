@@ -41,7 +41,7 @@ namespace ieml {
 			case NodeType::List:
 				for(Size i{0}; i < clearNode.getListSize().ok(); ++i) {
 					stream << indent << "- \n";
-					printNode(indentSize + 1, stream, clearNode.at(i).some());
+					printNode(indentSize + 1, stream, clearNode.at(i).ok());
 				}
 				break;
 			case NodeType::Map:
