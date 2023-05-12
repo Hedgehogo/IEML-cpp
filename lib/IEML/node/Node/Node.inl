@@ -27,33 +27,39 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	template<typename T, typename E>
-	Result<const T&, E> BasicNode<Char_>::getTypedDataOr(E e) const {
-		if(auto typeData = std::get_if<T>(&data_.data_))
-			return TypeResult<const T&>::Ok(*typeData);
-		return TypeResult<const T&>::Error(e);
+	template<typename T, NodeType Type>
+	Result<T, NodeAnotherTypeException> BasicNode<Char_>::makeTypeError() const {
+		return GetResult<T>::Error(NodeAnotherTypeException{getMark(), Type, getType()});
 	}
 	
 	template<typename Char_>
-	template<typename T, typename E>
-	Result<T&, E> BasicNode<Char_>::getTypedDataOr(E e) {
-		if(auto typeData = std::get_if<T>(&data_.data_))
-			return TypeResult<const T&>::Ok(*typeData);
-		return TypeResult<const T&>::Error(e);
+	template<NodeType Type>
+	GetResult<const ToNodeData<Type, Char_>&> BasicNode<Char_>::getTypedDataOrError() const {
+		if(auto typeData = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
+			return GetResult<const ToNodeData<Type, Char_>&>::Ok(*typeData);
+		return makeTypeError<const ToNodeData<Type, Char_>&, Type>();
 	}
 	
 	template<typename Char_>
-	template<typename T>
-	Option<const T&> BasicNode<Char_>::getTypedData() const {
-		if(auto typeData = std::get_if<T>(&data_.data_))
+	template<NodeType Type>
+	GetResult<ToNodeData<Type, Char_>&> BasicNode<Char_>::getTypedDataOrError() {
+		if(auto typeData = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
+			return GetResult<ToNodeData<Type, Char_>&>::Ok(*typeData);
+		return makeTypeError<ToNodeData<Type, Char_>&, Type>();
+	}
+	
+	template<typename Char_>
+	template<NodeType Type>
+	Option<const ToNodeData<Type, Char_>&> BasicNode<Char_>::getTypedData() const {
+		if(auto typeData = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
 			return {*typeData};
 		return {};
 	}
 	
 	template<typename Char_>
-	template<typename T>
-	Option<T&> BasicNode<Char_>::getTypedData() {
-		if(auto typeData = std::get_if<T>(&data_.data_))
+	template<NodeType Type>
+	Option<ToNodeData<Type, Char_>&> BasicNode<Char_>::getTypedData() {
+		if(auto typeData = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
 			return {*typeData};
 		return {};
 	}
@@ -272,37 +278,91 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	Result<Size, NodeAnotherTypeException> BasicNode<Char_>::getListSize() const {
+	GetResult<Size> BasicNode<Char_>::getListSize() const {
 		if(auto listData{std::get_if<BasicListData<Char_>>(&getClear().data_.data_)})
-			return TypeResult<Size>::Ok(listData->size());
-		return TypeResult<Size>::Error({NodeType::Map, getType()});
+			return GetResult<Size>::Ok(listData->size());
+		return makeTypeError<Size, NodeType::List>();
 	}
 	
 	template<typename Char_>
-	Result<Size, NodeAnotherTypeException> BasicNode<Char_>::getMapSize() const {
+	GetResult<Size> BasicNode<Char_>::getMapSize() const {
 		if(auto mapData{std::get_if<BasicMapData<Char_>>(&getClear().data_.data_)})
-			return TypeResult<Size>::Ok(mapData->size());
-		return TypeResult<Size>::Error({NodeType::List, getType()});
+			return GetResult<Size>::Ok(mapData->size());
+		return makeTypeError<Size, NodeType::Map>();
 	}
 	
 	template<typename Char_>
-	Result<Size, NodeAnotherTypeException> BasicNode<Char_>::getSize() const {
+	GetResult<Size> BasicNode<Char_>::getSize() const {
 		auto& clearNode{getClear()};
 		if(auto listData{std::get_if<BasicListData<Char_>>(&clearNode.data_.data_)})
-			return TypeResult<Size>::Ok(listData->size());
+			return GetResult<Size>::Ok(listData->size());
 		if(auto mapData{std::get_if<BasicMapData<Char_>>(&clearNode.data_.data_)})
-			return TypeResult<Size>::Ok(mapData->size());
-		return TypeResult<Size>::Error({NodeType::List, getType()});
+			return GetResult<Size>::Ok(mapData->size());
+		return makeTypeError<Size, NodeType::List>();
 	}
 	
 	template<typename Char_>
-	Result<const BasicListData<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::getList() const {
-		return getClear().template getTypedDataOr<BasicListData<Char_>>(NodeAnotherTypeException{NodeType::List, getType()});
+	GetResult<const BasicListData<Char_>&> BasicNode<Char_>::getList() const {
+		return getClear().template getTypedDataOrError<NodeType::List>();
 	}
 	
 	template<typename Char_>
-	Result<const BasicMapData<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::getMap() const {
-		return getClear().template getTypedDataOr<BasicMapData<Char_>>(NodeAnotherTypeException{NodeType::Map, getType()});
+	GetResult<const BasicMapData<Char_>&> BasicNode<Char_>::getMap() const {
+		return getClear().template getTypedDataOrError<NodeType::Map>();
+	}
+	
+	template<typename Char_>
+	GetResult<BasicNode<Char_>&> BasicNode<Char_>::at(Size index) {
+		return getClear()[index];
+	}
+	
+	template<typename Char_>
+	GetResult<const BasicNode<Char_>&> BasicNode<Char_>::at(Size index) const {
+		return getClear()[index];
+	}
+	
+	template<typename Char_>
+	BasicNode<Char_>& BasicNode<Char_>::at_or(Size index) {
+		auto list{getClear().template getTypedData<NodeType::List>()};
+		if(list.is_some() && (index < list.some().size()))
+			return list.some().at(index);
+		return undefined;
+	}
+	
+	template<typename Char_>
+	const BasicNode<Char_>& BasicNode<Char_>::at_or(Size index) const {
+		auto list{getClear().template getTypedData<NodeType::List>()};
+		if(list.is_some() && (index < list.some().size()))
+			return list.some().at(index);
+		return undefined;
+	}
+	
+	template<typename Char_>
+	GetResult<BasicNode<Char_>&> BasicNode<Char_>::at(const BasicString<Char_>& key) {
+		return getClear()[key];
+	}
+	
+	template<typename Char_>
+	GetResult<const BasicNode<Char_>&> BasicNode<Char_>::at(const BasicString<Char_>& key) const {
+		return getClear()[key];
+	}
+	
+	template<typename Char_>
+	BasicNode<Char_>& BasicNode<Char_>::at_or(const BasicString<Char_>& key) {
+		auto map{getClear().template getTypedData<NodeType::Map>()};
+		if(map.is_some())
+			if(auto find{map.some().find(key)}; find != map.some().end())
+				return find->second;
+		return undefined;
+	}
+	
+	template<typename Char_>
+	const BasicNode<Char_>& BasicNode<Char_>::at_or(const BasicString<Char_>& key) const {
+		auto map{getClear().template getTypedData<NodeType::Map>()};
+		if(map.is_some())
+			if(auto find{map.some().find(key)}; find != map.some().end())
+				return find->second;
+		return undefined;
 	}
 	
 	template<typename Char_>
@@ -317,83 +377,30 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	Result<BasicNode<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::at(Size index) {
-		auto list{getClear().template getTypedData<BasicListData<Char_>>()};
-		if(list.is_some() && (index < list.some().size()))
-			return TypeResult<BasicNode<Char_>&>::Ok(list.some().at(index));
-		return TypeResult<BasicNode<Char_>&>::Error(NodeAnotherTypeException{NodeType::List, getType()});
+	template<typename... Steps>
+	GetResult<BasicNode<Char_>&> BasicNode<Char_>::get(Steps&& ... steps) {
+		return detail::getNode<Char_>(*this, std::forward<Steps>(steps)...);
 	}
 	
 	template<typename Char_>
-	Result<const BasicNode<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::at(Size index) const {
-		auto list{getClear().template getTypedData<BasicListData<Char_>>()};
-		if(list.is_some() && (index < list.some().size()))
-			return TypeResult<const BasicNode<Char_>&>::Ok(list.some().at(index));
-		return TypeResult<const BasicNode<Char_>&>::Error(NodeAnotherTypeException{NodeType::List, getType()});
+	template<typename... Steps>
+	GetResult<const BasicNode<Char_>&> BasicNode<Char_>::get(Steps&& ... steps) const {
+		return detail::getNode<Char_>(*this, std::forward<Steps>(steps)...);
 	}
 	
 	template<typename Char_>
-	BasicNode<Char_>& BasicNode<Char_>::at_or(Size index) {
-		auto list{getClear().template getTypedData<BasicListData<Char_>>()};
-		if(list.is_some() && (index < list.some().size()))
-			return list.some().at(index);
-		return undefined;
-	}
-	
-	template<typename Char_>
-	const BasicNode<Char_>& BasicNode<Char_>::at_or(Size index) const {
-		auto list{getClear().template getTypedData<BasicListData<Char_>>()};
-		if(list.is_some() && (index < list.some().size()))
-			return list.some().at(index);
-		return undefined;
-	}
-	
-	template<typename Char_>
-	Result<BasicNode<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::at(const BasicString<Char_>& key) {
-		auto map{getClear().template getTypedData<BasicMapData<Char_>>()};
-		if(map.is_some())
-			if(auto find{map.some().find(key)}; find != map.some().end())
-				return TypeResult<BasicNode<Char_>&>::Ok(find->second);
-		return TypeResult<BasicNode<Char_>&>::Error(NodeAnotherTypeException{NodeType::Map, getType()});
-	}
-	
-	template<typename Char_>
-	Result<const BasicNode<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::at(const BasicString<Char_>& key) const {
-		auto map{getClear().template getTypedData<BasicMapData<Char_>>()};
-		if(map.is_some())
-			if(auto find{map.some().find(key)}; find != map.some().end())
-				return TypeResult<const BasicNode<Char_>&>::Ok(find->second);
-		return TypeResult<const BasicNode<Char_>&>::Error(NodeAnotherTypeException{NodeType::Map, getType()});
-	}
-	
-	template<typename Char_>
-	BasicNode<Char_>& BasicNode<Char_>::at_or(const BasicString<Char_>& key) {
-		auto map{getClear().template getTypedData<BasicMapData<Char_>>()};
-		if(map.is_some())
-			if(auto find{map.some().find(key)}; find != map.some().end())
-				return find->second;
-		return undefined;
-	}
-	
-	template<typename Char_>
-	const BasicNode<Char_>& BasicNode<Char_>::at_or(const BasicString<Char_>& key) const {
-		auto map{getClear().template getTypedData<BasicMapData<Char_>>()};
-		if(map.is_some())
-			if(auto find{map.some().find(key)}; find != map.some().end())
-				return find->second;
-		return undefined;
-	}
-	
-	template<typename Char_>
-	template<typename... A>
-	Result<BasicNode<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::get(A&& ... args) {
-		return detail::get(*this, GetStep<Char_, A>{args}...);
-	}
-	
-	template<typename Char_>
-	template<typename... A>
-	Result<const BasicNode<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::get(A&& ... args) const {
-		return detail::get(*this, GetStep<Char_, A>{args}...);
+	template<typename T, typename... Steps>
+	GetAsResult<T> BasicNode<Char_>::getAs(Steps&& ... steps) const {
+		auto item{get(std::forward<Steps>(steps)...)};
+		if(item.is_ok()) {
+			if(!item.ok().isDefined())
+				return GetAsResult<T>::Error({FailedConvertDataException{item.ok().mark_, getTypeInfo<T>()}});
+			T object;
+			if(detail::DecodeImpl<Char_, T>::decode(item.ok(), object))
+				return GetAsResult<T>::Ok(object);
+			return GetAsResult<T>::Error({FailedConvertDataException{item.ok().mark_, getTypeInfo<T>()}});
+		}
+		return GetAsResult<T>::Error({item.error()});
 	}
 	
 	template<typename Char_>
@@ -402,37 +409,37 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	Result<BasicNode<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::operator[](Size index) {
-		auto list{getTypedData<BasicListData<Char_>>()};
+	GetResult<BasicNode<Char_>&> BasicNode<Char_>::operator[](Size index) {
+		auto list{getTypedData<NodeType::List>()};
 		if(list.is_some() && (index < list.some().size()))
-			return TypeResult<BasicNode<Char_>&>::Ok(list.some().at(index));
-		return TypeResult<BasicNode<Char_>&>::Error(NodeAnotherTypeException{NodeType::List, getType()});
+			return GetResult<BasicNode<Char_>&>::Ok(list.some().at(index));
+		return makeTypeError<BasicNode<Char_>&, NodeType::List>();
 	}
 	
 	template<typename Char_>
-	Result<const BasicNode<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::operator[](Size index) const {
-		auto list{getTypedData<BasicListData<Char_>>()};
+	GetResult<const BasicNode<Char_>&> BasicNode<Char_>::operator[](Size index) const {
+		auto list{getTypedData<NodeType::List>()};
 		if(list.is_some() && (index < list.some().size()))
-			return TypeResult<const BasicNode<Char_>&>::Ok(list.some().at(index));
-		return TypeResult<const BasicNode<Char_>&>::Error(NodeAnotherTypeException{NodeType::List, getType()});
+			return GetResult<const BasicNode<Char_>&>::Ok(list.some().at(index));
+		return makeTypeError<const BasicNode<Char_>&, NodeType::List>();
 	}
 	
 	template<typename Char_>
-	Result<BasicNode<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::operator[](const BasicString<Char_>& key) {
-		auto map{getTypedData<BasicMapData<Char_>>()};
+	GetResult<BasicNode<Char_>&> BasicNode<Char_>::operator[](const BasicString<Char_>& key) {
+		auto map{getTypedData<NodeType::Map>()};
 		if(map.is_some())
 			if(auto find{map.some().find(key)}; find != map.some().end())
-				return TypeResult<BasicNode<Char_>&>::Ok(find->second);
-		return TypeResult<BasicNode<Char_>&>::Error(NodeAnotherTypeException{NodeType::Map, getType()});
+				return GetResult<BasicNode<Char_>&>::Ok(find->second);
+		return makeTypeError<BasicNode<Char_>&, NodeType::Map>();
 	}
 	
 	template<typename Char_>
-	Result<const BasicNode<Char_>&, NodeAnotherTypeException> BasicNode<Char_>::operator[](const BasicString<Char_>& key) const {
-		auto map{getTypedData<BasicMapData<Char_>>()};
+	GetResult<const BasicNode<Char_>&> BasicNode<Char_>::operator[](const BasicString<Char_>& key) const {
+		auto map{getTypedData<NodeType::Map>()};
 		if(map.is_some())
 			if(auto find{map.some().find(key)}; find != map.some().end())
-				return TypeResult<const BasicNode<Char_>&>::Ok(find->second);
-		return TypeResult<const BasicNode<Char_>&>::Error(NodeAnotherTypeException{NodeType::Map, getType()});
+				return GetResult<const BasicNode<Char_>&>::Ok(find->second);
+		return makeTypeError<const BasicNode<Char_>&, NodeType::Map>();
 	}
 	
 	template<typename Char_>

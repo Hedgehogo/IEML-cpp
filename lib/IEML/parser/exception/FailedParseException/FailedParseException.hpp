@@ -23,10 +23,10 @@ namespace ieml {
 	public:
 		FailedParseException(FilePath filePath, Reason reason, Mark mark);
 		
-		String getDescription() const override;
+		String get_description() const override;
 		
-		FilePath getFilePath() const;
+		FilePath get_file_path() const;
 		
-		Reason getReason() const;
+		Reason get_reason() const;
 	};
 }

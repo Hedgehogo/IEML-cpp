@@ -5,13 +5,13 @@ namespace ieml {
 		WithMarkException(mark), file_path(filePath), reason(reason) {
 	}
 	
-	String getFileDescription(FilePath filePath) {
+	String get_file_description(FilePath filePath) {
 		if(!filePath.empty())
 			return String(" in the file '") + filePath.string() + String("'");
 		return "";
 	}
 	
-	String getReasonDescription(FailedParseException::Reason reason) {
+	String get_reason_description(FailedParseException::Reason reason) {
 		if(reason == FailedParseException::Reason::FailedDetermineType) {
 			return "Failed to determine data type.";
 		} else if(reason == FailedParseException::Reason::ExpectedMapKey) {
@@ -28,17 +28,17 @@ namespace ieml {
 		return "The end of the file has been reached, but the String is not completed.";
 	}
 	
-	String FailedParseException::getDescription() const {
+	String FailedParseException::get_description() const {
 		return String("Failed to determine the type of data") +
-			   getFileDescription(file_path) + String(". ") +
-			   getReasonDescription(reason);
+			   get_file_description(file_path) + String(". ") +
+			   get_reason_description(reason);
 	}
 	
-	FilePath FailedParseException::getFilePath() const {
+	FilePath FailedParseException::get_file_path() const {
 		return file_path;
 	}
 	
-	FailedParseException::Reason FailedParseException::getReason() const {
+	FailedParseException::Reason FailedParseException::get_reason() const {
 		return reason;
 	}
 }
