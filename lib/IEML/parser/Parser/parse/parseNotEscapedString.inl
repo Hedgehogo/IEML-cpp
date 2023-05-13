@@ -3,7 +3,6 @@
 #include "../../helpers/blankLines/blankLines.hpp"
 
 namespace ieml {
-	static constexpr auto reNotEscapedString = ctll::fixed_string{R"(> ([^\n]*))"};
 	static constexpr auto reNotEscapedSpecial = ctll::fixed_string{R"(>>)"};
 	static constexpr auto reLine = ctll::fixed_string{R"([^\n]*)"};
 	
@@ -38,9 +37,6 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicStringData<Char_>> BasicParser<Char_, FileInclude_>::parseNotEscapedString(Size indent) {
-		if(auto find{matchAndMove<reNotEscapedString, Char_>(pos_, end(), mark_)}) {
-			return {find.template get<1>().str()};
-		}
 		if(matchNotEscapedSpecial<Char_>(pos_, end(), mark_)) {
 			BasicStringData<Char_> result{};
 			PosInfo posInfo{getPosInfo()};

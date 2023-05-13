@@ -2,5 +2,5 @@
 
 #include <IEML/parser/Parser/Parser.hpp>
 
-TEST(parser, Parser_parseNotScalar) {
+TEST(parser, Parser_parseLineString) {
 }

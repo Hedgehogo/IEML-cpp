@@ -8,12 +8,15 @@ namespace ieml {
 			skipBlankLine<Char_>(pos_, end(), mark_);
 			return BasicNodeData<Char_>{null.some()};
 		}
-		if(auto classic{parseClassicString(indent)}) {
+		if(auto classicString{parseClassicString(indent)}) {
 			skipBlankLine<Char_>(pos_, end(), mark_);
-			return BasicNodeData<Char_>{classic.some()};
+			return BasicNodeData<Char_>{classicString.some()};
 		}
-		if(auto notEscaped{parseNotEscapedString(indent)}) {
-			return BasicNodeData<Char_>{notEscaped.some()};
+		if(auto lineString{parseLineString()}) {
+			return BasicNodeData<Char_>{lineString.some()};
+		}
+		if(auto notEscapedString{parseNotEscapedString(indent)}) {
+			return BasicNodeData<Char_>{notEscapedString.some()};
 		}
 		if(auto raw{parseRaw()}) {
 			return BasicNodeData<Char_>{raw.some()};
