@@ -8,7 +8,7 @@ namespace ieml {
 		return std::to_string(mark_.line) + String(":") + std::to_string(mark_.symbol) + String(": ");
 	}
 	
-	Mark WithMarkException::get_mark() {
+	Mark WithMarkException::get_mark() const {
 		return mark_;
 	}
 }

@@ -14,6 +14,8 @@ namespace ieml {
 	using BasicStringIter = typename BasicString<Char_>::iterator;
 	template<typename Char_>
 	using BasicStringCIter = typename BasicString<Char_>::const_iterator;
+	template<typename Char_>
+	using BasicStringView = std::basic_string_view<Char_>;
 	
 	using Char = char;
 	using IStream = std::basic_istream<Char>;

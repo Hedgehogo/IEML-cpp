@@ -11,34 +11,42 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_ = FileInclude<Char_>>
 	class BasicParser {
-	private:
+	public:
 		struct PosInfo {
 			BasicStringCIter<Char_> pos;
 			Mark mark;
 		};
-		
+	
+	private:
 		BasicStringCIter<Char_> pos_;
 		BasicStringCIter<Char_> end_;
 		Mark mark_;
 		RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper_;
 		FilePath filePath_;
 		
-		BasicStringCIter<Char_> end();
-		
-		PosInfo getPosInfo();
-		
-		void setPosInfo(const PosInfo& posInfo);
-		
 		void parseFileAnchorMap(RcPtr<BasicAnchorKeeper<Char_>> loadedAnchorKeeper, Size indent);
 		
 		void except(FailedParseException::Reason reason);
-		
-		void exceptWithCheckSpace(FailedParseException::Reason reason);
 		
 	public:
 		BasicParser(const BasicString<Char_>& inputStr, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath = FilePath{});
 		
 		BasicParser(const BasicString<Char_>& inputStr, FilePath filePath = FilePath{}, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper = makeRcPtr<BasicAnchorKeeper<Char_>>());
+		
+		/// @brief Gets a const iterator at the end of the document.
+		///
+		/// @return Returns a const iterator at the end of the document.
+		BasicStringCIter<Char_> end();
+		
+		/// @brief Gets information about the current position.
+		///
+		/// @return Returns information about the current position.
+		PosInfo getPosInfo();
+		
+		/// @brief Sets a new position in the document.
+		///
+		/// @param posInfo Position information.
+		void setPosInfo(const PosInfo& posInfo);
 		
 		/// @brief Parses all input to the node data.
 		///

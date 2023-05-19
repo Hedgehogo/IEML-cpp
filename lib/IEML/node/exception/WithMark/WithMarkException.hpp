@@ -14,6 +14,6 @@ namespace ieml {
 		
 		String get_note() const override;
 		
-		Mark get_mark();
+		Mark get_mark() const;
 	};
 }

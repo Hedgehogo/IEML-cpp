@@ -33,14 +33,6 @@ namespace ieml {
 	void BasicParser<Char_, FileInclude_>::except(FailedParseException::Reason reason) {
 		throw FailedParseException{filePath_, reason, mark_};
 	}
-	
-	template<typename Char_, typename FileInclude_>
-	void BasicParser<Char_, FileInclude_>::exceptWithCheckSpace(FailedParseException::Reason reason) {
-		if(pos_ != end() && *pos_ == toChar<Char_>(' ')) {
-			throw FailedParseException{filePath_, FailedParseException::Reason::ImpermissibleSpace, mark_};
-		}
-		throw FailedParseException{filePath_, reason, mark_};
-	}
 }
 
 #include "parse/parseNull.inl"

@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include <IEML/node/exception/FailedConvertData/FailedConvertDataException.hpp>
+#include <IEML/node/exception/FailedDecodeData/FailedDecodeDataException.hpp>
 
 TEST(Node, exception) {
-	ieml::FailedConvertDataException exception{ieml::Mark{2, 5}, ieml::getTypeInfo<int>()};
+	ieml::FailedDecodeDataException exception{ieml::Mark{2, 5}, ieml::getTypeInfo<int>()};
 	ASSERT_EQ(exception.get_mark().line, 2);
 	ASSERT_EQ(exception.get_mark().symbol, 5);
 	ASSERT_EQ(exception.get_type_name(), std::string("int"));

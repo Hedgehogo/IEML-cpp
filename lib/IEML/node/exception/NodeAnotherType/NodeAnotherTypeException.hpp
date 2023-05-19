@@ -1,11 +1,11 @@
 #pragma once
 
 #include "../../NodeType/NodeType.hpp"
-#include "../WithMark/WithMarkException.hpp"
+#include "../Node/NodeException.hpp"
 
 namespace ieml {
 	/// @brief Exception thrown when a node has been asked for a value that is not a node
-	class NodeAnotherTypeException : public WithMarkException {
+	class NodeAnotherTypeException : public NodeException {
 	private:
 		NodeType requested_type_;
 		NodeType node_type_;
@@ -24,5 +24,7 @@ namespace ieml {
 		///
 		/// @return The type of node whose data was requested.
 		NodeType get_node_type();
+		
+		NodeAnotherTypeException* clone() const override;
 	};
 }

@@ -5,55 +5,48 @@
 namespace ieml {
 	namespace detail {
 		template<typename Char_, typename T>
-		bool DecodeImpl<Char_, T>::decode(const BasicNode<Char_>& node, T& object) {
+		Option<T> DecodeImpl<Char_, T>::decode(const BasicNode<Char_>& node) {
 			if constexpr(std::is_arithmetic_v<T>) {
 				if(node.isRaw()) {
 					BasicString<Char_> str{node.template as<BasicRawData<Char_>>().ok()};
-					if(auto number{toNumber<T, Char_>(str.cbegin(), str.cend())}) {
-						object = number.some();
-						return true;
-					}
+					return toNumber<T, Char_>(str.cbegin(), str.cend());
 				}
 			} else {
-				return Decode<Char_, T>::decode(node, object);
+				return Decode<Char_, T>::decode(node);
 			}
-			return false;
+			return {};
 		}
 		
 		template<typename Char_>
-		bool DecodeImpl<Char_, BasicRawData<Char_>>::decode(const BasicNode<Char_>& node, BasicRawData<Char_>& object) {
+		Option<BasicRawData<Char_>> DecodeImpl<Char_, BasicRawData<Char_>>::decode(const BasicNode<Char_>& node) {
 			if(auto strData = std::get_if<BasicRawData<Char_>>(&node.data_.data_)) {
-				object = *strData;
-				return true;
+				return {*strData};
 			}
-			return false;
+			return {};
 		}
 		
 		template<typename Char_>
-		bool DecodeImpl<Char_, BasicString<Char_>>::decode(const BasicNode<Char_>& node, BasicString<Char_>& object) {
+		Option<BasicString<Char_>> DecodeImpl<Char_, BasicString<Char_>>::decode(const BasicNode<Char_>& node) {
 			if(auto strData = std::get_if<BasicStringData<Char_>>(&node.data_.data_)) {
-				object = *strData;
-				return true;
+				return {*strData};
 			}
-			return false;
+			return {};
 		}
 		
 		template<typename Char_>
-		bool DecodeImpl<Char_, BasicListData<Char_>>::decode(const BasicNode<Char_>& node, BasicListData<Char_>& object) {
+		Option<BasicListData<Char_>> DecodeImpl<Char_, BasicListData<Char_>>::decode(const BasicNode<Char_>& node) {
 			if(auto listData = std::get_if<BasicListData<Char_>>(&node.data_.data_)) {
-				object = *listData;
-				return true;
+				return {*listData};
 			}
-			return false;
+			return {};
 		}
 		
 		template<typename Char_>
-		bool DecodeImpl<Char_, BasicMapData<Char_>>::decode(const BasicNode<Char_>& node, BasicMapData<Char_>& object) {
+		Option<BasicMapData<Char_>> DecodeImpl<Char_, BasicMapData<Char_>>::decode(const BasicNode<Char_>& node) {
 			if(auto mapData = std::get_if<BasicMapData<Char_>>(&node.data_.data_)) {
-				object = *mapData;
-				return true;
+				return {*mapData};
 			}
-			return false;
+			return {};
 		}
 	}
 }
