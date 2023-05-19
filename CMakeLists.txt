@@ -6,17 +6,37 @@ include(FetchContent)
 set(CMAKE_CXX_STANDARD 17)
 
 
+FetchContent_Declare(
+        ctre
+        GIT_REPOSITORY https://github.com/hanickadot/compile-time-regular-expressions.git
+        GIT_TAG        main
+        FIND_PACKAGE_ARGS NAMES ctre
+)
+
+FetchContent_Declare(
+        option_result_cpp
+        GIT_REPOSITORY https://github.com/Hedgehogo/option-result-cpp.git
+        GIT_TAG        main
+        FIND_PACKAGE_ARGS NAMES option_result_cpp
+)
+
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest
+        GIT_TAG        v1.13.0
+        FIND_PACKAGE_ARGS NAMES googletest
+)
+
+FetchContent_MakeAvailable(ctre option_result_cpp googletest)
+
+
 file(GLOB_RECURSE src "lib/*.hpp" "lib/*.cpp")
-
-add_subdirectory(modules/compile_time_regex)
-
-add_subdirectory(modules/option_result_cpp)
 
 add_library(${PROJECT_NAME} ${src})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC option_result_cpp)
 
-target_include_directories(${PROJECT_NAME} PUBLIC modules/compile_time_regex/include modules/option_result_cpp/lib)
+target_include_directories(${PROJECT_NAME} PUBLIC ${ctre_SOURCE_DIR}/include ${option_result_cpp_SOURCE_DIR}/lib)
 
 
 add_executable(${PROJECT_NAME}_ex main.cpp)
@@ -27,15 +47,6 @@ target_include_directories(${PROJECT_NAME}_ex PRIVATE lib/)
 
 
 file(GLOB_RECURSE test_src "tests/*.hpp" "tests/*.cpp")
-
-FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest
-        GIT_TAG        v1.13.0
-        FIND_PACKAGE_ARGS NAMES googletest
-)
-
-FetchContent_MakeAvailable(googletest)
 
 add_executable(${PROJECT_NAME}_tests ${test_src})
 
