@@ -11,10 +11,10 @@ namespace ieml {
 		struct Clear {};
 		
 		template<typename Char_, typename T>
-		GetResult<T&> getNode(T& node);
+		GetResult<Char_, T&> getNode(T& node);
 		
 		template<typename Char_, typename T, typename Step, typename... Steps>
-		GetResult<T&> getNode(T& node, Step&& step, Steps&&... steps);
+		GetResult<Char_, T&> getNode(T& node, Step&& step, Steps&&... steps);
 	}
 	
 	constexpr auto clear = detail::Clear{};
