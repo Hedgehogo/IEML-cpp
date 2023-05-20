@@ -1,6 +1,6 @@
 #include "getTypeName.hpp"
 
-#ifdef __GNUG__
+#if defined(__GNUG__)
 
 #include <cstdlib>
 #include <memory>
