@@ -1,4 +1,9 @@
 /cmake-build-debug/
+/cmake-build-debug-gcc/
+/cmake-build-debug-msvc/
+/cmake-build-debug-clang/
 /cmake-build-release/
+/cmake-build-release-gcc/
+/cmake-build-release-msvc/
+/cmake-build-release-clang/
 .idea/
-signature.txt

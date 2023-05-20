@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <variant>
-#include <unordered_map>
+#include <absl/container/flat_hash_map.h>
 #include "../../helpers/fileSystem/fileSystem.hpp"
 #include "../../helpers/pointers/pointers.hpp"
 #include "../../helpers/MetaFn/MetaFn.hpp"
@@ -46,11 +46,7 @@ namespace ieml {
 	
 	/// @brief Node data storing a map of named other nodes
 	template<typename Char_>
-#if (defined(__clang__) && (__clang_major__ >= 11)) || defined(_MSC_VER)
-	using BasicMapData = std::unordered_map<BasicString<Char_>, BasicNode<Char_>>;
-#else
-	using BasicMapData = std::map<BasicString<Char_>, BasicNode<Char_>>;
-#endif
+	using BasicMapData = absl::flat_hash_map<BasicString<Char_>, BasicNode<Char_>>;
 	
 	using MapData = BasicMapData<Char>;
 	
@@ -61,15 +57,17 @@ namespace ieml {
 	
 	template<typename Char_>
 	struct BaseMetaData {
-		BoxPtr<BasicNode<Char_>> node_;
+		BasicNode<Char_>* node_;
 		
-		BaseMetaData(BoxPtr<BasicNode<Char_>> node);
+		BaseMetaData(BasicNode<Char_>&& node);
 		
 		BaseMetaData(const BasicNode<Char_>& node);
 		
 		BaseMetaData(BaseMetaData<Char_>&& other);
 		
 		BaseMetaData(const BaseMetaData<Char_>& other);
+		
+		~BaseMetaData();
 		
 		BaseMetaData<Char_>& operator=(const BaseMetaData<Char_>& other);
 	};
@@ -79,7 +77,7 @@ namespace ieml {
 	struct BasicTagData : public BaseMetaData<Char_> {
 		BasicTag<Char_> tag_;
 		
-		BasicTagData(BoxPtr<BasicNode<Char_>> node, const BasicTag<Char_>& tag);
+		BasicTagData(BasicNode<Char_>&& node, const BasicTag<Char_>& tag);
 		
 		BasicTagData(const BasicNode<Char_>& node, const BasicTag<Char_>& tag);
 	};
@@ -91,7 +89,7 @@ namespace ieml {
 	struct BasicFileData : public BaseMetaData<Char_> {
 		FilePath filePath_;
 		
-		BasicFileData(BoxPtr<BasicNode<Char_>> node, const FilePath& filePath);
+		BasicFileData(BasicNode<Char_>&& node, const FilePath& filePath);
 		
 		BasicFileData(const BasicNode<Char_>& node, const FilePath& filePath);
 	};

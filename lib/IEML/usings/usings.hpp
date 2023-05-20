@@ -18,7 +18,6 @@ namespace ieml {
 	using BasicStringView = std::basic_string_view<Char_>;
 	
 	using Char = char;
-	using IStream = std::basic_istream<Char>;
 	using String = BasicString<Char>;
 	using Size = std::size_t;
 }

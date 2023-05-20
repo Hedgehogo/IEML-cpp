@@ -32,7 +32,8 @@ TEST(Node, decode_raw) {
 
 TEST(Node, decode_list) {
 	ieml::Node node{ieml::ListData{ieml::Node{ieml::NullData{}}, ieml::Node{ieml::RawData{""}}}};
-	auto list{node.as<ieml::ListData>().except()};
+	auto opt_list{node.as<ieml::ListData>()};
+	auto& list{opt_list.except()};
 	
 	EXPECT_NO_THROW(list.at(0));
 	ASSERT_TRUE(list.at(0).isNull());

@@ -26,7 +26,6 @@ namespace ieml {
 	template<typename Char_>
 	class BasicNode {
 	public:
-		
 		BasicNode(BasicNodeData<Char_> data, Mark mark = {0, 0});
 		
 		template<typename T>

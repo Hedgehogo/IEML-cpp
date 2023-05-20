@@ -8,7 +8,7 @@ namespace ieml {
 	struct GetFromStep<N, BasicTagData<Char_>> {
 		static N* get(N& node) {
 			if(auto tagData = std::get_if<BasicTagData<Char_>>(&node.data_.data_))
-				return tagData->node_.get();
+				return tagData->node_;
 			return nullptr;
 		}
 	};
@@ -17,7 +17,7 @@ namespace ieml {
 	struct GetFromStep<N, BasicFileData<Char_>> {
 		static N* get(N& node) {
 			if(auto fileData = std::get_if<BasicFileData<Char_>>(&node.data_.data_))
-				return fileData->node_.get();
+				return fileData->node_;
 			return nullptr;
 		}
 	};

@@ -98,7 +98,7 @@ namespace ieml {
 				}
 				return Option<R>{number};
 			} else {
-				return Option<R>{integerPart.value};
+				return Option<R>{static_cast<R>(integerPart.value)};
 			}
 		}
 		
