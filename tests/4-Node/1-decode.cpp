@@ -10,6 +10,10 @@ TEST(Node, decode_int) {
 	ieml::Node node_basis{ieml::RawData{"16'FF"}};
 	ASSERT_FLOAT_EQ(node_basis.as<int>().except(), 255);
 	ASSERT_FLOAT_EQ(node_basis.as<float>().except(), 255.f);
+	
+	ieml::Node node_basis_comment{ieml::RawData{"16'FF # hello"}};
+	ASSERT_FLOAT_EQ(node_basis_comment.as<int>().except(), 255);
+	ASSERT_FLOAT_EQ(node_basis_comment.as<float>().except(), 255.f);
 }
 
 TEST(Node, decode_float) {
@@ -18,6 +22,17 @@ TEST(Node, decode_float) {
 	
 	ieml::Node node_basis{ieml::RawData{"3'0.1"}};
 	ASSERT_FLOAT_EQ(node_basis.as<float>().except(), 1.f/3.f);
+	
+	ieml::Node node_basis_comment{ieml::RawData{"3'0.1 # hello"}};
+	ASSERT_FLOAT_EQ(node_basis_comment.as<float>().except(), 1.f/3.f);
+}
+
+TEST(Node, decode_bool) {
+	ieml::Node node{ieml::RawData{"yes"}};
+	ASSERT_FLOAT_EQ(node.as<bool>().except(), true);
+	
+	ieml::Node node_comment{ieml::RawData{"yes # hello"}};
+	ASSERT_FLOAT_EQ(node_comment.as<bool>().except(), true);
 }
 
 TEST(Node, decode_string) {

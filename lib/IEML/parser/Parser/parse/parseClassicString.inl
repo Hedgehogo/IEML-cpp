@@ -53,9 +53,12 @@ namespace ieml {
 						break;
 					case toChar<Char_>('\n'):
 						mark.enterCount += 1;
-						mark.lastLength = 0;
+						
 						mark.pos += 1;
-						if(!matchIndent<Char_>(mark.pos, end, indent)) {
+						if(matchIndent<Char_>(mark.pos, end, indent)) {
+							mark.lastLength = indent;
+						} else {
+							mark.lastLength = 0;
 							return {};
 						}
 						break;
@@ -67,9 +70,11 @@ namespace ieml {
 			} else if(*mark.pos == toChar<Char_>('\n')) {
 				mark.enterCount += 1;
 				mark.realLength += 1;
-				mark.lastLength = 0;
 				mark.pos += 1;
-				if(!matchIndent<Char_>(mark.pos, end, indent)) {
+				if(matchIndent<Char_>(mark.pos, end, indent)) {
+					mark.lastLength = indent;
+				} else {
+					mark.lastLength = 0;
 					return {};
 				}
 			} else {

@@ -1,6 +1,7 @@
 //included into parse.hpp
 
 #include <cmath>
+#include "../../../parser/helpers/blankLines/blankLines.hpp"
 
 namespace ieml {
 	namespace number {
@@ -15,7 +16,7 @@ namespace ieml {
 		}
 		
 		template<typename C, typename T>
-		Parser<C, T>::Parser(Parser::IterType&& first, Parser::IterType&& last) : first_(first), last_(last) {
+		Parser<C, T>::Parser(Parser::IterType&& first, Parser::IterType&& last) : pos_(first), last_(last) {
 		}
 		
 		template<typename C, typename T>
@@ -26,12 +27,12 @@ namespace ieml {
 		template<typename C, typename T>
 		bool Parser<C, T>::parseMinus() {
 			bool minus{false};
-			if(first_ != last_) {
-				if(*first_ == toChar('-')) {
+			if(pos_ != last_) {
+				if(*pos_ == toChar('-')) {
 					minus = true;
-					++first_;
-				} else if(*first_ == toChar('-')) {
-					++first_;
+					++pos_;
+				} else if(*pos_ == toChar('-')) {
+					++pos_;
 				}
 			}
 			return minus;
@@ -56,11 +57,11 @@ namespace ieml {
 		NumberPart Parser<C, T>::parseNumberPart(BaseType base) {
 			long long value{0};
 			long long factor{1};
-			for(; first_ != last_; ++first_) {
-				if(*first_ == toChar('_')) {
+			for(; pos_ != last_; ++pos_) {
+				if(*pos_ == toChar('_')) {
 					continue;
 				}
-				BaseType digit{parseDigit(*first_, base)};
+				BaseType digit{parseDigit(*pos_, base)};
 				if(digit == 255) {
 					return {value, factor};
 				}
@@ -88,8 +89,8 @@ namespace ieml {
 			}
 			if constexpr(!std::numeric_limits<R>::is_integer) {
 				R number = integerPart.value;
-				if(first_ != last_ && *first_ == toChar('.')) {
-					++first_;
+				if(pos_ != last_ && *pos_ == toChar('.')) {
+					++pos_;
 					auto fractionalPart{parseNumberPart(base)};
 					if(!fractionalPart.correct()) {
 						return {};
@@ -110,11 +111,11 @@ namespace ieml {
 			if(!integerPartOrBase.notEmpty()) {
 				return {0, 0};
 			}
-			if(first_ == last_) {
+			if(pos_ == last_) {
 				return {addMinus(static_cast<R>(integerPartOrBase.value), minus), 10};
 			}
-			if(*first_ == toChar('\'')) {
-				++first_;
+			if(*pos_ == toChar('\'')) {
+				++pos_;
 				if(integerPartOrBase.value >= 1 && integerPartOrBase.value <= 36) {
 					auto number{parseNumber<R>(integerPartOrBase.value)};
 					if(number) {
@@ -125,8 +126,8 @@ namespace ieml {
 			}
 			if constexpr(!std::numeric_limits<R>::is_integer) {
 				R number = integerPartOrBase.value;
-				if(*first_ == toChar('.')) {
-					++first_;
+				if(*pos_ == toChar('.')) {
+					++pos_;
 					auto fractionalPart{parseNumberPart(10)};
 					if(!fractionalPart.correct()) {
 						return {0, 0};
@@ -144,8 +145,8 @@ namespace ieml {
 			if(!number.correct()) {
 				return Option<T>{};
 			}
-			if(first_ != last_ && *first_ == toChar('e')) {
-				++first_;
+			if(pos_ != last_ && *pos_ == toChar('e')) {
+				++pos_;
 				auto exponent{parseNumberBase<long long>()};
 				if(!number.correct()) {
 					return Option<T>{};
@@ -156,25 +157,33 @@ namespace ieml {
 		}
 		
 		template<typename C, typename T>
-		void Parser<C, T>::skipSpaces() {
-			while(first_ != last_ && *first_ == toChar(' ')) {
-				++first_;
-			}
+		void Parser<C, T>::skipBlankLine() {
+			pos_ = ctre::starts_with<reBlankLine>(pos_, last_).end();
 		}
 		
 		template<typename C, typename T>
 		bool Parser<C, T>::isComplete() {
-			return first_ == last_;
+			return pos_ == last_;
+		}
+		
+		template<typename C, typename T>
+		BasicStringCIter<C> Parser<C, T>::pos() {
+			return pos_;
+		}
+		
+		template<typename C, typename T>
+		BasicStringCIter<C> Parser<C, T>::last() {
+			return last_;
 		}
 	}
 	
 	template<typename T, typename C>
-	std::enable_if_t<std::is_arithmetic_v<T>, Option<T>> toNumber(number::StringIter<C>&& first, number::StringIter<C>&& last) {
-		number::Parser<C, T> parser{std::forward<number::StringIter<C>>(first), std::forward<number::StringIter<C>>(last)};
+	std::enable_if_t<std::is_arithmetic_v<T>, Option<T>> toNumber(BasicStringCIter<C>&& first, BasicStringCIter<C>&& last) {
+		number::Parser<C, T> parser{std::forward<BasicStringCIter<C>>(first), std::forward<BasicStringCIter<C>>(last)};
 		auto number{parser.parseNumberScientific()};
-		parser.skipSpaces();
+		parser.skipBlankLine();
 		if(number && parser.isComplete()) {
-			return std::move(number.some());
+			return number;
 		}
 		return {};
 	}

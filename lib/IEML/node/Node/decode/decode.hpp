@@ -17,6 +17,12 @@ namespace ieml {
 			static Option<T> decode(const BasicNode<Char_>& node);
 		};
 		
+		/// @brief Help structure to implement the conversion functions from a node to bool
+		template<typename Char_>
+		struct DecodeImpl<Char_, bool> {
+			static Option<bool> decode(const BasicNode<Char_>& node);
+		};
+		
 		/// @brief Help structure to implement the conversion functions from a node to raw data
 		template<typename Char_>
 		struct DecodeImpl<Char_, BasicRawData<Char_>> {

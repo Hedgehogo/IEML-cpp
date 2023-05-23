@@ -25,7 +25,7 @@ FetchContent_Declare(
 FetchContent_Declare(
         abseil
         GIT_REPOSITORY https://github.com/abseil/abseil-cpp
-        GIT_TAG        master
+        GIT_TAG        lts_2023_01_25
         FIND_PACKAGE_ARGS NAMES absl
 )
 
@@ -33,7 +33,7 @@ FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://github.com/google/googletest.git
         GIT_TAG        v1.13.0
-        FIND_PACKAGE_ARGS NAMES googletest
+        FIND_PACKAGE_ARGS NAMES gtest
 )
 
 FetchContent_MakeAvailable(ctre option_result_cpp abseil googletest)

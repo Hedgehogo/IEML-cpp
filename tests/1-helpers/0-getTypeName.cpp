@@ -6,7 +6,7 @@
 class Test{};
 
 template<>
-struct ieml::TypeName<testing::Test> {
+struct ieml::TypeName<Test> {
 	static ieml::String get() {
 		return ieml::String{"Test Alias"};
 	}
@@ -14,5 +14,5 @@ struct ieml::TypeName<testing::Test> {
 
 TEST(helpers, getTypeName) {
 	ASSERT_EQ(ieml::getTypeName<ieml::Mark>(), std::string("ieml::Mark"));
-	ASSERT_EQ(ieml::getTypeName<Test>(), std::string("Test Alias"));
+	ASSERT_EQ(ieml::getTypeName<::Test>(), std::string("Test Alias"));
 }

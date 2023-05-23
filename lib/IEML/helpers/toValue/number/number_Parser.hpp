@@ -1,11 +1,9 @@
 #pragma once
 
-#include "../../../../usings/usings.hpp"
+#include "../../../usings/usings.hpp"
 
 namespace ieml {
 	namespace number {
-		template<typename C>
-		using StringIter = typename std::basic_string<C>::const_iterator;
 		using BaseType = std::uint8_t;
 		
 		struct NumberPart {
@@ -31,7 +29,7 @@ namespace ieml {
 		template<typename C, typename T>
 		class Parser {
 		public:
-			using IterType = typename std::basic_string<C>::const_iterator;
+			using IterType = BasicStringCIter<C>;
 			
 			Parser(IterType&& first, IterType&& last);
 			
@@ -51,18 +49,22 @@ namespace ieml {
 			
 			Option<T> parseNumberScientific();
 			
-			void skipSpaces();
+			void skipBlankLine();
 			
 			bool isComplete();
+			
+			IterType pos();
+			
+			IterType last();
 		
 		private:
-			IterType first_;
+			IterType pos_;
 			IterType last_;
 		};
 	}
 	
 	template<typename T, typename C>
-	std::enable_if_t<std::is_arithmetic_v<T>, Option<T>> toNumber(number::StringIter<C>&& first, number::StringIter<C>&& last);
+	std::enable_if_t<std::is_arithmetic_v<T>, Option<T>> toNumber(BasicStringCIter<C>&& first, BasicStringCIter<C>&& last);
 }
 
-#include "parseNumber.inl"
+#include "number_Parser.inl"

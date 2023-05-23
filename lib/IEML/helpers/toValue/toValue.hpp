@@ -1,15 +1,18 @@
 #pragma once
 
-#include "toNumber/toNumber.hpp"
+#include "number/number_Parser.hpp"
 
 namespace ieml {
-	/// @brief Converts a letter into the bool.
+	/// @brief Converts a string into the bool.
 	///
 	/// @param first Beginning of a string containing a bool.
 	/// @param last End of a string containing a bool.
 	///
-	/// @return bool The bool obtained from the string.
+	/// @tparam Char_ String character type.
 	///
-	/// @note Does not check for correct input.
-	bool toBool(String::const_iterator first, String::const_iterator last);
+	/// @return bool The bool obtained from the string.
+	template<typename Char_>
+	Option<bool> toBool(BasicStringCIter<Char_> first, BasicStringCIter<Char_> last);
 }
+
+#include "toValue.inl"
