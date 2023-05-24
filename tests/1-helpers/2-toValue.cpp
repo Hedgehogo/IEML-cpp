@@ -196,20 +196,20 @@ TEST(helpers, toNumber) {
 
 TEST(helpers, toBool) {
 	{
-		ieml::String str{"2'10e1"};
-		ieml::Option<int> number{ieml::toNumber<int, ieml::Char>(str.cbegin(), str.cend())};
-		ASSERT_TRUE(number.is_some());
-		ASSERT_EQ(number.some(), 4);
+		ieml::String str{"yes"};
+		ieml::Option<bool> boolValue{ieml::toBool<ieml::Char>(str.cbegin(), str.cend())};
+		ASSERT_TRUE(boolValue.is_some());
+		ASSERT_EQ(boolValue.some(), true);
 	}
 	{
-		ieml::String str{"2'10e1 # hello"};
-		ieml::Option<int> number{ieml::toNumber<int, ieml::Char>(str.cbegin(), str.cend())};
-		ASSERT_TRUE(number.is_some());
-		ASSERT_EQ(number.some(), 4);
+		ieml::String str{"no # hello"};
+		ieml::Option<bool> boolValue{ieml::toBool<ieml::Char>(str.cbegin(), str.cend())};
+		ASSERT_TRUE(boolValue.is_some());
+		ASSERT_EQ(boolValue.some(), false);
 	}
 	{
-		ieml::String str{"2'10e1k"};
-		ieml::Option<int> number{ieml::toNumber<int, ieml::Char>(str.cbegin(), str.cend())};
-		ASSERT_FALSE(number.is_some());
+		ieml::String str{" no"};
+		ieml::Option<bool> boolValue{ieml::toBool<ieml::Char>(str.cbegin(), str.cend())};
+		ASSERT_FALSE(boolValue.is_some());
 	}
 }

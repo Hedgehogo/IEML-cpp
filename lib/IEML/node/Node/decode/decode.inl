@@ -18,7 +18,7 @@ namespace ieml {
 		template<typename Char_>
 		Option<bool> DecodeImpl<Char_, bool>::decode(const BasicNode<Char_>& node) {
 			if(auto rawData{std::get_if<BasicRawData<Char_>>(&node.data_.data_)}) {
-				return toBool<Char_>(rawData->str.cbegin(), rawData->str.cbegin());
+				return toBool<Char_>(rawData->str.cbegin(), rawData->str.cend());
 			}
 			return {};
 		}

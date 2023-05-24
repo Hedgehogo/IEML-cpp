@@ -31,8 +31,8 @@ TEST(Node, decode_bool) {
 	ieml::Node node{ieml::RawData{"yes"}};
 	ASSERT_FLOAT_EQ(node.as<bool>().except(), true);
 	
-	ieml::Node node_comment{ieml::RawData{"yes # hello"}};
-	ASSERT_FLOAT_EQ(node_comment.as<bool>().except(), true);
+	ieml::Node node_comment{ieml::RawData{"no # hello"}};
+	ASSERT_FLOAT_EQ(node_comment.as<bool>().except(), false);
 }
 
 TEST(Node, decode_string) {
