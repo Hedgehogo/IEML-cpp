@@ -3,8 +3,8 @@
 #include "../../helpers/blankLines/blankLines.hpp"
 
 namespace ieml {
-	static constexpr auto reTakeAnchor = ctll::fixed_string{R"(&([^\"\n<> ]*) ?)"};
-	static constexpr auto reGetAnchor = ctll::fixed_string{R"(\*([^\"\n<> ]*) ?)"};
+	static constexpr auto reTakeAnchor = ctll::fixed_string{R"(&([^\n ]+)( | ?(?=\n)))"};
+	static constexpr auto reGetAnchor = ctll::fixed_string{R"(\*([^\n ]+))"};
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicTakeAnchorData<Char_>> BasicParser<Char_, FileInclude_>::parseTakeAnchor(Size indent) {

@@ -6,20 +6,34 @@
 namespace ieml {
 	static constexpr auto reFile = ctll::fixed_string{R"(< [^\n]*)"};
 	
+	namespace detail {
+		template<typename FileInclude_>
+		static auto hasCustomFilePathHelper(FileInclude_&&) -> decltype(FileInclude_::getFilePath(std::declval<FilePath>(), std::declval<FilePath>()), std::true_type{});
+		static std::false_type hasCustomFilePathHelper(...);
+		
+		template<typename FileInclude_>
+		constexpr auto hasCustomFilePath = std::is_same_v<decltype(hasCustomFilePathHelper(std::declval<FileInclude_>())), std::true_type>;
+	}
+	
 	template<typename Char_>
-	BasicNodeData<Char_> FileInclude<Char_>::include(RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath) {
+	BasicNodeData<Char_> FileInclude<Char_>::include(RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper, const FilePath& filePath) {
 		BasicString<Char_> inputStr{readFile<Char_>(filePath)};
 		BasicParser<Char_> parser{inputStr, anchorKeeper};
 		return parser.parse();
 	}
 	
-	template<typename Char_>
+	template<typename FileInclude_>
 	FilePath getFilePath(const FilePath& parentFilePath, FilePath&& newFilePath) {
-		FilePath normalFilePath{newFilePath.concat(".ieml").lexically_normal().make_preferred()};
-		FilePath relativeFilePath{FilePath{parentFilePath}.remove_filename() / normalFilePath};
-		if(fs::exists(relativeFilePath))
-			return relativeFilePath.lexically_normal();
-		return normalFilePath;
+		if constexpr(detail::hasCustomFilePath<FileInclude_>) {
+			return FileInclude_::getFilePath(parentFilePath, std::forward<FilePath>(newFilePath));
+		} else {
+			FilePath normalFilePath{newFilePath.concat(".ieml").lexically_normal().make_preferred()};
+			FilePath relativeFilePath{FilePath{parentFilePath}.remove_filename() / normalFilePath};
+			if(fs::exists(relativeFilePath))
+				return relativeFilePath.lexically_normal();
+			return normalFilePath;
+		}
+		return {};
 	}
 	
 	template<typename Char_, typename FileInclude_>
@@ -44,7 +58,8 @@ namespace ieml {
 		Mark mark{mark_};
 		if(auto find{matchAndMove<reFile, Char_>(pos_, end(), mark_)}) {
 			RcPtr<BasicAnchorKeeper<Char_>> loadedAnchorKeeper{makeRcPtr<BasicAnchorKeeper<Char_>>(anchorKeeper_)};
-			FilePath loadedFilePath{getFilePath<Char_>(filePath_, {find.begin() + 2, find.end()})};
+			FilePath newFilePath{BasicString<Char_>{find.begin() + 2, find.end()}};
+			FilePath loadedFilePath{getFilePath<FileInclude_>(filePath_, std::move(newFilePath))};
 			parseFileAnchorMap(loadedAnchorKeeper, indent);
 			return {BasicFileData<Char_>{BasicNode<Char_>{FileInclude_::include(loadedAnchorKeeper, loadedFilePath), mark}, loadedFilePath}};
 		}

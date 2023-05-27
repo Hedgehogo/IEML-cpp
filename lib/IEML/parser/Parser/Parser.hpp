@@ -156,7 +156,7 @@ namespace ieml {
 	
 	template<typename Char_>
 	struct FileInclude {
-		static BasicNodeData<Char_> include(RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper, FilePath filePath);
+		static BasicNodeData<Char_> include(RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper, const FilePath& filePath);
 	};
 }
 

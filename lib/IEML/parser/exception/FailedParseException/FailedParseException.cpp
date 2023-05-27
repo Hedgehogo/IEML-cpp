@@ -24,8 +24,10 @@ namespace ieml {
 			return "A tab was detected. A lower level of indentation was expected.";
 		} else if(reason == FailedParseException::Reason::AnchorAlreadyExists) {
 			return "An attempt was made to take an anchor with the name of an anchor that already exists.";
+		} else if(reason == FailedParseException::Reason::IncompleteString) {
+			return "The end of the file has been reached, but the String is not completed.";
 		}
-		return "The end of the file has been reached, but the String is not completed.";
+		return "There are extra characters at the end of the document.";
 	}
 	
 	String FailedParseException::get_description() const {

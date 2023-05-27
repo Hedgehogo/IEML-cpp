@@ -4,7 +4,7 @@
 #include "../../helpers/tag/tag.hpp"
 
 namespace ieml {
-	static constexpr auto reMapKey = ctll::fixed_string{R"(([^\"\n<>]*?):( |(?=\n)))"};
+	static constexpr auto reMapKey = ctll::fixed_string{R"(([^\n]*?):( | ?(?=\n)))"};
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicMapData<Char_>> BasicParser<Char_, FileInclude_>::parseMap(Size indent) {
@@ -24,7 +24,7 @@ namespace ieml {
 					setPosInfo(posInfo);
 					BasicString<Char_> keyStr{find.template get<1>().str()};
 					BasicNodeData nodeData{parseNode(indent + 1)};
-					nodes.emplace(keyStr, BasicNode < Char_ > {nodeData, posInfo.mark});
+					nodes.emplace(keyStr, BasicNode<Char_>{nodeData, posInfo.mark});
 					posInfo = getPosInfo();
 					
 					if(pos_ != end() && *pos_ != toChar<Char_>('\n'))

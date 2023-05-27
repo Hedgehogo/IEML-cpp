@@ -14,6 +14,7 @@ namespace ieml {
 			ImpermissibleTab,
 			AnchorAlreadyExists,
 			IncompleteString,
+			IncompleteDocument,
 		};
 	
 	private:

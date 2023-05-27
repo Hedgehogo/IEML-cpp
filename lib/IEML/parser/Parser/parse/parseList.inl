@@ -3,7 +3,7 @@
 #include "../../helpers/match/match.hpp"
 
 namespace ieml {
-	static constexpr auto reListSpecial = ctll::fixed_string{R"(-( |(?=\n)))"};
+	static constexpr auto reListSpecial = ctll::fixed_string{R"(-( | ?(?=\n)))"};
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicListData<Char_>> BasicParser<Char_, FileInclude_>::parseList(Size indent) {
