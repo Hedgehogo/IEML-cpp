@@ -54,5 +54,21 @@ namespace ieml {
 			}
 			return {};
 		}
+		
+		template<typename Char_>
+		Option<BasicListData<Char_> const&> DecodeImpl<Char_, BasicListData<Char_> const&>::decode(const BasicNode<Char_>& node) {
+			if(auto listData{std::get_if<BasicListData<Char_>>(&node.data_.data_)}) {
+				return {*listData};
+			}
+			return {};
+		}
+		
+		template<typename Char_>
+		Option<BasicMapData<Char_> const&> DecodeImpl<Char_, BasicMapData<Char_> const&>::decode(const BasicNode<Char_>& node) {
+			if(auto mapData{std::get_if<BasicMapData<Char_>>(&node.data_.data_)}) {
+				return {*mapData};
+			}
+			return {};
+		}
 	}
 }

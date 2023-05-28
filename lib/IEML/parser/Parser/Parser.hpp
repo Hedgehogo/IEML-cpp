@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../../node/NodeData/NodeData.hpp"
-#include "../../anchor/AnchorKeeper/AnchorKeeper.hpp"
+#include "../../node/Node/Node.hpp"
 #include "../../usings/usings.hpp"
 #include "../exception/FailedParseException/FailedParseException.hpp"
 
@@ -158,6 +157,12 @@ namespace ieml {
 	struct FileInclude {
 		static BasicNodeData<Char_> include(RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper, const FilePath& filePath);
 	};
+	
+	template<typename Char_ = Char>
+	BasicNode<Char_> fromFile(const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper = makeRcPtr<BasicAnchorKeeper<Char_>>());
+	
+	template<typename Char_ = Char>
+	BasicNode<Char_> from(const BasicString<Char_>& inputStr, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper = makeRcPtr<BasicAnchorKeeper<Char_>>());
 }
 
 #include "Parser.inl"

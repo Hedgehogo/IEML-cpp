@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <IEML/node/Node/Node.hpp>
+#include <IEML/parser.hpp>
 
 static auto testFiles = absl::flat_hash_map<ieml::String , ieml::String>{
 	std::make_pair(

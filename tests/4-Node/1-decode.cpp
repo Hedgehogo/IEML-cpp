@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <IEML/node/Node/Node.hpp>
+#include <IEML/parser.hpp>
 
 TEST(Node, decode_int) {
 	ieml::Node node{ieml::RawData{"-8_246"}};

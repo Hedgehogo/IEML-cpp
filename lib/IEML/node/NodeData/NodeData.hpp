@@ -84,20 +84,21 @@ namespace ieml {
 	
 	using TagData = BasicTagData<Char>;
 	
+	template<typename Char_>
+	class BasicAnchorKeeper;
+	
 	/// @brief Node data storing the file path and other data
 	template<typename Char_>
 	struct BasicFileData : public BaseMetaData<Char_> {
+		RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper_;
 		FilePath filePath_;
 		
-		BasicFileData(BasicNode<Char_>&& node, const FilePath& filePath);
+		BasicFileData(BasicNode<Char_>&& node, const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper);
 		
-		BasicFileData(const BasicNode<Char_>& node, const FilePath& filePath);
+		BasicFileData(const BasicNode<Char_>& node, const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper);
 	};
 	
 	using FileData = BasicFileData<Char>;
-	
-	template<typename Char_>
-	class BasicAnchorKeeper;
 	
 	template<typename Char_>
 	struct BaseAnchorData {

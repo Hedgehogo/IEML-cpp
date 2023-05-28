@@ -17,7 +17,7 @@ namespace ieml {
 		if(filePath_.empty()) {
 			data = parseNode(indent);
 		} else {
-			data = BasicNodeData<Char_>{BasicFileData<Char_>{parseNode(indent), filePath_}};
+			data = BasicNodeData<Char_>{BasicFileData<Char_>{parseNode(indent), filePath_, anchorKeeper_}};
 		}
 		
 		skipBlankLinesLn(pos_, end(), mark_);

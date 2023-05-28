@@ -33,6 +33,20 @@ namespace ieml {
 	void BasicParser<Char_, FileInclude_>::except(FailedParseException::Reason reason) {
 		throw FailedParseException{filePath_, reason, mark_};
 	}
+	
+	template<typename Char_>
+	BasicNode<Char_> fromFile(const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper) {
+		FilePath normalFilePath{FilePath{filePath}.concat(".ieml").lexically_normal().make_preferred()};
+		BasicString<Char_> inputStr{readFile<Char_>(normalFilePath)};
+		BasicParser<Char_> parser{inputStr, normalFilePath, anchorKeeper};
+		return BasicNode<Char_>{parser.parse()};
+	}
+	
+	template<typename Char_>
+	BasicNode<Char_> from(const BasicString<Char_>& inputStr, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper) {
+		BasicParser<Char_> parser{inputStr, anchorKeeper};
+		return BasicNode<Char_>{parser.parse()};
+	}
 }
 
 #include "parse/parseNull.inl"

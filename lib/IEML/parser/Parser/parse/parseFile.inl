@@ -44,7 +44,7 @@ namespace ieml {
 			if(matchIndent<Char_>(pos_, end(), mark_, indent)) {
 				if(auto map{parseMap(indent)}) {
 					for(auto& [key, value]: map.some()) {
-						loadedAnchorKeeper->add(key, value);
+						loadedAnchorKeeper->addToFile(key, value);
 					}
 					return;
 				}
@@ -61,7 +61,7 @@ namespace ieml {
 			FilePath newFilePath{BasicString<Char_>{find.begin() + 2, find.end()}};
 			FilePath loadedFilePath{getFilePath<FileInclude_>(filePath_, std::move(newFilePath))};
 			parseFileAnchorMap(loadedAnchorKeeper, indent);
-			return {BasicFileData<Char_>{BasicNode<Char_>{FileInclude_::include(loadedAnchorKeeper, loadedFilePath), mark}, loadedFilePath}};
+			return {BasicFileData<Char_>{BasicNode<Char_>{FileInclude_::include(loadedAnchorKeeper, loadedFilePath), mark}, loadedFilePath, loadedAnchorKeeper}};
 		}
 		return {};
 	}

@@ -43,11 +43,13 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	BasicFileData<Char_>::BasicFileData(BasicNode<Char_>&& node, const FilePath& filePath) : BaseMetaData<Char_>(std::forward<BasicNode<Char_> >(node)), filePath_(filePath) {
+	BasicFileData<Char_>::BasicFileData(BasicNode<Char_>&& node, const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper) :
+		BaseMetaData<Char_>(std::forward<BasicNode<Char_> >(node)), filePath_(filePath), anchorKeeper_(anchorKeeper) {
 	}
 	
 	template<typename Char_>
-	BasicFileData<Char_>::BasicFileData(const BasicNode<Char_>& node, const FilePath& filePath) : BaseMetaData<Char_>(node), filePath_(filePath) {
+	BasicFileData<Char_>::BasicFileData(const BasicNode<Char_>& node, const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper) :
+		BaseMetaData<Char_>(node), filePath_(filePath), anchorKeeper_(anchorKeeper) {
 	}
 	
 	template<typename Char_>

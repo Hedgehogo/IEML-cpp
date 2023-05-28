@@ -1,4 +1,4 @@
-#include "print.hpp"
+#include "debug.hpp"
 #include <iostream>
 
 namespace ieml {
@@ -11,7 +11,7 @@ namespace ieml {
 		return stream;
 	}
 	
-	void printNode(Size indentSize, std::ostream& stream, const Node& node) {
+	void debug(Node const& node, std::ostream& stream, Size indentSize) {
 		IndentOut indent{indentSize};
 		auto& clearNode{node.getClear()};
 		auto type{clearNode.getType()};
@@ -41,22 +41,17 @@ namespace ieml {
 			case NodeType::List:
 				for(Size i{0}; i < clearNode.getListSize().ok(); ++i) {
 					stream << indent << "- \n";
-					printNode(indentSize + 1, stream, clearNode.at(i).ok());
+					debug(clearNode.at(i).ok(), stream, indentSize + 1);
 				}
 				break;
 			case NodeType::Map:
 				for(auto& [key, value]: clearNode.getMap().ok()) {
 					stream << indent << key << ": \n";
-					printNode(indentSize + 1, stream, value);
+					debug(value, stream, indentSize + 1);
 				}
 				break;
 			default:
 				break;
 		}
-	}
-	
-	std::ostream& operator<<(std::ostream& stream, BasicNode<Char>& node) {
-		printNode(0, stream, node);
-		return stream;
 	}
 }

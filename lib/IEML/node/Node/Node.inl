@@ -1,7 +1,6 @@
 //included into Node.hpp
 #include "../../helpers/readFile/readFile.hpp"
 #include "../../helpers/getTypeName/getTypeName.hpp"
-#include "../../parser/Parser/Parser.hpp"
 #include "get/get.hpp"
 #include "getFrom.inl"
 
@@ -18,12 +17,6 @@ namespace ieml {
 	template<typename T>
 	BasicNode<Char_>::BasicNode(T data, Mark mark) :
 		data_(BasicNodeData<Char_>{std::move(data)}), mark_(mark) {
-	}
-	
-	template<typename Char_>
-	template<typename T>
-	BasicNode<Char_>::BasicNode(T data, FilePath filePath, Mark mark) :
-		data_(BasicNodeData<Char_>{BasicFileData<Char_>{BasicNodeData<Char_>{std::move(data)}, filePath}}), mark_(mark) {
 	}
 	
 	template<typename Char_>
@@ -173,7 +166,7 @@ namespace ieml {
 	template<typename Char_>
 	template<NodeType... Types>
 	BasicNode<Char_>& BasicNode<Char_>::getClearData() {
-		if(auto clearNode{getFromStep<const BasicNode<Char_>, ToNodeData<Types, Char_>...>(*this)}) {
+		if(auto clearNode{getFromStep<BasicNode<Char_>, ToNodeData<Types, Char_>...>(*this)}) {
 			return *clearNode;
 		}
 		return *this;
@@ -230,7 +223,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	Option<BasicTag<Char_>> BasicNode<Char_>::getTag() const {
+	Option<BasicTag<Char_> const&> BasicNode<Char_>::getTag() const {
 		auto& clearNode{getClear<NodeType::File, NodeType::TakeAnchor, NodeType::GetAnchor>()};
 		if(auto tagData{std::get_if<BasicTagData<Char_>>(&clearNode.data_.data_)}) {
 			return {tagData->tag_};
@@ -239,7 +232,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	Option<FilePath> BasicNode<Char_>::getFilePath() const {
+	Option<FilePath const&> BasicNode<Char_>::getFilePath() const {
 		auto& clearNode{getClear<NodeType::Tag, NodeType::TakeAnchor, NodeType::GetAnchor>()};
 		if(auto fileData{std::get_if<BasicFileData<Char_>>(&clearNode.data_.data_)}) {
 			return {fileData->filePath_};
@@ -248,7 +241,16 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	Option<BasicString<Char_>> BasicNode<Char_>::getTakeAnchorName() const {
+	Option<BasicAnchorKeeper<Char_> const&> BasicNode<Char_>::getFileAnchorKeeper() const {
+		auto& clearNode{getClear<NodeType::Tag, NodeType::TakeAnchor, NodeType::GetAnchor>()};
+		if(auto fileData{std::get_if<BasicFileData<Char_>>(&clearNode.data_.data_)}) {
+			return {*fileData->anchorKeeper_};
+		}
+		return {};
+	}
+	
+	template<typename Char_>
+	Option<BasicString<Char_> const&> BasicNode<Char_>::getTakeAnchorName() const {
 		auto& clearNode{getClear<NodeType::Tag, NodeType::File, NodeType::GetAnchor>()};
 		if(auto takeAnchorData{std::get_if<BasicTakeAnchorData<Char_>>(&clearNode.data_.data_)}) {
 			return {takeAnchorData->name_};
@@ -257,7 +259,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	Option<BasicString<Char_>> BasicNode<Char_>::getGetAnchorName() const {
+	Option<BasicString<Char_> const&> BasicNode<Char_>::getGetAnchorName() const {
 		auto& clearNode{getClear<NodeType::Tag, NodeType::File, NodeType::TakeAnchor>()};
 		if(auto getAnchorData{std::get_if<BasicGetAnchorData<Char_>>(&clearNode.data_.data_)}) {
 			return {getAnchorData->name_};
@@ -266,7 +268,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	Option<BasicString<Char_>> BasicNode<Char_>::getAnchorName() const {
+	Option<BasicString<Char_> const&> BasicNode<Char_>::getAnchorName() const {
 		auto& clearNode{getClear<NodeType::Tag, NodeType::File>()};
 		if(auto takeAnchorData{std::get_if<BasicTakeAnchorData<Char_>>(&clearNode.data_.data_)}) {
 			return {takeAnchorData->name_};
@@ -461,19 +463,5 @@ namespace ieml {
 			return MapResult<Char_, const BasicNode<Char_>&>::Error({MapException{mark_, key}});
 		}
 		return MapResult<Char_, const BasicNode<Char_>&>::Error({makeTypeError<NodeType::Map>()});
-	}
-	
-	template<typename Char_>
-	BasicNode<Char_> fromFile(FilePath&& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper) {
-		FilePath normalFilePath{filePath.concat(".ieml").lexically_normal().make_preferred()};
-		BasicString<Char_> inputStr{readFile<Char_>(normalFilePath)};
-		BasicParser<Char_> parser{inputStr, normalFilePath, anchorKeeper};
-		return BasicNode{parser.parse()};
-	}
-	
-	template<typename Char_>
-	BasicNode<Char_> from(const BasicString<Char_>& inputStr, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper) {
-		BasicParser<Char_> parser{inputStr, anchorKeeper};
-		return BasicNode(parser.parse());
 	}
 }

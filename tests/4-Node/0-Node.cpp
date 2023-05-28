@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <IEML/node/Node/Node.hpp>
+#include <IEML/parser.hpp>
 
 TEST(Node, Node_0_Null) {
 	ieml::Node node{ieml::NullData{}, ieml::Mark{2, 5}};
@@ -131,7 +131,8 @@ TEST(Node, Node_5_Tag) {
 }
 
 TEST(Node, Node_6_File) {
-	ieml::Node node{ieml::NullData{}, ieml::FilePath{"file.ieml"}};
+	auto anchorKeeper{std::make_shared<ieml::AnchorKeeper>()};
+	ieml::Node node{ieml::FileData{ieml::NullData{}, ieml::FilePath{"file.ieml"}, anchorKeeper}};
 	
 	ASSERT_TRUE(node.isNull());
 	ASSERT_FALSE(node.isRaw());

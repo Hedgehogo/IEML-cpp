@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <IEML/node/Node/Node.hpp>
+#include <IEML/parser.hpp>
 
 struct TestInclude {
 	static ieml::NodeData include(ieml::RcPtr<ieml::AnchorKeeper> anchorKeeper, ieml::FilePath filePath) {

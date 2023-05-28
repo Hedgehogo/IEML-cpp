@@ -2,15 +2,15 @@
 
 #include <map>
 #include "../../node/NodeData/NodeData.hpp"
-#include "../../usings/usings.hpp"
 
 namespace ieml {
 	template<typename Char_>
 	class BasicAnchorKeeper {
 	private:
-		using NodeDataMap = std::unordered_map<BasicString<Char_>, BasicNode<Char_>>;
+		using AnchorMap = absl::flat_hash_map<BasicString<Char_>, BasicNode<Char_>>;
 		
-		NodeDataMap anchors_;
+		AnchorMap anchors_;
+		AnchorMap fileAnchors_;
 		RcPtr<BasicAnchorKeeper<Char_>> parent_;
 		
 	public:
@@ -20,7 +20,13 @@ namespace ieml {
 		
 		bool add(const BasicString<Char_>& key, BasicNode<Char_> value);
 		
+		bool addToFile(const BasicString<Char_>& key, BasicNode<Char_> value);
+		
 		BasicNode<Char_>* get(const BasicString<Char_>& key);
+		
+		AnchorMap const& getMap() const;
+		
+		AnchorMap const& getFileMap() const;
 	};
 	
 	using AnchorKeeper = BasicAnchorKeeper<Char>;

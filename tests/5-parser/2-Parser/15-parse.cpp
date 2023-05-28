@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <IEML/node/Node/Node.hpp>
+#include <IEML/parser.hpp>
 
 TEST(parser, Parser_parse) {
 	{

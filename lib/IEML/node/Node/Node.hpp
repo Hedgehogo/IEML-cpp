@@ -31,9 +31,6 @@ namespace ieml {
 		template<typename T>
 		BasicNode(T data, Mark mark = {0, 0});
 		
-		template<typename T>
-		BasicNode(T data, FilePath filePath, Mark mark = {0, 0});
-		
 		/// @brief Gets the node defined.
 		///
 		/// @param Node Node to check.
@@ -172,27 +169,32 @@ namespace ieml {
 		/// @brief Gets the tag.
 		///
 		/// @return A tag.
-		Option<BasicTag<Char_>> getTag() const;
+		Option<BasicTag<Char_> const&> getTag() const;
 		
 		/// @brief Gets the file path.
 		///
 		/// @return A file path.
-		Option<FilePath> getFilePath() const;
+		Option<FilePath const&> getFilePath() const;
+		
+		/// @brief Gets the file anchor keeper.
+		///
+		/// @return A anchor keeper.
+		Option<BasicAnchorKeeper<Char_> const&> getFileAnchorKeeper() const;
 		
 		/// @brief Gets the take anchor name.
 		///
 		/// @return A take anchor name.
-		Option<BasicString<Char_>> getTakeAnchorName() const;
+		Option<BasicString<Char_> const&> getTakeAnchorName() const;
 		
 		/// @brief Gets the get anchor name.
 		///
 		/// @return A get anchor name.
-		Option<BasicString<Char_>> getGetAnchorName() const;
+		Option<BasicString<Char_> const&> getGetAnchorName() const;
 		
 		/// @brief Gets the anchor name.
 		///
 		/// @return A anchor name.
-		Option<BasicString<Char_>> getAnchorName() const;
+		Option<BasicString<Char_> const&> getAnchorName() const;
 		
 		/// @brief Gets the list size.
 		///
@@ -338,12 +340,6 @@ namespace ieml {
 	};
 	
 	using Node = BasicNode<Char>;
-	
-	template<typename Char_ = Char>
-	BasicNode<Char_> fromFile(FilePath&& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper = makeRcPtr<BasicAnchorKeeper<Char_>>());
-	
-	template<typename Char_ = Char>
-	BasicNode<Char_> from(const BasicString<Char_>& inputStr, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper = makeRcPtr<BasicAnchorKeeper<Char_>>());
 }
 
 #include "../../anchor/AnchorKeeper/AnchorKeeper.inl"
