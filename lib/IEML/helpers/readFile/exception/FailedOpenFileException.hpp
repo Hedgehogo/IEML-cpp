@@ -4,12 +4,12 @@
 #include "../../fileSystem/fileSystem.hpp"
 
 namespace ieml {
-	class FailedReadFileException : public BaseException {
+	class FailedOpenFileException : public BaseException {
 	private:
 		FilePath filePath;
 	
 	public:
-		FailedReadFileException(FilePath filePath);
+		FailedOpenFileException(FilePath filePath);
 		
 		String getDescription() const override;
 		

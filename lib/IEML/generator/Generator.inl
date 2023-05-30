@@ -134,6 +134,8 @@ namespace ieml {
 	void intoFile(const BasicNode<Char_>& node, const FilePath& filePath) {
 		fs::create_directories(filePath.parent_path());
 		std::ofstream stream{filePath};
+		if(!stream)
+			throw FailedOpenFileException{filePath};
 		stream.clear();
 		BasicGenerator<Char_, FileGenerate_> generator{stream};
 		generator.generate(node);

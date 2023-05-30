@@ -10,7 +10,7 @@ TEST(parser, Parser_parse) {
 		ieml::Parser parser{str};
 		auto node{parser.parse()};
 		auto info{parser.getPosInfo()};
-		ASSERT_EQ(node.data_.index(), 0);
+		ASSERT_TRUE(std::get<6>(node.data_).node_->isNull());
 		ASSERT_EQ(info.pos, str.cend());
 		ASSERT_EQ(info.mark.line, 0);
 		ASSERT_EQ(info.mark.symbol, 4);
@@ -23,7 +23,7 @@ null)"
 		ieml::Parser parser{str};
 		auto node{parser.parse()};
 		auto info{parser.getPosInfo()};
-		ASSERT_EQ(node.data_.index(), 0);
+		ASSERT_TRUE(std::get<6>(node.data_).node_->isNull());
 		ASSERT_EQ(info.pos, str.cend());
 		ASSERT_EQ(info.mark.line, 1);
 		ASSERT_EQ(info.mark.symbol, 4);
@@ -38,7 +38,7 @@ null)"
 		ieml::Parser parser{str};
 		auto node{parser.parse()};
 		auto info{parser.getPosInfo()};
-		ASSERT_EQ(node.data_.index(), 3);
+		ASSERT_TRUE(std::get<6>(node.data_).node_->isList());
 		ASSERT_EQ(info.pos, str.cend());
 		ASSERT_EQ(info.mark.line, 3);
 		ASSERT_EQ(info.mark.symbol, 0);

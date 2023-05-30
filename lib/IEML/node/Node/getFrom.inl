@@ -25,9 +25,15 @@ namespace ieml {
 	template<typename Char_, typename N>
 	struct GetFromStep<N, BasicTakeAnchorData<Char_>> {
 		static N* get(N& node) {
-			if(auto takeAnchorData = std::get_if<BasicTakeAnchorData<Char_>>(&node.data_.data_))
-				if(auto anchorData{takeAnchorData->keeper_->get(takeAnchorData->name_)})
-					return anchorData;
+			if(auto takeAnchorData = std::get_if<BasicTakeAnchorData<Char_>>(&node.data_.data_)) {
+				auto& keeper{takeAnchorData->keeper_};
+				if(!keeper.expired()) {
+					auto shared{keeper.lock()};
+					if(auto anchorData{shared->get(takeAnchorData->name_)}) {
+						return anchorData;
+					}
+				}
+			}
 			return nullptr;
 		}
 	};
@@ -35,9 +41,15 @@ namespace ieml {
 	template<typename Char_, typename N>
 	struct GetFromStep<N, BasicGetAnchorData<Char_>> {
 		static N* get(N& node) {
-			if(auto getAnchorData = std::get_if<BasicGetAnchorData<Char_>>(&node.data_.data_))
-				if(auto anchorData{getAnchorData->keeper_->get(getAnchorData->name_)})
-					return anchorData;
+			if(auto getAnchorData = std::get_if<BasicGetAnchorData<Char_>>(&node.data_.data_)) {
+				auto& keeper{getAnchorData->keeper_};
+				if(!keeper.expired()) {
+					auto shared{keeper.lock()};
+					if(auto anchorData{shared->get(getAnchorData->name_)}) {
+						return anchorData;
+					}
+				}
+			}
 			return nullptr;
 		}
 	};

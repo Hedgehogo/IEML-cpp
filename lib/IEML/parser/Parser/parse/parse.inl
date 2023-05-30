@@ -13,18 +13,14 @@ namespace ieml {
 		skipBlankLinesLn<Char_>(pos_, end(), mark_);
 		Size indent{determineIndent<Char_>(pos_, end(), mark_)};
 		
-		BasicNodeData<Char_> data;
-		if(filePath_.empty()) {
-			data = parseNode(indent);
-		} else {
-			data = BasicNodeData<Char_>{BasicFileData<Char_>{parseNode(indent), filePath_, anchorKeeper_}};
-		}
+		BasicNodeData<Char_> data{BasicNodeData<Char_>{BasicFileData<Char_>{parseNode(indent), filePath_, anchorKeeper_}}};
 		
 		skipBlankLinesLn(pos_, end(), mark_);
 		skipBlankLine(pos_, end(), mark_);
 		if(pos_ != end()) {
 			except(FailedParseException::Reason::IncompleteDocument);
 		}
+		
 		return data;
 	}
 }

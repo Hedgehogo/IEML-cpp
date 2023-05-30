@@ -235,7 +235,9 @@ namespace ieml {
 	Option<FilePath const&> BasicNode<Char_>::getFilePath() const {
 		auto& clearNode{getClear<NodeType::Tag, NodeType::TakeAnchor, NodeType::GetAnchor>()};
 		if(auto fileData{std::get_if<BasicFileData<Char_>>(&clearNode.data_.data_)}) {
-			return {fileData->filePath_};
+			if(!fileData->filePath_.empty()) {
+				return {fileData->filePath_};
+			}
 		}
 		return {};
 	}

@@ -25,8 +25,11 @@ namespace ieml {
 			return &find->second;
 		if(auto find{anchors_.find(key)}; find != anchors_.end())
 			return &find->second;
-		if(parent_)
-			return parent_->get(key);
+		if(!parent_.expired()) {
+			auto shared{parent_.lock()};
+			if(shared)
+				return shared->get(key);
+		}
 		return nullptr;
 	}
 	

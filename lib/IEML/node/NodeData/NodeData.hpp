@@ -102,7 +102,7 @@ namespace ieml {
 	
 	template<typename Char_>
 	struct BaseAnchorData {
-		RcPtr<BasicAnchorKeeper<Char_>> keeper_;
+		WeakPtr<BasicAnchorKeeper<Char_>> keeper_;
 		BasicString<Char_> name_;
 	};
 	

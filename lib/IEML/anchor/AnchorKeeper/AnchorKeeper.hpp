@@ -11,7 +11,7 @@ namespace ieml {
 		
 		AnchorMap anchors_;
 		AnchorMap fileAnchors_;
-		RcPtr<BasicAnchorKeeper<Char_>> parent_;
+		WeakPtr<BasicAnchorKeeper<Char_>> parent_;
 		
 	public:
 		BasicAnchorKeeper();

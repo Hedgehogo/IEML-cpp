@@ -11,7 +11,7 @@ TEST(parser, Parser_parseTakeAnchor) {
 		auto info{parser.getPosInfo()};
 		ASSERT_TRUE(takeAnchor.is_some());
 		ASSERT_EQ(takeAnchor.except().name_, ieml::String{"anchor"});
-		ASSERT_EQ(takeAnchor.except().keeper_, keeper);
+		ASSERT_EQ(takeAnchor.except().keeper_.lock(), keeper);
 		ASSERT_EQ(info.pos, str.cbegin() + 12);
 		ASSERT_EQ(info.mark.line, 0);
 		ASSERT_EQ(info.mark.symbol, 12);
@@ -29,7 +29,7 @@ TEST(parser, Parser_parseTakeAnchor) {
 		auto info{parser.getPosInfo()};
 		ASSERT_TRUE(takeAnchor.is_some());
 		ASSERT_EQ(takeAnchor.except().name_, ieml::String{"anchor"});
-		ASSERT_EQ(takeAnchor.except().keeper_, keeper);
+		ASSERT_EQ(takeAnchor.except().keeper_.lock(), keeper);
 		ASSERT_EQ(info.pos, str.cbegin() + 14);
 		ASSERT_EQ(info.mark.line, 1);
 		ASSERT_EQ(info.mark.symbol, 6);
