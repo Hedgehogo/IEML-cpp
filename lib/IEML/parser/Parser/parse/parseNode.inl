@@ -18,6 +18,8 @@ namespace ieml {
 			return BasicNodeData<Char_>{file.some()};
 		if(auto list{parseList(indent)})
 			return BasicNodeData<Char_>{list.some()};
+		if(auto shortList{parseShortList()})
+			return BasicNodeData<Char_>{shortList.some()};
 		if(auto map{parseMap(indent)})
 			return BasicNodeData<Char_>{map.some()};
 		return parseScalar(indent);

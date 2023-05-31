@@ -134,7 +134,7 @@ namespace ieml {
 		/// @param indent The current indentation level.
 		///
 		/// @return Returns <i>List</i> data or nothing.
-		Option<BasicListData<Char_>> parseShortList(Size indent);
+		Option<BasicListData<Char_>> parseShortList();
 		
 		/// @brief Parses the <i>Map</i>.
 		///

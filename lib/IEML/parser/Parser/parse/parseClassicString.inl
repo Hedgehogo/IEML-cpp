@@ -139,7 +139,11 @@ namespace ieml {
 		if(auto stringMark{isClassicString<Char_>(pos_, end(), indent)}) {
 			BasicString<Char_> result{handleClassicString<Char_>(pos_ + 1, stringMark.some().realLength, indent)};
 			pos_ = stringMark.some().pos;
-			mark_.symbol = stringMark.some().lastLength;
+			if(stringMark.some().enterCount == 0) {
+				mark_.symbol += stringMark.some().lastLength;
+			} else {
+				mark_.symbol = stringMark.some().lastLength;
+			}
 			mark_.line += stringMark.some().enterCount;
 			return {BasicStringData<Char_>{result}};
 		}
