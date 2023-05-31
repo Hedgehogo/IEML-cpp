@@ -27,10 +27,10 @@ namespace ieml {
 	
 	template<typename Char_>
 	template<NodeType Type>
-	TypeResult<const ToNodeData<Type, Char_>&> BasicNode<Char_>::getTypedDataOrError() const {
+	TypeResult<ToNodeData<Type, Char_> const&> BasicNode<Char_>::getTypedDataOrError() const {
 		if(auto typeData = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
-			return TypeResult<const ToNodeData<Type, Char_>&>::Ok(*typeData);
-		return TypeResult<const ToNodeData<Type, Char_>&>::Error(makeTypeError<Type>());
+			return TypeResult<ToNodeData<Type, Char_> const&>::Ok(*typeData);
+		return TypeResult<ToNodeData<Type, Char_> const&>::Error(makeTypeError<Type>());
 	}
 	
 	template<typename Char_>
@@ -38,12 +38,12 @@ namespace ieml {
 	TypeResult<ToNodeData<Type, Char_>&> BasicNode<Char_>::getTypedDataOrError() {
 		if(auto typeData = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
 			return TypeResult<ToNodeData<Type, Char_>&>::Ok(*typeData);
-		return TypeResult<const ToNodeData<Type, Char_>&>::Error(makeTypeError<Type>());
+		return TypeResult<ToNodeData<Type, Char_> const&>::Error(makeTypeError<Type>());
 	}
 	
 	template<typename Char_>
 	template<NodeType Type>
-	Option<const ToNodeData<Type, Char_>&> BasicNode<Char_>::getTypedData() const {
+	Option<ToNodeData<Type, Char_> const&> BasicNode<Char_>::getTypedData() const {
 		if(auto typeData = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
 			return {*typeData};
 		return {};
@@ -58,7 +58,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	bool BasicNode<Char_>::isDefined(const BasicNode<Char_>& node) {
+	bool BasicNode<Char_>::isDefined(BasicNode<Char_> const& node) {
 		return &node != &undefined;
 	}
 	
@@ -140,7 +140,7 @@ namespace ieml {
 	
 	template<typename Char_>
 	template<NodeType... Types>
-	const BasicNode<Char_>& BasicNode<Char_>::getClear() const {
+	BasicNode<Char_> const& BasicNode<Char_>::getClear() const {
 		return getFrom<const BasicNode<Char_>, ToNodeData<Types, Char_>...>(*this);
 	}
 	
@@ -150,13 +150,13 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	const BasicNode<Char_>& BasicNode<Char_>::getClear() const {
+	BasicNode<Char_> const& BasicNode<Char_>::getClear() const {
 		return getClear<NodeType::Tag, NodeType::File, NodeType::TakeAnchor, NodeType::GetAnchor>();
 	}
 	
 	template<typename Char_>
 	template<NodeType... Types>
-	const BasicNode<Char_>& BasicNode<Char_>::getClearData() const {
+	BasicNode<Char_> const& BasicNode<Char_>::getClearData() const {
 		if(auto clearNode{getFromStep<const BasicNode<Char_>, ToNodeData<Types, Char_>...>(*this)}) {
 			return *clearNode;
 		}
@@ -178,7 +178,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	const BasicNode<Char_>& BasicNode<Char_>::getClearTag() const {
+	BasicNode<Char_> const& BasicNode<Char_>::getClearTag() const {
 		return getClearData<NodeType::Tag>();
 	}
 	
@@ -188,7 +188,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	const BasicNode<Char_>& BasicNode<Char_>::getClearFile() const {
+	BasicNode<Char_> const& BasicNode<Char_>::getClearFile() const {
 		return getClearData<NodeType::File>();
 	}
 	
@@ -198,7 +198,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	const BasicNode<Char_>& BasicNode<Char_>::getClearTakeAnchor() const {
+	BasicNode<Char_> const& BasicNode<Char_>::getClearTakeAnchor() const {
 		return getClearData<NodeType::TakeAnchor>();
 	}
 	
@@ -208,7 +208,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	const BasicNode<Char_>& BasicNode<Char_>::getClearGetAnchor() const {
+	BasicNode<Char_> const& BasicNode<Char_>::getClearGetAnchor() const {
 		return getClearData<NodeType::GetAnchor>();
 	}
 	
@@ -218,8 +218,17 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	const BasicNode<Char_>& BasicNode<Char_>::getClearAnchor() const {
+	BasicNode<Char_> const& BasicNode<Char_>::getClearAnchor() const {
 		return getClearData<NodeType::TakeAnchor, NodeType::GetAnchor>();
+	}
+	
+	template<typename Char_>
+	Option<BasicTag<Char_>&> BasicNode<Char_>::getTag() {
+		auto& clearNode{getClear<NodeType::File, NodeType::TakeAnchor, NodeType::GetAnchor>()};
+		if(auto tagData{std::get_if<BasicTagData<Char_>>(&clearNode.data_.data_)}) {
+			return {tagData->tag_};
+		}
+		return {};
 	}
 	
 	template<typename Char_>
@@ -306,12 +315,32 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	TypeResult<const BasicListData<Char_>&> BasicNode<Char_>::getList() const {
+	TypeResult<ieml::BasicRawData<Char_>&> BasicNode<Char_>::getRaw() {
+		return getClear().template getTypedDataOrError<NodeType::Raw>();
+	}
+	
+	template<typename Char_>
+	TypeResult<const ieml::BasicRawData<Char_>&> BasicNode<Char_>::getRaw() const {
+		return getClear().template getTypedDataOrError<NodeType::Raw>();
+	}
+	
+	template<typename Char_>
+	TypeResult<ieml::BasicStringData<Char_>&> BasicNode<Char_>::getString() {
+		return getClear().template getTypedDataOrError<NodeType::String>();
+	}
+	
+	template<typename Char_>
+	TypeResult<const ieml::BasicStringData<Char_>&> BasicNode<Char_>::getString() const {
+		return getClear().template getTypedDataOrError<NodeType::String>();
+	}
+	
+	template<typename Char_>
+	TypeResult<BasicListData<Char_> const&> BasicNode<Char_>::getList() const {
 		return getClear().template getTypedDataOrError<NodeType::List>();
 	}
 	
 	template<typename Char_>
-	TypeResult<const BasicMapData<Char_>&> BasicNode<Char_>::getMap() const {
+	TypeResult<BasicMapData<Char_> const&> BasicNode<Char_>::getMap() const {
 		return getClear().template getTypedDataOrError<NodeType::Map>();
 	}
 	
@@ -321,7 +350,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	ListResult<const BasicNode<Char_>&> BasicNode<Char_>::at(Size index) const {
+	ListResult<BasicNode<Char_> const&> BasicNode<Char_>::at(Size index) const {
 		return getClear()[index];
 	}
 	
@@ -334,7 +363,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	const BasicNode<Char_>& BasicNode<Char_>::at_or(Size index) const {
+	BasicNode<Char_> const& BasicNode<Char_>::at_or(Size index) const {
 		auto list{getClear().template getTypedData<NodeType::List>()};
 		if(list.is_some() && (index < list.some().size()))
 			return list.some().at(index);
@@ -342,17 +371,17 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	MapResult<Char_, BasicNode<Char_>&> BasicNode<Char_>::at(const BasicString<Char_>& key) {
+	MapResult<Char_, BasicNode<Char_>&> BasicNode<Char_>::at(BasicString<Char_> const& key) {
 		return getClear()[key];
 	}
 	
 	template<typename Char_>
-	MapResult<Char_, const BasicNode<Char_>&> BasicNode<Char_>::at(const BasicString<Char_>& key) const {
+	MapResult<Char_, BasicNode<Char_> const&> BasicNode<Char_>::at(BasicString<Char_> const& key) const {
 		return getClear()[key];
 	}
 	
 	template<typename Char_>
-	BasicNode<Char_>& BasicNode<Char_>::at_or(const BasicString<Char_>& key) {
+	BasicNode<Char_>& BasicNode<Char_>::at_or(BasicString<Char_> const& key) {
 		auto map{getClear().template getTypedData<NodeType::Map>()};
 		if(map.is_some())
 			if(auto find{map.some().find(key)}; find != map.some().end())
@@ -361,7 +390,7 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	const BasicNode<Char_>& BasicNode<Char_>::at_or(const BasicString<Char_>& key) const {
+	BasicNode<Char_> const& BasicNode<Char_>::at_or(BasicString<Char_> const& key) const {
 		auto map{getClear().template getTypedData<NodeType::Map>()};
 		if(map.is_some())
 			if(auto find{map.some().find(key)}; find != map.some().end())
@@ -393,7 +422,7 @@ namespace ieml {
 	
 	template<typename Char_>
 	template<typename... Steps>
-	GetResult<Char_, const BasicNode<Char_>&> BasicNode<Char_>::get(Steps&& ... steps) const {
+	GetResult<Char_, BasicNode<Char_> const&> BasicNode<Char_>::get(Steps&& ... steps) const {
 		return detail::getNode<Char_>(*this, std::forward<Steps>(steps)...);
 	}
 	
@@ -431,20 +460,20 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	ListResult<const BasicNode<Char_>&> BasicNode<Char_>::operator[](Size index) const {
+	ListResult<BasicNode<Char_> const&> BasicNode<Char_>::operator[](Size index) const {
 		auto list{getTypedData<NodeType::List>()};
 		if(list.is_some()) {
 			auto size{list.some().size()};
 			if(size > index) {
-				return ListResult<const BasicNode<Char_>&>::Ok(list.some().at(index));
+				return ListResult<BasicNode<Char_> const&>::Ok(list.some().at(index));
 			}
-			return ListResult<const BasicNode<Char_>&>::Error({ListException{mark_, index, size}});
+			return ListResult<BasicNode<Char_> const&>::Error({ListException{mark_, index, size}});
 		}
-		return ListResult<const BasicNode<Char_>&>::Error({makeTypeError<NodeType::List>()});
+		return ListResult<BasicNode<Char_> const&>::Error({makeTypeError<NodeType::List>()});
 	}
 	
 	template<typename Char_>
-	MapResult<Char_, BasicNode<Char_>&> BasicNode<Char_>::operator[](const BasicString<Char_>& key) {
+	MapResult<Char_, BasicNode<Char_>&> BasicNode<Char_>::operator[](BasicString<Char_> const& key) {
 		auto map{getTypedData<NodeType::Map>()};
 		if(map.is_some()) {
 			if(auto find{map.some().find(key)}; find != map.some().end()) {
@@ -456,14 +485,14 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	MapResult<Char_, const BasicNode<Char_>&> BasicNode<Char_>::operator[](const BasicString<Char_>& key) const {
+	MapResult<Char_, BasicNode<Char_> const&> BasicNode<Char_>::operator[](BasicString<Char_> const& key) const {
 		auto map{getTypedData<NodeType::Map>()};
 		if(map.is_some()) {
 			if(auto find{map.some().find(key)}; find != map.some().end()) {
-				return MapResult<Char_, const BasicNode<Char_>&>::Ok(find->second);
+				return MapResult<Char_, BasicNode<Char_> const&>::Ok(find->second);
 			}
-			return MapResult<Char_, const BasicNode<Char_>&>::Error({MapException{mark_, key}});
+			return MapResult<Char_, BasicNode<Char_> const&>::Error({MapException{mark_, key}});
 		}
-		return MapResult<Char_, const BasicNode<Char_>&>::Error({makeTypeError<NodeType::Map>()});
+		return MapResult<Char_, BasicNode<Char_> const&>::Error({makeTypeError<NodeType::Map>()});
 	}
 }

@@ -1,10 +1,10 @@
 //included into Node.hpp
-#include "../../../helpers/toValue//toValue.hpp"
+#include "../../../helpers/toValue/toValue.hpp"
 
 namespace ieml {
 	namespace detail {
 		template<typename Char_, typename T>
-		Option<T> DecodeImpl<Char_, T>::decode(const BasicNode<Char_>& node) {
+		Option<T> DecodeImpl<Char_, T>::decode(BasicNode<Char_> const& node) {
 			if constexpr(std::is_arithmetic_v<T>) {
 				if(auto rawData{node.template as<BasicRawData<Char_>>()}) {
 					return toNumber<T, Char_>(rawData.ok().str.cbegin(), rawData.ok().str.cend());
@@ -16,7 +16,7 @@ namespace ieml {
 		}
 		
 		template<typename Char_>
-		Option<bool> DecodeImpl<Char_, bool>::decode(const BasicNode<Char_>& node) {
+		Option<bool> DecodeImpl<Char_, bool>::decode(BasicNode<Char_> const& node) {
 			if(auto rawData{std::get_if<BasicRawData<Char_>>(&node.data_.data_)}) {
 				return toBool<Char_>(rawData->str.cbegin(), rawData->str.cend());
 			}
@@ -24,7 +24,7 @@ namespace ieml {
 		}
 		
 		template<typename Char_>
-		Option<BasicRawData<Char_>> DecodeImpl<Char_, BasicRawData<Char_>>::decode(const BasicNode<Char_>& node) {
+		Option<BasicRawData<Char_>> DecodeImpl<Char_, BasicRawData<Char_>>::decode(BasicNode<Char_> const& node) {
 			if(auto rawData{std::get_if<BasicRawData<Char_>>(&node.data_.data_)}) {
 				return {*rawData};
 			}
@@ -32,7 +32,7 @@ namespace ieml {
 		}
 		
 		template<typename Char_>
-		Option<BasicString<Char_>> DecodeImpl<Char_, BasicString<Char_>>::decode(const BasicNode<Char_>& node) {
+		Option<BasicString<Char_>> DecodeImpl<Char_, BasicString<Char_>>::decode(BasicNode<Char_> const& node) {
 			if(auto strData{std::get_if<BasicStringData<Char_>>(&node.data_.data_)}) {
 				return {*strData};
 			}
@@ -40,7 +40,7 @@ namespace ieml {
 		}
 		
 		template<typename Char_>
-		Option<BasicListData<Char_>> DecodeImpl<Char_, BasicListData<Char_>>::decode(const BasicNode<Char_>& node) {
+		Option<BasicListData<Char_>> DecodeImpl<Char_, BasicListData<Char_>>::decode(BasicNode<Char_> const& node) {
 			if(auto listData{std::get_if<BasicListData<Char_>>(&node.data_.data_)}) {
 				return {*listData};
 			}
@@ -48,7 +48,7 @@ namespace ieml {
 		}
 		
 		template<typename Char_>
-		Option<BasicMapData<Char_>> DecodeImpl<Char_, BasicMapData<Char_>>::decode(const BasicNode<Char_>& node) {
+		Option<BasicMapData<Char_>> DecodeImpl<Char_, BasicMapData<Char_>>::decode(BasicNode<Char_> const& node) {
 			if(auto mapData{std::get_if<BasicMapData<Char_>>(&node.data_.data_)}) {
 				return {*mapData};
 			}
@@ -56,7 +56,7 @@ namespace ieml {
 		}
 		
 		template<typename Char_>
-		Option<BasicListData<Char_> const&> DecodeImpl<Char_, BasicListData<Char_> const&>::decode(const BasicNode<Char_>& node) {
+		Option<BasicListData<Char_> const&> DecodeImpl<Char_, BasicListData<Char_> const&>::decode(BasicNode<Char_> const& node) {
 			if(auto listData{std::get_if<BasicListData<Char_>>(&node.data_.data_)}) {
 				return {*listData};
 			}
@@ -64,7 +64,7 @@ namespace ieml {
 		}
 		
 		template<typename Char_>
-		Option<BasicMapData<Char_> const&> DecodeImpl<Char_, BasicMapData<Char_> const&>::decode(const BasicNode<Char_>& node) {
+		Option<BasicMapData<Char_> const&> DecodeImpl<Char_, BasicMapData<Char_> const&>::decode(BasicNode<Char_> const& node) {
 			if(auto mapData{std::get_if<BasicMapData<Char_>>(&node.data_.data_)}) {
 				return {*mapData};
 			}

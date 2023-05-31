@@ -36,7 +36,7 @@ namespace ieml {
 		/// @param Node Node to check.
 		///
 		/// @return The node defined.
-		static bool isDefined(const BasicNode& node);
+		static bool isDefined(BasicNode const& node);
 		
 		/// @brief Gets the node defined.
 		///
@@ -113,14 +113,14 @@ namespace ieml {
 		BasicNode<Char_>& getClear();
 		
 		template<NodeType... Types>
-		const BasicNode<Char_>& getClear() const;
+		BasicNode<Char_> const& getClear() const;
 		
 		/// @brief Recursively gets a child node, excluding Types.
 		///
 		/// @return A node.
 		BasicNode<Char_>& getClear();
 		
-		const BasicNode<Char_>& getClear() const;
+		BasicNode<Char_> const& getClear() const;
 		
 		/// @brief Gets a child node if the node type is Type, otherwise the current node.
 		///
@@ -129,46 +129,48 @@ namespace ieml {
 		BasicNode<Char_>& getClearData();
 		
 		template<NodeType... Types>
-		const BasicNode<Char_>& getClearData() const;
+		BasicNode<Char_> const& getClearData() const;
 		
 		/// @brief Gets the node under the tag if the node type is with the tag, otherwise the current node.
 		///
 		/// @return A node.
 		BasicNode<Char_>& getClearTag();
 		
-		const BasicNode<Char_>& getClearTag() const;
+		BasicNode<Char_> const& getClearTag() const;
 		
 		/// @brief Gets the node contained in the file, if the node type is a file, otherwise the current node.
 		///
 		/// @return A node.
 		BasicNode<Char_>& getClearFile();
 		
-		const BasicNode<Char_>& getClearFile() const;
+		BasicNode<Char_> const& getClearFile() const;
 		
 		/// @brief Gets the node contained in the anchor if the node type is take anchor, otherwise the current node
 		///
 		/// @return A node.
 		BasicNode<Char_>& getClearTakeAnchor();
 		
-		const BasicNode<Char_>& getClearTakeAnchor() const;
+		BasicNode<Char_> const& getClearTakeAnchor() const;
 		
 		/// @brief Gets the node contained in the anchor if the node type is get anchor, otherwise the current node
 		///
 		/// @return A node.
 		BasicNode<Char_>& getClearGetAnchor();
 		
-		const BasicNode<Char_>& getClearGetAnchor() const;
+		BasicNode<Char_> const& getClearGetAnchor() const;
 		
 		/// @brief Gets the node contained in the anchor if the node type is anchor, otherwise the current node
 		///
 		/// @return A node.
 		BasicNode<Char_>& getClearAnchor();
 		
-		const BasicNode<Char_>& getClearAnchor() const;
+		BasicNode<Char_> const& getClearAnchor() const;
 		
 		/// @brief Gets the tag.
 		///
 		/// @return A tag.
+		Option<BasicTag<Char_>&> getTag();
+		
 		Option<BasicTag<Char_> const&> getTag() const;
 		
 		/// @brief Gets the file path.
@@ -211,15 +213,29 @@ namespace ieml {
 		/// @return A size or NodeAnotherTypeException.
 		TypeResult<Size> getSize() const;
 		
+		/// @brief Gets the raw data.
+		///
+		/// @return A raw data or NodeAnotherTypeException.
+		TypeResult<BasicRawData<Char_>&> getRaw();
+		
+		TypeResult<BasicRawData<Char_> const&> getRaw() const;
+		
+		/// @brief Gets the string.
+		///
+		/// @return A string or NodeAnotherTypeException.
+		TypeResult<BasicStringData<Char_>&> getString();
+		
+		TypeResult<BasicStringData<Char_> const&> getString() const;
+		
 		/// @brief Gets the node list.
 		///
 		/// @return A node list or NodeAnotherTypeException.
-		TypeResult<const BasicListData<Char_>&> getList() const;
+		TypeResult<BasicListData<Char_> const&> getList() const;
 		
 		/// @brief Gets the node map.
 		///
 		/// @return A node map or NodeAnotherTypeException.
-		TypeResult<const BasicMapData<Char_>&> getMap() const;
+		TypeResult<BasicMapData<Char_> const&> getMap() const;
 		
 		/// @brief Gets a node from the list by index.
 		///
@@ -228,7 +244,7 @@ namespace ieml {
 		/// @return A node or NodeAnotherTypeException.
 		ListResult<BasicNode<Char_>&> at(Size index);
 		
-		ListResult<const BasicNode<Char_>&> at(Size index) const;
+		ListResult<BasicNode<Char_> const&> at(Size index) const;
 		
 		/// @brief Gets a node from the list by index.
 		///
@@ -237,25 +253,25 @@ namespace ieml {
 		/// @return A node or undefined node.
 		BasicNode<Char_>& at_or(Size index);
 		
-		const BasicNode<Char_>& at_or(Size index) const;
+		BasicNode<Char_> const& at_or(Size index) const;
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or NodeAnotherTypeException.
-		MapResult<Char_, BasicNode<Char_>&> at(const BasicString<Char_>& key);
+		MapResult<Char_, BasicNode<Char_>&> at(BasicString<Char_> const& key);
 		
-		MapResult<Char_, const BasicNode<Char_>&> at(const BasicString<Char_>& key) const;
+		MapResult<Char_, BasicNode<Char_> const&> at(BasicString<Char_> const& key) const;
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or undefined node.
-		BasicNode<Char_>& at_or(const BasicString<Char_>& key);
+		BasicNode<Char_>& at_or(BasicString<Char_> const& key);
 		
-		const BasicNode<Char_>& at_or(const BasicString<Char_>& key) const;
+		BasicNode<Char_> const& at_or(BasicString<Char_> const& key) const;
 		
 		/// @brief Gets the T value.
 		///
@@ -274,7 +290,7 @@ namespace ieml {
 		GetResult<Char_, BasicNode<Char_>&> get(Steps&&... steps);
 		
 		template<typename... Steps>
-		GetResult<Char_, const BasicNode<Char_>&> get(Steps&&... steps) const;
+		GetResult<Char_, BasicNode<Char_> const&> get(Steps&&... steps) const;
 		
 		/// @brief Gets the T value converted from a node in the passed path or an error at any step or during conversion.
 		///
@@ -298,16 +314,16 @@ namespace ieml {
 		/// @return A node or NodeAnotherTypeException.
 		ListResult<BasicNode<Char_>&> operator[](Size index);
 		
-		ListResult<const BasicNode<Char_>&> operator[](Size index) const;
+		ListResult<BasicNode<Char_> const&> operator[](Size index) const;
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node or NodeAnotherTypeException.
-		MapResult<Char_, BasicNode<Char_>&> operator[](const BasicString<Char_>& key);
+		MapResult<Char_, BasicNode<Char_>&> operator[](BasicString<Char_> const& key);
 		
-		MapResult<Char_, const BasicNode<Char_>&> operator[](const BasicString<Char_>& key) const;
+		MapResult<Char_, BasicNode<Char_> const&> operator[](BasicString<Char_> const& key) const;
 		
 		template<typename OtherChar_, typename T>
 		friend
@@ -322,16 +338,16 @@ namespace ieml {
 		NodeAnotherTypeException makeTypeError() const;
 		
 		template<NodeType Type>
-		TypeResult<const ToNodeData<Type, Char_>&> getTypedDataOrError() const;
-		
-		template<NodeType Type>
 		TypeResult<ToNodeData<Type, Char_>&> getTypedDataOrError();
 		
 		template<NodeType Type>
-		Option<const ToNodeData<Type, Char_>&> getTypedData() const;
+		TypeResult<ToNodeData<Type, Char_> const&> getTypedDataOrError() const;
 		
 		template<NodeType Type>
 		Option<ToNodeData<Type, Char_>&> getTypedData();
+		
+		template<NodeType Type>
+		Option<ToNodeData<Type, Char_> const&> getTypedData() const;
 		
 		static BasicNode<Char_> undefined;
 		
