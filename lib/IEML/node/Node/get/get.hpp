@@ -1,7 +1,7 @@
 #pragma once
 
 #include <option_result/Error.hpp>
-#include <option_result.hpp>
+#include <option_result/option_result.hpp>
 #include "../../../usings/usings.hpp"
 #include "../../../helpers/MetaFn/MetaFn.hpp"
 #include "../../exception/NodeAnotherType/NodeAnotherTypeException.hpp"

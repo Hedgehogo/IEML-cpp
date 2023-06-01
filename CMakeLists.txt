@@ -33,7 +33,7 @@ FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://github.com/google/googletest.git
         GIT_TAG        v1.13.0
-        FIND_PACKAGE_ARGS NAMES gtest
+        FIND_PACKAGE_ARGS NAMES GTest
 )
 
 FetchContent_MakeAvailable(ctre option_result_cpp abseil googletest)
@@ -41,12 +41,20 @@ FetchContent_MakeAvailable(ctre option_result_cpp abseil googletest)
 
 file(GLOB_RECURSE src "lib/*.hpp" "lib/*.cpp")
 
+if (${CMAKE_BUILD_TYPE} STREQUAL Release)
+    file(COPY "${CMAKE_CURRENT_LIST_DIR}/lib/" DESTINATION "${CMAKE_CURRENT_LIST_DIR}/include/")
+    file(GLOB_RECURSE filesToRemove "include/*.cpp")
+    file(REMOVE ${filesToRemove})
+endif ()
+
+
 add_library(${PROJECT_NAME} ${src})
-
 target_link_libraries(${PROJECT_NAME} PUBLIC option_result_cpp absl::flat_hash_map)
-
-target_include_directories(${PROJECT_NAME} PUBLIC ${ctre_SOURCE_DIR}/include ${option_result_cpp_SOURCE_DIR}/lib ${abseil_SOURCE_DIR})
-
+target_include_directories(${PROJECT_NAME} PUBLIC
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${ctre_SOURCE_DIR}/include>
+        )
 
 add_executable(${PROJECT_NAME}_ex main.cpp)
 
@@ -62,3 +70,17 @@ add_executable(${PROJECT_NAME}_tests ${test_src})
 target_include_directories(${PROJECT_NAME}_tests PRIVATE lib/)
 
 target_link_libraries(${PROJECT_NAME}_tests PRIVATE gtest gtest_main ${PROJECT_NAME})
+
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+install(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}
+        LIBRARY DESTINATION lib
+        PUBLIC_HEADER DESTINATION include/${PROJECT_NAME}
+        )
+
+install(EXPORT ${PROJECT_NAME}
+        FILE ${PROJECT_NAME}Config.cmake
+        NAMESPACE ${PROJECT_NAME}::
+        DESTINATION lib/cmake/${PROJECT_NAME}
+        )
