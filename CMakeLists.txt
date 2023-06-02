@@ -41,18 +41,11 @@ FetchContent_MakeAvailable(ctre option_result_cpp abseil googletest)
 
 file(GLOB_RECURSE src "lib/*.hpp" "lib/*.cpp")
 
-if (${CMAKE_BUILD_TYPE} STREQUAL Release)
-    file(COPY "${CMAKE_CURRENT_LIST_DIR}/lib/" DESTINATION "${CMAKE_CURRENT_LIST_DIR}/include/")
-    file(GLOB_RECURSE filesToRemove "include/*.cpp")
-    file(REMOVE ${filesToRemove})
-endif ()
-
-
 add_library(${PROJECT_NAME} ${src})
 target_link_libraries(${PROJECT_NAME} PUBLIC option_result_cpp absl::flat_hash_map)
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib>
         $<BUILD_INTERFACE:${ctre_SOURCE_DIR}/include>
         )
 
@@ -60,18 +53,14 @@ add_executable(${PROJECT_NAME}_ex main.cpp)
 
 target_link_libraries(${PROJECT_NAME}_ex PRIVATE ${PROJECT_NAME})
 
-target_include_directories(${PROJECT_NAME}_ex PRIVATE lib/)
-
 
 file(GLOB_RECURSE test_src "tests/*.hpp" "tests/*.cpp")
 
 add_executable(${PROJECT_NAME}_tests ${test_src})
 
-target_include_directories(${PROJECT_NAME}_tests PRIVATE lib/)
-
 target_link_libraries(${PROJECT_NAME}_tests PRIVATE gtest gtest_main ${PROJECT_NAME})
 
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/lib/IEML DESTINATION ${CMAKE_INSTALL_PREFIX}/include PATTERN "*.hpp")
 
 install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}
