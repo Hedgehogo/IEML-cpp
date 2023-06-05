@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(ABSL_PROPAGATE_CXX_STD ON)
 
+set(ABSL_ENABLE_INSTALL ON)
+
 
 FetchContent_Declare(
         ctre
@@ -59,6 +61,7 @@ file(GLOB_RECURSE test_src "tests/*.hpp" "tests/*.cpp")
 add_executable(${PROJECT_NAME}_tests ${test_src})
 
 target_link_libraries(${PROJECT_NAME}_tests PRIVATE gtest gtest_main ${PROJECT_NAME})
+
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/lib/IEML DESTINATION ${CMAKE_INSTALL_PREFIX}/include PATTERN "*.hpp")
 
