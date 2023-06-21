@@ -184,3 +184,13 @@ TEST(Node, Node_8_GetAnchor) {
 	ASSERT_EQ(node.getGetAnchorName().some(), ieml::String{"get_anchor"});
 	ASSERT_EQ(node.getAnchorName().some(), ieml::String{"get_anchor"});
 }
+
+TEST(Node, Node_9_Equal) {
+	ieml::Node first{ieml::RawData{"hello"}};
+	ieml::Node second{ieml::RawData{"goodbye"}};
+	ieml::Node third{ieml::ListData{ieml::StringData{"hello"}, ieml::NullData{}}};
+	
+	ASSERT_TRUE(first == first);
+	ASSERT_FALSE(first == second);
+	ASSERT_FALSE(first == third);
+}

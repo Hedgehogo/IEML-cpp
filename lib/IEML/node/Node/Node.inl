@@ -38,7 +38,7 @@ namespace ieml {
 	TypeResult<ToNodeData<Type, Char_>&> BasicNode<Char_>::getTypedDataOrError() {
 		if(auto typeData = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
 			return TypeResult<ToNodeData<Type, Char_>&>::Ok(*typeData);
-		return TypeResult<ToNodeData<Type, Char_> const&>::Error(makeTypeError<Type>());
+		return TypeResult<ToNodeData<Type, Char_>&>::Error(makeTypeError<Type>());
 	}
 	
 	template<typename Char_>
@@ -494,5 +494,15 @@ namespace ieml {
 			return MapResult<Char_, BasicNode<Char_> const&>::Error({MapException{mark_, key}});
 		}
 		return MapResult<Char_, BasicNode<Char_> const&>::Error({makeTypeError<NodeType::Map>()});
+	}
+	
+	template<typename Char_>
+	bool BasicNode<Char_>::operator==(const BasicNode<Char_>& other) const {
+		return data_ == other.data_;
+	}
+	
+	template<typename Char_>
+	bool BasicNode<Char_>::operator!=(const BasicNode<Char_>& other) const {
+		return !operator==(other);
 	}
 }

@@ -20,7 +20,7 @@ namespace ieml {
 	struct BasicNodeData;
 	
 	/// @brief Node data storing null
-	struct NullData {};
+	using NullData = std::monostate;
 	
 	/// @brief Node data storing the raw string
 	template<typename Char_>
@@ -28,6 +28,8 @@ namespace ieml {
 		BasicString<Char_> str;
 		
 		operator BasicString<Char_>() const;
+		
+		bool operator==(BasicRawData<Char_> const& other) const;
 	};
 	
 	using RawData = BasicRawData<Char>;
@@ -44,9 +46,15 @@ namespace ieml {
 	
 	using ListData = BasicListData<Char>;
 	
+	template<typename Char_>
+	bool operator==(BasicListData<Char_> const& first, BasicListData<Char_> const& second);
+	
 	/// @brief Node data storing a map of named other nodes
 	template<typename Char_>
 	using BasicMapData = absl::flat_hash_map<BasicString<Char_>, BasicNode<Char_>>;
+	
+	template<typename Char_>
+	bool operator==(BasicMapData<Char_> const& first, BasicMapData<Char_> const& second);
 	
 	using MapData = BasicMapData<Char>;
 	
@@ -70,6 +78,8 @@ namespace ieml {
 		~BaseMetaData();
 		
 		BaseMetaData<Char_>& operator=(const BaseMetaData<Char_>& other);
+		
+		bool operator==(BaseMetaData<Char_> const& other) const;
 	};
 	
 	/// @brief Node data storing tag and other data
@@ -80,6 +90,8 @@ namespace ieml {
 		BasicTagData(BasicNode<Char_>&& node, const BasicTag<Char_>& tag);
 		
 		BasicTagData(const BasicNode<Char_>& node, const BasicTag<Char_>& tag);
+		
+		bool operator==(BasicTagData<Char_> const& other) const;
 	};
 	
 	using TagData = BasicTagData<Char>;
@@ -96,6 +108,8 @@ namespace ieml {
 		BasicFileData(BasicNode<Char_>&& node, const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper);
 		
 		BasicFileData(const BasicNode<Char_>& node, const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper);
+		
+		bool operator==(BasicFileData<Char_> const& other) const;
 	};
 	
 	using FileData = BasicFileData<Char>;
@@ -104,6 +118,8 @@ namespace ieml {
 	struct BaseAnchorData {
 		WeakPtr<BasicAnchorKeeper<Char_>> keeper_;
 		BasicString<Char_> name_;
+		
+		bool operator==(BaseAnchorData<Char_> const& other) const;
 	};
 	
 	/// @brief Node data storing anchor
@@ -132,6 +148,8 @@ namespace ieml {
 			BasicTakeAnchorData<Char_>,
 			BasicGetAnchorData<Char_>
 		> data_;
+		
+		bool operator==(BasicNodeData<Char_> const& other) const;
 	};
 	
 	using NodeData = BasicNodeData<Char>;

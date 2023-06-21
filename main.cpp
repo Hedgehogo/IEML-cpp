@@ -4,7 +4,7 @@
 #include <IEML/debug.hpp>
 
 struct FileGenerate {
-	static void generate(ieml::Node const& node, const ieml::FilePath& filePath) {}
+	static void generate(ieml::Node const&, ieml::FilePath const&) {}
 };
 
 int main() {

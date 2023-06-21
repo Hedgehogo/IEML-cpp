@@ -325,6 +325,11 @@ namespace ieml {
 		
 		MapResult<Char_, BasicNode<Char_> const&> operator[](BasicString<Char_> const& key) const;
 		
+		/// Does not take marks into account in comparisons
+		bool operator==(BasicNode<Char_> const& other) const;
+		
+		bool operator!=(BasicNode<Char_> const& other) const;
+		
 		template<typename OtherChar_, typename T>
 		friend
 		struct detail::DecodeImpl;
