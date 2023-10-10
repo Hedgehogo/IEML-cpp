@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../helpers/fileSystem/fileSystem.hpp"
+#include "../../../helpers/file_system/file_system.hpp"
 #include "../../../node/exception/WithMark/WithMarkException.hpp"
 
 namespace ieml {
@@ -22,7 +22,7 @@ namespace ieml {
 		Reason reason;
 	
 	public:
-		FailedParseException(FilePath filePath, Reason reason, Mark mark);
+		FailedParseException(FilePath file_path, Reason reason, Mark mark);
 		
 		String get_description() const override;
 		

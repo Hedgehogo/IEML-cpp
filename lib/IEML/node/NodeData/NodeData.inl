@@ -91,21 +91,21 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
-	BasicFileData<Char_>::BasicFileData(BasicNode<Char_>&& node, const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper) :
-		BaseMetaData<Char_>(std::forward<BasicNode<Char_> >(node)), filePath_(filePath), anchorKeeper_(anchorKeeper) {
+	BasicFileData<Char_>::BasicFileData(BasicNode<Char_>&& node, const FilePath& file_path, RcPtr<BasicAnchorKeeper<Char_>> anchor_keeper) :
+		BaseMetaData<Char_>(std::forward<BasicNode<Char_> >(node)), file_path_(file_path), anchor_keeper_(anchor_keeper) {
 	}
 	
 	template<typename Char_>
-	BasicFileData<Char_>::BasicFileData(const BasicNode<Char_>& node, const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper) :
-		BaseMetaData<Char_>(node), filePath_(filePath), anchorKeeper_(anchorKeeper) {
+	BasicFileData<Char_>::BasicFileData(const BasicNode<Char_>& node, const FilePath& file_path, RcPtr<BasicAnchorKeeper<Char_>> anchor_keeper) :
+		BaseMetaData<Char_>(node), file_path_(file_path), anchor_keeper_(anchor_keeper) {
 	}
 	
 	template<typename Char_>
 	bool BasicFileData<Char_>::operator==(const BasicFileData<Char_>& other) const {
 		return
-			filePath_ == other.filePath_ &&
-			anchorKeeper_->getMap() == other.anchorKeeper_->getMap() &&
-			anchorKeeper_->getFileMap() == other.anchorKeeper_->getFileMap() &&
+			file_path_ == other.file_path_ &&
+			anchor_keeper_->get_map() == other.anchor_keeper_->get_map() &&
+			anchor_keeper_->get_file_map() == other.anchor_keeper_->get_file_map() &&
 			BaseMetaData<Char_>::operator==(other);
 	}
 	

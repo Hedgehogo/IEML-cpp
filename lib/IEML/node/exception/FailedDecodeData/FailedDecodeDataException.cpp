@@ -17,7 +17,7 @@ namespace ieml {
 	}
 	
 	String FailedDecodeDataException::get_type_name() const {
-		return type_info_.getName();
+		return type_info_.get_name();
 	}
 	
 	bool FailedDecodeDataException::has_reason() const {

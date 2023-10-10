@@ -1,22 +1,22 @@
 #include "NodeType.hpp"
 
 namespace ieml {
-	String getStringFromNodeType(NodeType nodeType) {
-		if(nodeType == NodeType::String) {
+	String get_string_from_node_type(NodeType node_type) {
+		if(node_type == NodeType::String) {
 			return "String";
-		} else if(nodeType == NodeType::Raw) {
+		} else if(node_type == NodeType::Raw) {
 			return "Raw";
-		} else if(nodeType == NodeType::List) {
+		} else if(node_type == NodeType::List) {
 			return "List";
-		} else if(nodeType == NodeType::Map) {
+		} else if(node_type == NodeType::Map) {
 			return "Map";
-		} else if(nodeType == NodeType::Tag) {
+		} else if(node_type == NodeType::Tag) {
 			return "Tag";
-		} else if(nodeType == NodeType::File) {
+		} else if(node_type == NodeType::File) {
 			return "File";
-		} else if(nodeType == NodeType::TakeAnchor) {
+		} else if(node_type == NodeType::TakeAnchor) {
 			return "Take Anchor";
-		} else if(nodeType == NodeType::GetAnchor) {
+		} else if(node_type == NodeType::GetAnchor) {
 			return "Get Anchor";
 		} else {
 			return "Null";

@@ -51,9 +51,9 @@ TEST(Node, decode_list) {
 	auto& list{opt_list.except()};
 	
 	EXPECT_NO_THROW(list.at(0));
-	ASSERT_TRUE(list.at(0).isNull());
+	ASSERT_TRUE(list.at(0).is_null());
 	EXPECT_NO_THROW(list.at(1));
-	ASSERT_TRUE(list.at(1).isRaw());
+	ASSERT_TRUE(list.at(1).is_raw());
 	EXPECT_ANY_THROW(list.at(2));
 }
 
@@ -72,9 +72,9 @@ TEST(Node, decode_map) {
 	auto map{node.as<ieml::MapData>().except()};
 	
 	EXPECT_NO_THROW(map.at(ieml::String{"first"}));
-	ASSERT_TRUE(map.at(ieml::String{"first"}).isNull());
+	ASSERT_TRUE(map.at(ieml::String{"first"}).is_null());
 	EXPECT_NO_THROW(map.at(ieml::String{"second"}));
-	ASSERT_TRUE(map.at(ieml::String{"second"}).isRaw());
+	ASSERT_TRUE(map.at(ieml::String{"second"}).is_raw());
 	EXPECT_ANY_THROW(map.at(ieml::String{"other-key"}));
 }
 
@@ -87,8 +87,8 @@ template<typename Char_>
 struct ieml::Decode<Char_, Vec2> {
 	static ieml::Option<Vec2> decode(const ieml::Node& node) {
 		return {Vec2{
-			node.getAs<float>("x").except(),
-			node.getAs<float>("y").except(),
+			node.get_as<float>("x").except(),
+			node.get_as<float>("y").except(),
 		}};
 	}
 };
@@ -102,8 +102,8 @@ template<typename Char_>
 struct ieml::Decode<Char_, Rect> {
 	static ieml::Option<Rect> decode(const ieml::Node& node) {
 		return {Rect{
-			node.getAs<Vec2>("position").except(),
-			node.getAs<Vec2>("size").except(),
+			node.get_as<Vec2>("position").except(),
+			node.get_as<Vec2>("size").except(),
 		}};
 	}
 };

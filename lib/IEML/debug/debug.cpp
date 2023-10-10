@@ -11,21 +11,21 @@ namespace ieml {
 		return stream;
 	}
 	
-	void debug(Node const& node, std::ostream& stream, Size indentSize) {
-		IndentOut indent{indentSize};
-		auto& clearNode{node.getClear()};
-		auto type{clearNode.getType()};
+	void debug(Node const& node, std::ostream& stream, Size indent_size) {
+		IndentOut indent{indent_size};
+		auto& clear_node{node.get_clear()};
+		auto type{clear_node.get_type()};
 		
-		stream << indent << "<" << node.getMark().line << ":" << node.getMark().symbol;
-		stream << ", " << getStringFromNodeType(type);
-		if(auto tag{node.getTag()})
+		stream << indent << "<" << node.get_mark().line << ":" << node.get_mark().symbol;
+		stream << ", " << get_string_from_node_type(type);
+		if(auto tag{node.get_tag()})
 			stream << ", tag: " << tag.some();
-		if(auto filePath{node.getFilePath()})
-			stream << ", file-path: " << filePath.some();
-		if(auto getAnchorName{node.getGetAnchorName()})
-			stream << ", get-anchor-name: " << getAnchorName.some();
-		if(auto takeAnchorName{node.getTakeAnchorName()})
-			stream << ", take-anchor-name: " << takeAnchorName.some();
+		if(auto file_path{node.get_file_path()})
+			stream << ", file-path: " << file_path.some();
+		if(auto get_anchor_name{node.get_get_anchor_name()})
+			stream << ", get-anchor-name: " << get_anchor_name.some();
+		if(auto take_anchor_name{node.get_take_anchor_name()})
+			stream << ", take-anchor-name: " << take_anchor_name.some();
 		stream << ">\n";
 		
 		switch(type) {
@@ -33,21 +33,21 @@ namespace ieml {
 				stream << indent << "null\n";
 				break;
 			case NodeType::Raw:
-				stream << indent << "\"" << clearNode.as<RawData>().ok().str << "\"\n";
+				stream << indent << "\"" << clear_node.as<RawData>().ok().str << "\"\n";
 				break;
 			case NodeType::String:
-				stream << indent << "\"" << clearNode.as<String>().ok() << "\"\n";
+				stream << indent << "\"" << clear_node.as<String>().ok() << "\"\n";
 				break;
 			case NodeType::List:
-				for(Size i{0}; i < clearNode.getListSize().ok(); ++i) {
+				for(Size i{0}; i < clear_node.get_list_size().ok(); ++i) {
 					stream << indent << "- \n";
-					debug(clearNode.at(i).ok(), stream, indentSize + 1);
+					debug(clear_node.at(i).ok(), stream, indent_size + 1);
 				}
 				break;
 			case NodeType::Map:
-				for(auto& [key, value]: clearNode.getMap().ok()) {
+				for(auto& [key, value]: clear_node.get_map().ok()) {
 					stream << indent << key << ": \n";
-					debug(value, stream, indentSize + 1);
+					debug(value, stream, indent_size + 1);
 				}
 				break;
 			default:

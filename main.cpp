@@ -8,9 +8,9 @@ struct FileGenerate {
 };
 
 int main() {
-	ieml::Node node{ieml::fromFile("../exampleSrc/test")};
-	std::cout << node.getAs<double>("second", 0, ieml::clear).except() << "\n";
+	ieml::Node node{ieml::from_file("../exampleSrc/test")};
+	std::cout << node.get_as<double>("second", 0, ieml::clear).except() << "\n";
 	ieml::debug(node);
 	std::cout << "\n";
-	ieml::into<ieml::Char, FileGenerate>(node.getClearFile(), std::cout);
+	ieml::into<ieml::Char, FileGenerate>(node.get_clear_file(), std::cout);
 }

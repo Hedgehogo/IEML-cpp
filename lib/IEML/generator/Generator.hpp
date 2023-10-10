@@ -15,23 +15,23 @@ namespace ieml {
 		
 		void generate(BasicNode<Char_> const& node, Size indent = 0);
 		
-		void generateNull(BasicNode<Char_> const& node, Size indent);
+		void generate_null(BasicNode<Char_> const& node, Size indent);
 		
-		void generateRaw(BasicNode<Char_> const& node, Size indent);
+		void generate_raw(BasicNode<Char_> const& node, Size indent);
 		
-		void generateString(BasicNode<Char_> const& node, Size indent);
+		void generate_string(BasicNode<Char_> const& node, Size indent);
 		
-		void generateList(BasicNode<Char_> const& node, Size indent);
+		void generate_list(BasicNode<Char_> const& node, Size indent);
 		
-		void generateMap(BasicNode<Char_> const& node, Size indent);
+		void generate_map(BasicNode<Char_> const& node, Size indent);
 		
-		void generateTag(BasicNode<Char_> const& node, Size indent);
+		void generate_tag(BasicNode<Char_> const& node, Size indent);
 		
-		void generateFile(BasicNode<Char_> const& node, Size indent);
+		void generate_file(BasicNode<Char_> const& node, Size indent);
 		
-		void generateTakeAnchor(BasicNode<Char_> const& node, Size indent);
+		void generate_take_anchor(BasicNode<Char_> const& node, Size indent);
 		
-		void generateGetAnchor(BasicNode<Char_> const& node, Size indent);
+		void generate_get_anchor(BasicNode<Char_> const& node, Size indent);
 		
 	private:
 		std::basic_ostream<Char_>& stream_;
@@ -41,11 +41,11 @@ namespace ieml {
 	
 	template<typename Char_>
 	struct FileGenerate {
-		static void generate(BasicNode<Char_> const& node, const FilePath& filePath);
+		static void generate(BasicNode<Char_> const& node, const FilePath& file_path);
 	};
 	
 	template<typename Char_ = Char, typename FileGenerate_ = FileGenerate<Char_>>
-	void intoFile(const BasicNode<Char_>& node, const FilePath& filePath);
+	void into_file(const BasicNode<Char_>& node, const FilePath& file_path);
 	
 	template<typename Char_ = Char, typename FileGenerate_ = FileGenerate<Char_>>
 	void into(const BasicNode<Char_>& node, std::basic_ostream<Char_>& stream);

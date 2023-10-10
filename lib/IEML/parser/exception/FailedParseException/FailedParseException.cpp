@@ -1,13 +1,13 @@
 #include "FailedParseException.hpp"
 
 namespace ieml {
-	FailedParseException::FailedParseException(FilePath filePath, Reason reason, Mark mark) :
-		WithMarkException(mark), file_path(filePath), reason(reason) {
+	FailedParseException::FailedParseException(FilePath file_path, Reason reason, Mark mark) :
+		WithMarkException(mark), file_path(file_path), reason(reason) {
 	}
 	
-	String get_file_description(FilePath filePath) {
-		if(!filePath.empty())
-			return String(" in the file '") + filePath.string() + String("'");
+	String get_file_description(FilePath file_path) {
+		if(!file_path.empty())
+			return String(" in the file '") + file_path.string() + String("'");
 		return "";
 	}
 	

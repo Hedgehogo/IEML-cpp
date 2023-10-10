@@ -10,7 +10,7 @@ namespace ieml {
 		using AnchorMap = absl::flat_hash_map<BasicString<Char_>, BasicNode<Char_>>;
 		
 		AnchorMap anchors_;
-		AnchorMap fileAnchors_;
+		AnchorMap file_anchors_;
 		WeakPtr<BasicAnchorKeeper<Char_>> parent_;
 		
 	public:
@@ -20,13 +20,13 @@ namespace ieml {
 		
 		bool add(const BasicString<Char_>& key, BasicNode<Char_> value);
 		
-		bool addToFile(const BasicString<Char_>& key, BasicNode<Char_> value);
+		bool add_to_file(const BasicString<Char_>& key, BasicNode<Char_> value);
 		
 		BasicNode<Char_>* get(const BasicString<Char_>& key);
 		
-		AnchorMap const& getMap() const;
+		AnchorMap const& get_map() const;
 		
-		AnchorMap const& getFileMap() const;
+		AnchorMap const& get_file_map() const;
 	};
 	
 	using AnchorKeeper = BasicAnchorKeeper<Char>;

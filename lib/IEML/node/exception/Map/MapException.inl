@@ -3,7 +3,7 @@
 namespace ieml {
 	namespace detail {
 		template<typename Char_>
-		String toString(BasicString<Char_> const& other) {
+		String to_string(BasicString<Char_> const& other) {
 			return String{static_cast<const Char*>(other.c_str())};
 		}
 	}
@@ -15,7 +15,7 @@ namespace ieml {
 	
 	template<typename Char_>
 	String MapException<Char_>::get_description() const {
-		return String{"A key named '"} + detail::toString<Char_>(requested_key_) + String {"' does not exist in the map."};
+		return String{"A key named '"} + detail::to_string<Char_>(requested_key_) + String {"' does not exist in the map."};
 	}
 	
 	template<typename Char_>

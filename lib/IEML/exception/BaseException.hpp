@@ -10,9 +10,9 @@ namespace ieml {
 		/// @brief Gets an error description.
 		///
 		/// @return Error description.
-		virtual String getDescription() const = 0;
+		virtual String get_description() const = 0;
 		
-		virtual String getFullDescription() const;
+		virtual String get_full_description() const;
 		
 		const char* what() const noexcept final;
 	};

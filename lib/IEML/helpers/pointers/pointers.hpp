@@ -12,22 +12,22 @@ namespace ieml {
 		using BoxPtr = std::unique_ptr<T>;
 		
 		template<typename T, typename... A>
-		auto makeBoxPtr(A&& ... args) -> decltype(std::make_unique<T>(std::forward<A>(args)...)) {
+		auto make_box_ptr(A&& ... args) -> decltype(std::make_unique<T>(std::forward<A>(args)...)) {
 			return std::make_unique<T>(std::forward<A>(args)...);
 		}
 		
 		template<typename T, typename... A>
-		BoxPtr<T> cloneBoxPtr(const BoxPtr<T>& other) {
+		BoxPtr<T> clone_box_ptr(const BoxPtr<T>& other) {
 			static_assert(!std::is_abstract_v<T>);
 			if(other.get() != nullptr) {
-				return makeBoxPtr<T>(*other);
+				return make_box_ptr<T>(*other);
 			} else {
 				return BoxPtr<T>{nullptr};
 			}
 		}
 		
 		template<typename T, typename... A>
-		auto makeRcPtr(A&& ... args) -> decltype(std::make_shared<T>(std::forward<A>(args)...)) {
+		auto make_rc_ptr(A&& ... args) -> decltype(std::make_shared<T>(std::forward<A>(args)...)) {
 			return std::make_shared<T>(std::forward<A>(args)...);
 		}
 	}

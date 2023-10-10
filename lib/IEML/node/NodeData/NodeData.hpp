@@ -5,7 +5,7 @@
 #include <string>
 #include <variant>
 #include <absl/container/flat_hash_map.h>
-#include "../../helpers/fileSystem/fileSystem.hpp"
+#include "../../helpers/file_system/file_system.hpp"
 #include "../../helpers/pointers/pointers.hpp"
 #include "../../helpers/MetaFn/MetaFn.hpp"
 #include "../NodeType/NodeType.hpp"
@@ -102,12 +102,12 @@ namespace ieml {
 	/// @brief Node data storing the file path and other data
 	template<typename Char_>
 	struct BasicFileData : public BaseMetaData<Char_> {
-		RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper_;
-		FilePath filePath_;
+		RcPtr<BasicAnchorKeeper<Char_>> anchor_keeper_;
+		FilePath file_path_;
 		
-		BasicFileData(BasicNode<Char_>&& node, const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper);
+		BasicFileData(BasicNode<Char_>&& node, const FilePath& file_path, RcPtr<BasicAnchorKeeper<Char_>> anchor_keeper);
 		
-		BasicFileData(const BasicNode<Char_>& node, const FilePath& filePath, RcPtr<BasicAnchorKeeper<Char_>> anchorKeeper);
+		BasicFileData(const BasicNode<Char_>& node, const FilePath& file_path, RcPtr<BasicAnchorKeeper<Char_>> anchor_keeper);
 		
 		bool operator==(BasicFileData<Char_> const& other) const;
 	};

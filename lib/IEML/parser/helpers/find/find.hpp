@@ -13,7 +13,7 @@ namespace ieml {
 		};
 		
 		template<typename IteratorType>
-		static constexpr bool isReverseIteratorV = IsReverseIterator<IteratorType>::value;
+		static constexpr bool is_reverse_iteratorV = IsReverseIterator<IteratorType>::value;
 	}
 	
 	template<typename IteratorType, typename ValueType>
@@ -23,10 +23,10 @@ namespace ieml {
 	IteratorType rfind(IteratorType first, IteratorType last, const ValueType& value);
 	
 	template<typename ValueType, ValueType... Values, typename IteratorType>
-	IteratorType findSet(IteratorType first, IteratorType last);
+	IteratorType find_set(IteratorType first, IteratorType last);
 	
 	template<typename ValueType, ValueType... Values, typename IteratorType>
-	IteratorType rfindSet(IteratorType first, IteratorType last);
+	IteratorType rfind_set(IteratorType first, IteratorType last);
 }
 
 #include "find.inl"

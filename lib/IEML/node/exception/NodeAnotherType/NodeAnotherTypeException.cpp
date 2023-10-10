@@ -6,8 +6,8 @@ namespace ieml {
 	}
 	
 	String NodeAnotherTypeException::get_description() const {
-		return String("Node of the '") + getStringFromNodeType(node_type_) + String("' type cannot be converted to a value of the '") +
-			getStringFromNodeType(requested_type_) + String("' type.");
+		return String("Node of the '") + get_string_from_node_type(node_type_) + String("' type cannot be converted to a value of the '") +
+			get_string_from_node_type(requested_type_) + String("' type.");
 	}
 	
 	NodeType NodeAnotherTypeException::get_requested_type() {

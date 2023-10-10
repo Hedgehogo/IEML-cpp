@@ -25,17 +25,17 @@ TEST(node, MapData) {
 }
 
 TEST(node, FileData) {
-	auto firstKeeper{ieml::makeRcPtr<ieml::AnchorKeeper>()};
-	firstKeeper->add("first", ieml::NullData{});
-	firstKeeper->addToFile("first-file", ieml::NullData{});
-	auto secondKeeper{ieml::makeRcPtr<ieml::AnchorKeeper>()};
-	secondKeeper->add("first", ieml::NullData{});
-	secondKeeper->add("first-file", ieml::NullData{});
+	auto first_keeper{ieml::make_rc_ptr<ieml::AnchorKeeper>()};
+	first_keeper->add("first", ieml::NullData{});
+	first_keeper->add_to_file("first-file", ieml::NullData{});
+	auto second_keeper{ieml::make_rc_ptr<ieml::AnchorKeeper>()};
+	second_keeper->add("first", ieml::NullData{});
+	second_keeper->add("first-file", ieml::NullData{});
 	
-	ieml::FileData first{ieml::NullData{}, "test.ieml", firstKeeper};
-	ieml::FileData second{ieml::RawData{"hello"}, "test.ieml", firstKeeper};
-	ieml::FileData third{ieml::NullData{}, "test-2.ieml", firstKeeper};
-	ieml::FileData fourth{ieml::NullData{}, "test.ieml", secondKeeper};
+	ieml::FileData first{ieml::NullData{}, "test.ieml", first_keeper};
+	ieml::FileData second{ieml::RawData{"hello"}, "test.ieml", first_keeper};
+	ieml::FileData third{ieml::NullData{}, "test-2.ieml", first_keeper};
+	ieml::FileData fourth{ieml::NullData{}, "test.ieml", second_keeper};
 	
 	ASSERT_TRUE(first == first);
 	ASSERT_FALSE(first == second);

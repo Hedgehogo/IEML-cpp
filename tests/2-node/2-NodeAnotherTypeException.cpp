@@ -14,8 +14,8 @@ public:
 };
 
 TEST(node, exception) {
-	TestWithMarkException withMarkException{ieml::Mark{1, 2}};
-	ASSERT_EQ(withMarkException.get_full_description(), ieml::String{"1:2: Test"});
+	TestWithMarkException with_mark_exception{ieml::Mark{1, 2}};
+	ASSERT_EQ(with_mark_exception.get_full_description(), ieml::String{"1:2: Test"});
 	
 	ieml::NodeAnotherTypeException exception{ieml::Mark{2, 5}, ieml::NodeType::String, ieml::NodeType::Raw};
 	ASSERT_EQ(exception.get_mark().line, 2);
