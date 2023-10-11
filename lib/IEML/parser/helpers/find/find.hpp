@@ -13,7 +13,7 @@ namespace ieml {
 		};
 		
 		template<typename IteratorType>
-		static constexpr bool is_reverse_iteratorV = IsReverseIterator<IteratorType>::value;
+		static constexpr bool is_reverse_iterator_v = IsReverseIterator<IteratorType>::value;
 	}
 	
 	template<typename IteratorType, typename ValueType>

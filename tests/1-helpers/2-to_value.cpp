@@ -13,8 +13,8 @@ TEST(helpers_number, parse_digit) {
 		std::uint8_t digit_9{parser.parse_digit('9', 10)};
 		ASSERT_EQ(digit_9, 9);
 		
-		std::uint8_t digit_A{parser.parse_digit('A', 10)};
-		ASSERT_EQ(digit_A, 255);
+		std::uint8_t digit__a{parser.parse_digit('A', 10)};
+		ASSERT_EQ(digit__a, 255);
 	}
 	{
 		std::uint8_t digit_0{parser.parse_digit('0', 16)};
@@ -23,14 +23,14 @@ TEST(helpers_number, parse_digit) {
 		std::uint8_t digit_9{parser.parse_digit('9', 16)};
 		ASSERT_EQ(digit_9, 9);
 		
-		std::uint8_t digit_A{parser.parse_digit('A', 16)};
-		ASSERT_EQ(digit_A, 10);
+		std::uint8_t digit__a{parser.parse_digit('A', 16)};
+		ASSERT_EQ(digit__a, 10);
 		
-		std::uint8_t digit_F{parser.parse_digit('F', 16)};
-		ASSERT_EQ(digit_F, 15);
+		std::uint8_t digit__f{parser.parse_digit('F', 16)};
+		ASSERT_EQ(digit__f, 15);
 		
-		std::uint8_t digit_G{parser.parse_digit('G', 16)};
-		ASSERT_EQ(digit_G, 255);
+		std::uint8_t digit__g{parser.parse_digit('G', 16)};
+		ASSERT_EQ(digit__g, 255);
 	}
 }
 

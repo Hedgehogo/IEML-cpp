@@ -22,9 +22,9 @@ TEST(parser, helpers_find) {
 	ieml::String::reverse_iterator r_iter_find_set{ieml::find_set<char, 'r', 'o'>(str.rbegin(), str.rend())};
 	ASSERT_EQ(r_iter_find_set, str.rbegin() + 2);
 	
-	ieml::String::iterator iterRFindSet{ieml::rfind_set<char, 'r', 'o'>(str.begin(), str.end())};
-	ASSERT_EQ(iterRFindSet, str.begin() + 8);
+	ieml::String::iterator iter_r_find_set{ieml::rfind_set<char, 'r', 'o'>(str.begin(), str.end())};
+	ASSERT_EQ(iter_r_find_set, str.begin() + 8);
 	
-	ieml::String::reverse_iterator r_iterRFindSet{ieml::rfind_set<char, 'r', 'o'>(str.rbegin(), str.rend())};
-	ASSERT_EQ(r_iterRFindSet, str.rbegin() + 6);
+	ieml::String::reverse_iterator r_iter_r_find_set{ieml::rfind_set<char, 'r', 'o'>(str.rbegin(), str.rend())};
+	ASSERT_EQ(r_iter_r_find_set, str.rbegin() + 6);
 }

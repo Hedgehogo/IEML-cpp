@@ -8,7 +8,7 @@ struct FileGenerate {
 };
 
 int main() {
-	ieml::Node node{ieml::from_file("../exampleSrc/test")};
+	ieml::Node node{ieml::from_file("../example-src/test")};
 	std::cout << node.get_as<double>("second", 0, ieml::clear).except() << "\n";
 	ieml::debug(node);
 	std::cout << "\n";

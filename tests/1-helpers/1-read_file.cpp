@@ -5,6 +5,6 @@
 
 TEST(helpers, read_file) {
 	std::string str;
-	EXPECT_NO_THROW(str = ieml::read_file<char>("../exampleSrc/test.txt"));
-	EXPECT_THROW(ieml::read_file<char>("../exampleSrc/other-test.txt"), ieml::FailedOpenFileException);
+	EXPECT_NO_THROW(str = ieml::read_file<char>("../example-src/test.txt"));
+	EXPECT_THROW(ieml::read_file<char>("../example-src/other-test.txt"), ieml::FailedOpenFileException);
 }
