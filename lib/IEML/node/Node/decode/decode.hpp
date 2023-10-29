@@ -8,7 +8,8 @@ namespace ieml {
 	
 	/// @brief Structure to implement the conversion functions from a node to T
 	template<typename Char_, typename T>
-	struct Decode;
+	struct Decode {
+	};
 	
 	namespace detail {
 		/// @brief Help structure to implement the conversion functions from a node to T
