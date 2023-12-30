@@ -406,7 +406,7 @@ namespace ieml {
 		try {
 			auto object{detail::DecodeImpl<Char_, T>::decode(*this)};
 			if(object.is_some()) {
-				return DecodeResult<T>::Ok(std::move(object.some()));
+				return DecodeResult<T>::Ok(std::forward<T>(object.some()));
 			}
 		} catch(NodeException& e) {
 			return DecodeResult<T>::Error({mark_, get_type_info<T>(), BoxPtr<NodeException>{e.clone()}});
@@ -433,7 +433,7 @@ namespace ieml {
 		if(item.is_ok()) {
 			auto object{item.ok().template as<T>()};
 			if(object.is_ok()) {
-				return GetAsResult<Char_, T>::Ok(std::move(object.ok()));
+				return GetAsResult<Char_, T>::Ok(std::forward<T>(object.ok()));
 			} else {
 				return GetAsResult<Char_, T>::Error({std::move(object.error())});
 			}
