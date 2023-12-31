@@ -55,7 +55,7 @@ namespace ieml {
 	};
 	
 	template<typename N>
-	N* get_from_step(N& data) {
+	N* get_from_step(N&) {
 		return nullptr;
 	}
 	
