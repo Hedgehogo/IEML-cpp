@@ -151,7 +151,7 @@ namespace ieml {
 				if(!number.correct()) {
 					return Option<T>{};
 				}
-				return Option<T>{number.value * static_cast<T>(powl(static_cast<long double>(number.base), static_cast<long double>(exponent.value)))};
+				return Option<T>{static_cast<T>(number.value * static_cast<T>(powl(static_cast<long double>(number.base), static_cast<long double>(exponent.value))))};
 			}
 			return Option<T>{number.value};
 		}
