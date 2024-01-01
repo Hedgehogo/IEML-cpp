@@ -21,6 +21,26 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
+	template<typename... Steps>
+	GetResult<Char_, const ieml::BasicNode<Char_>&> BasicListView<Char_>::get(size_t index, Steps&& ... steps) const {
+		auto item{at(index)};
+		if(item) {
+			return item.ok().get(std::forward<Steps>(steps)...);
+		}
+		return GetResult<Char_, BasicNode<Char_> const&>::Error({std::move(item.error())});
+	}
+	
+	template<typename Char_>
+	template<typename T, typename... Steps>
+	GetAsResult<Char_, T> BasicListView<Char_>::get_as(size_t index, Steps&& ... steps) const {
+		auto item{at(index)};
+		if(item) {
+			return item.ok().template get_as<T>(std::forward<Steps>(steps)...);
+		}
+		return GetResult<Char_, BasicNode<Char_> const&>::Error({std::move(item.error())});
+	}
+	
+	template<typename Char_>
 	Result<BasicNode<Char_> const&, ListException> BasicListView<Char_>::operator[](Size index) const {
 		auto size{list_.size()};
 		if(size > index) {
