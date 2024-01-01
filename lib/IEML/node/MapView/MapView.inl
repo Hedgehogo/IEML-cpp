@@ -37,7 +37,7 @@ namespace ieml {
 		if(item) {
 			return item.ok().template get_as<T>(std::forward<Steps>(steps)...);
 		}
-		return GetResult<Char_, BasicNode<Char_> const&>::Error({std::move(item.error())});
+		return GetAsResult<Char_, T>::Error({std::move(item.error())});
 	}
 	
 	template<typename Char_>
