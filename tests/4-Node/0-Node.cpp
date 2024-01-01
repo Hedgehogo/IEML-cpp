@@ -125,6 +125,19 @@ TEST(Node, Node_4_Map) {
 	
 	auto incorrect_item{node.at(ieml::String("other-key"))};
 	ASSERT_FALSE(incorrect_item.is_ok());
+	
+	auto view{node.get_map_view()};
+	ASSERT_TRUE(view.is_ok());
+	ASSERT_EQ(view.ok().get_size(), 1);
+	ASSERT_EQ(&view.ok().get_map(), &node.get_map().except());
+	
+	auto view_item{view.ok().at(ieml::String("key"))};
+	ASSERT_TRUE(view_item.is_ok());
+	ASSERT_EQ(&view_item.ok(), &(view.ok()[ieml::String("key")].except()));
+	ASSERT_EQ(&view_item.ok(), &item.ok());
+	
+	auto incorrect_view_item{view.ok().at(ieml::String("other-key"))};
+	ASSERT_FALSE(incorrect_view_item.is_ok());
 }
 
 TEST(Node, Node_5_Tag) {

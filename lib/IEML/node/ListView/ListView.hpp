@@ -1,5 +1,9 @@
 #pragma once
 
+#include "../Mark/Mark.hpp"
+#include "../NodeData/NodeData.hpp"
+#include "../exception/List/ListException.hpp"
+
 namespace ieml {
 	template<typename Char_>
 	class BasicNode;

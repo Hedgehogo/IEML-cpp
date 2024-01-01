@@ -355,6 +355,16 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
+	TypeResult<BasicMapView<Char_> > BasicNode<Char_>::get_map_view() const {
+		auto& clear_node{get_clear()};
+		auto map{clear_node.template get_typed_data_or_error<NodeType::Map>()};
+		if(map.is_ok()) {
+			return TypeResult<BasicMapView<Char_> >::Ok({map.ok(), clear_node.mark_});
+		}
+		return TypeResult<BasicMapView<Char_> >::Error(std::move(map.error()));
+	}
+	
+	template<typename Char_>
 	ListResult<BasicNode<Char_>&> BasicNode<Char_>::at(Size index) {
 		return get_clear()[index];
 	}
