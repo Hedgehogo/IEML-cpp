@@ -160,21 +160,21 @@ namespace ieml {
 		template<typename Char_>
 		struct ToNodeData<NodeType::Null, Char_> : MetaFn<NullData> {};
 		template<typename Char_>
-		struct ToNodeData<NodeType::Raw, Char_> : MetaFn<BasicRawData<Char_>> {};
+		struct ToNodeData<NodeType::Raw, Char_> : MetaFn<BasicRawData<Char_> > {};
 		template<typename Char_>
-		struct ToNodeData<NodeType::String, Char_> : MetaFn<BasicStringData<Char_>> {};
+		struct ToNodeData<NodeType::String, Char_> : MetaFn<BasicStringData<Char_> > {};
 		template<typename Char_>
-		struct ToNodeData<NodeType::List, Char_> : MetaFn<BasicListData<Char_>> {};
+		struct ToNodeData<NodeType::List, Char_> : MetaFn<BasicListData<Char_> > {};
 		template<typename Char_>
-		struct ToNodeData<NodeType::Map, Char_> : MetaFn<BasicMapData<Char_>> {};
+		struct ToNodeData<NodeType::Map, Char_> : MetaFn<BasicMapData<Char_> > {};
 		template<typename Char_>
-		struct ToNodeData<NodeType::Tag, Char_> : MetaFn<BasicTagData<Char_>> {};
+		struct ToNodeData<NodeType::Tag, Char_> : MetaFn<BasicTagData<Char_> > {};
 		template<typename Char_>
-		struct ToNodeData<NodeType::File, Char_> : MetaFn<BasicFileData<Char_>> {};
+		struct ToNodeData<NodeType::File, Char_> : MetaFn<BasicFileData<Char_> > {};
 		template<typename Char_>
-		struct ToNodeData<NodeType::TakeAnchor, Char_> : MetaFn<BasicTakeAnchorData<Char_>> {};
+		struct ToNodeData<NodeType::TakeAnchor, Char_> : MetaFn<BasicTakeAnchorData<Char_> > {};
 		template<typename Char_>
-		struct ToNodeData<NodeType::GetAnchor, Char_> : MetaFn<BasicGetAnchorData<Char_>> {};
+		struct ToNodeData<NodeType::GetAnchor, Char_> : MetaFn<BasicGetAnchorData<Char_> > {};
 	}
 	
 	template<NodeType Type, typename Char_>

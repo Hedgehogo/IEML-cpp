@@ -7,6 +7,7 @@
 #include "../exception/List/ListException.hpp"
 #include "../exception/Map/MapException.hpp"
 #include "../exception/FailedDecodeData/FailedDecodeDataException.hpp"
+#include "IEML/node/ListView/ListView.hpp"
 #include "decode/decode.hpp"
 
 namespace ieml {
@@ -237,6 +238,11 @@ namespace ieml {
 		/// @return A node map or NodeAnotherTypeException.
 		TypeResult<BasicMapData<Char_> const&> get_map() const;
 		
+		/// @brief Gets the node list view.
+		///
+		/// @return A node list view or NodeAnotherTypeException.
+		TypeResult<BasicListView<Char_> > get_list_view() const;
+		
 		/// @brief Gets a node from the list by index.
 		///
 		/// @param index Index of the requested node.
@@ -365,5 +371,6 @@ namespace ieml {
 
 #include "../../anchor/AnchorKeeper/AnchorKeeper.inl"
 #include "../NodeData/NodeData.inl"
+#include "../ListView/ListView.inl"
 #include "decode/decode.inl"
 #include "Node.inl"

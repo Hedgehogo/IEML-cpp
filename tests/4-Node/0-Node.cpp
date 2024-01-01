@@ -62,22 +62,35 @@ TEST(Node, Node_3_List) {
 	ASSERT_EQ(node.get_list_size(), 1);
 	ASSERT_EQ(node.get_size(), 1);
 	
-	auto elem{node.at(0)};
-	ASSERT_TRUE(elem.is_ok());
-	ASSERT_EQ(&elem.ok(), &node[0].ok());
+	auto item{node.at(0)};
+	ASSERT_TRUE(item.is_ok());
+	ASSERT_EQ(&item.ok(), &node[0].except());
 	
-	ASSERT_TRUE(elem.ok().is_null());
-	ASSERT_FALSE(elem.ok().is_raw());
-	ASSERT_FALSE(elem.ok().is_string());
-	ASSERT_FALSE(elem.ok().is_list());
-	ASSERT_FALSE(elem.ok().is_map());
-	ASSERT_FALSE(elem.ok().is_file());
-	ASSERT_FALSE(elem.ok().is_with_tag());
-	ASSERT_FALSE(elem.ok().is_take_anchor());
-	ASSERT_FALSE(elem.ok().is_get_anchor());
+	ASSERT_TRUE(item.ok().is_null());
+	ASSERT_FALSE(item.ok().is_raw());
+	ASSERT_FALSE(item.ok().is_string());
+	ASSERT_FALSE(item.ok().is_list());
+	ASSERT_FALSE(item.ok().is_map());
+	ASSERT_FALSE(item.ok().is_file());
+	ASSERT_FALSE(item.ok().is_with_tag());
+	ASSERT_FALSE(item.ok().is_take_anchor());
+	ASSERT_FALSE(item.ok().is_get_anchor());
 	
-	auto incorrect_elem{node.at(1)};
-	ASSERT_FALSE(incorrect_elem.is_ok());
+	auto incorrect_item{node.at(1)};
+	ASSERT_FALSE(incorrect_item.is_ok());
+	
+	auto view{node.get_list_view()};
+	ASSERT_TRUE(view.is_ok());
+	ASSERT_EQ(view.ok().get_size(), 1);
+	ASSERT_EQ(&view.ok().get_list(), &node.get_list().except());
+	
+	auto view_item{view.ok().at(0)};
+	ASSERT_TRUE(view_item.is_ok());
+	ASSERT_EQ(&view_item.ok(), &(view.ok()[0].except()));
+	ASSERT_EQ(&view_item.ok(), &item.ok());
+	
+	auto incorrect_view_item{view.ok().at(1)};
+	ASSERT_FALSE(incorrect_view_item.is_ok());
 }
 
 TEST(Node, Node_4_Map) {
@@ -96,22 +109,22 @@ TEST(Node, Node_4_Map) {
 	ASSERT_EQ(node.get_map_size(), 1);
 	ASSERT_EQ(node.get_size(), 1);
 	
-	auto elem{node.at(ieml::String("key"))};
-	ASSERT_TRUE(elem.is_ok());
-	ASSERT_EQ(&elem.ok(), &node[ieml::String("key")].ok());
+	auto item{node.at(ieml::String("key"))};
+	ASSERT_TRUE(item.is_ok());
+	ASSERT_EQ(&item.ok(), &node[ieml::String("key")].ok());
 	
-	ASSERT_TRUE(elem.ok().is_null());
-	ASSERT_FALSE(elem.ok().is_raw());
-	ASSERT_FALSE(elem.ok().is_string());
-	ASSERT_FALSE(elem.ok().is_list());
-	ASSERT_FALSE(elem.ok().is_map());
-	ASSERT_FALSE(elem.ok().is_file());
-	ASSERT_FALSE(elem.ok().is_with_tag());
-	ASSERT_FALSE(elem.ok().is_take_anchor());
-	ASSERT_FALSE(elem.ok().is_get_anchor());
+	ASSERT_TRUE(item.ok().is_null());
+	ASSERT_FALSE(item.ok().is_raw());
+	ASSERT_FALSE(item.ok().is_string());
+	ASSERT_FALSE(item.ok().is_list());
+	ASSERT_FALSE(item.ok().is_map());
+	ASSERT_FALSE(item.ok().is_file());
+	ASSERT_FALSE(item.ok().is_with_tag());
+	ASSERT_FALSE(item.ok().is_take_anchor());
+	ASSERT_FALSE(item.ok().is_get_anchor());
 	
-	auto incorrect_elem{node.at(ieml::String("other-key"))};
-	ASSERT_FALSE(incorrect_elem.is_ok());
+	auto incorrect_item{node.at(ieml::String("other-key"))};
+	ASSERT_FALSE(incorrect_item.is_ok());
 }
 
 TEST(Node, Node_5_Tag) {

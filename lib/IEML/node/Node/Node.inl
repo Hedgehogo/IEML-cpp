@@ -28,7 +28,7 @@ namespace ieml {
 	template<typename Char_>
 	template<NodeType Type>
 	TypeResult<ToNodeData<Type, Char_> const&> BasicNode<Char_>::get_typed_data_or_error() const {
-		if(auto type_data = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
+		if(auto type_data = std::get_if<ToNodeData<Type, Char_> >(&data_.data_))
 			return TypeResult<ToNodeData<Type, Char_> const&>::Ok(*type_data);
 		return TypeResult<ToNodeData<Type, Char_> const&>::Error(make_type_error<Type>());
 	}
@@ -36,7 +36,7 @@ namespace ieml {
 	template<typename Char_>
 	template<NodeType Type>
 	TypeResult<ToNodeData<Type, Char_>&> BasicNode<Char_>::get_typed_data_or_error() {
-		if(auto type_data = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
+		if(auto type_data = std::get_if<ToNodeData<Type, Char_> >(&data_.data_))
 			return TypeResult<ToNodeData<Type, Char_>&>::Ok(*type_data);
 		return TypeResult<ToNodeData<Type, Char_>&>::Error(make_type_error<Type>());
 	}
@@ -44,7 +44,7 @@ namespace ieml {
 	template<typename Char_>
 	template<NodeType Type>
 	Option<ToNodeData<Type, Char_> const&> BasicNode<Char_>::get_typed_data() const {
-		if(auto type_data = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
+		if(auto type_data = std::get_if<ToNodeData<Type, Char_> >(&data_.data_))
 			return {*type_data};
 		return {};
 	}
@@ -52,7 +52,7 @@ namespace ieml {
 	template<typename Char_>
 	template<NodeType Type>
 	Option<ToNodeData<Type, Char_>&> BasicNode<Char_>::get_typed_data() {
-		if(auto type_data = std::get_if<ToNodeData<Type, Char_>>(&data_.data_))
+		if(auto type_data = std::get_if<ToNodeData<Type, Char_> >(&data_.data_))
 			return {*type_data};
 		return {};
 	}
@@ -342,6 +342,16 @@ namespace ieml {
 	template<typename Char_>
 	TypeResult<BasicMapData<Char_> const&> BasicNode<Char_>::get_map() const {
 		return get_clear().template get_typed_data_or_error<NodeType::Map>();
+	}
+	
+	template<typename Char_>
+	TypeResult<BasicListView<Char_> > BasicNode<Char_>::get_list_view() const {
+		auto& clear_node{get_clear()};
+		auto list{clear_node.template get_typed_data_or_error<NodeType::List>()};
+		if(list.is_ok()) {
+			return TypeResult<BasicListView<Char_> >::Ok({list.ok(), clear_node.mark_});
+		}
+		return TypeResult<BasicListView<Char_> >::Error(std::move(list.error()));
 	}
 	
 	template<typename Char_>
