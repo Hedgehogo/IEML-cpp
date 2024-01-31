@@ -6,7 +6,9 @@ namespace ieml {
 	}
 	
 	FailedDecodeDataException::FailedDecodeDataException(const FailedDecodeDataException& other) :
-		NodeException(other.get_mark()), type_info_(other.type_info_), reason_(other.reason_->clone()) {
+		NodeException(other.get_mark()),
+		type_info_(other.type_info_),
+		reason_(other.reason_.get() != nullptr ? other.reason_->clone() : nullptr) {
 	}
 	
 	String FailedDecodeDataException::get_description() const {
