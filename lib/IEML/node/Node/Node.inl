@@ -449,16 +449,15 @@ namespace ieml {
 	template<typename Char_>
 	template<typename T, typename... Steps>
 	GetAsResult<Char_, T> BasicNode<Char_>::get_as(Steps&& ... steps) const {
-		auto item{get(std::forward<Steps>(steps)...)};
-		if(item.is_ok()) {
-			auto object{item.ok().template as<T>()};
-			if(object.is_ok()) {
-				return GetAsResult<Char_, T>::Ok(std::forward<T>(object.ok()));
-			} else {
-				return GetAsResult<Char_, T>::Error({std::move(object.error())});
+		auto item_result{get(std::forward<Steps>(steps)...)};
+		for(auto& item: item_result.ok_or_none()) {
+			auto object_result{item.template as<T>()};
+			for(auto& object: object_result.ok_or_none()) {
+				return GetAsResult<Char_, T>::Ok(GetResult<Char_, T>::Ok(std::forward<T>(object)));
 			}
+			return GetAsResult<Char_, T>::Error(std::move(object_result.error()));
 		}
-		return GetAsResult<Char_, T>::Error(item.error().template move_upcast<FailedDecodeDataException>());
+		return GetAsResult<Char_, T>::Ok(GetResult<Char_, T>::Error(std::move(item_result.error())));
 	}
 	
 	template<typename Char_>

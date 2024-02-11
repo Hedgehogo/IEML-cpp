@@ -33,11 +33,11 @@ namespace ieml {
 	template<typename Char_>
 	template<typename T, typename... Steps>
 	GetAsResult<Char_, T> BasicMapView<Char_>::get_as(const BasicString<Char_>& key, Steps&& ... steps) const {
-		auto item{at(key)};
-		if(item) {
-			return item.ok().template get_as<T>(std::forward<Steps>(steps)...);
+		auto item_result{at(key)};
+		for(auto& item: item_result.ok_or_none()) {
+			return item.template get_as<T>(std::forward<Steps>(steps)...);
 		}
-		return GetAsResult<Char_, T>::Error({std::move(item.error())});
+		return GetAsResult<Char_, T>::Ok(GetResult<Char_, T>::Error(std::move(item_result.error())));
 	}
 	
 	template<typename Char_>

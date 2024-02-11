@@ -87,8 +87,8 @@ template<typename Char_>
 struct ieml::Decode<Char_, Vec2> {
 	static ieml::Option<Vec2> decode(const ieml::Node& node) {
 		return {Vec2{
-			node.get_as<float>("x").except(),
-			node.get_as<float>("y").except(),
+			node.get_as<float>("x").except().except(),
+			node.get_as<float>("y").except().except(),
 		}};
 	}
 };
@@ -102,8 +102,8 @@ template<typename Char_>
 struct ieml::Decode<Char_, Rect> {
 	static ieml::Option<Rect> decode(const ieml::Node& node) {
 		return {Rect{
-			node.get_as<Vec2>("position").except(),
-			node.get_as<Vec2>("size").except(),
+			node.get_as<Vec2>("position").except().except(),
+			node.get_as<Vec2>("size").except().except(),
 		}};
 	}
 };

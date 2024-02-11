@@ -17,5 +17,5 @@ namespace ieml {
 	template<typename T>
 	using DecodeResult = Result<T, FailedDecodeDataException>;
 	template<typename Char_, typename T>
-	using GetAsResult = Result<T, orl::Error<NodeAnotherTypeException, ListException, MapException<Char_>, FailedDecodeDataException> >;
+	using GetAsResult = DecodeResult<GetResult<Char_, T> >;
 }

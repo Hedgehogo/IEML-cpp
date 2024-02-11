@@ -33,11 +33,11 @@ namespace ieml {
 	template<typename Char_>
 	template<typename T, typename... Steps>
 	GetAsResult<Char_, T> BasicListView<Char_>::get_as(size_t index, Steps&& ... steps) const {
-		auto item{at(index)};
-		if(item) {
-			return item.ok().template get_as<T>(std::forward<Steps>(steps)...);
+		auto item_result{at(index)};
+		for(auto& item: item_result.ok_or_none()) {
+			return item.template get_as<T>(std::forward<Steps>(steps)...);
 		}
-		return GetAsResult<Char_, T>::Error({std::move(item.error())});
+		return GetAsResult<Char_, T>::Ok(GetResult<Char_, T>::Error(std::move(item_result.error())));
 	}
 	
 	template<typename Char_>
