@@ -1,13 +1,12 @@
 cmake_minimum_required(VERSION 3.23)
 project(IEML_cpp)
-
+set(CMAKE_CXX_STANDARD 17)
 include(FetchContent)
 
-set(CMAKE_CXX_STANDARD 17)
+option(IEML_ENABLE_INSTALL "Enable install rule" ON)
 
 set(ABSL_PROPAGATE_CXX_STD ON)
-
-set(ABSL_ENABLE_INSTALL ON)
+set(ABSL_ENABLE_INSTALL ${IEML_ENABLE_INSTALL})
 
 
 FetchContent_Declare(
@@ -27,7 +26,7 @@ FetchContent_Declare(
 FetchContent_Declare(
         abseil
         GIT_REPOSITORY https://github.com/abseil/abseil-cpp
-        GIT_TAG        lts_2023_01_25
+        GIT_TAG         "20240116.0"
         FIND_PACKAGE_ARGS NAMES absl
 )
 
@@ -62,17 +61,18 @@ add_executable(${PROJECT_NAME}_tests ${test_src})
 
 target_link_libraries(${PROJECT_NAME}_tests PRIVATE gtest gtest_main ${PROJECT_NAME})
 
+if (IEML_ENABLE_INSTALL)
+        install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/lib/IEML DESTINATION ${CMAKE_INSTALL_PREFIX}/include PATTERN "*.hpp")
 
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/lib/IEML DESTINATION ${CMAKE_INSTALL_PREFIX}/include PATTERN "*.hpp")
+        install(TARGETS ${PROJECT_NAME}
+                EXPORT ${PROJECT_NAME}
+                LIBRARY DESTINATION lib
+                PUBLIC_HEADER DESTINATION include/${PROJECT_NAME}
+                )
 
-install(TARGETS ${PROJECT_NAME}
-        EXPORT ${PROJECT_NAME}
-        LIBRARY DESTINATION lib
-        PUBLIC_HEADER DESTINATION include/${PROJECT_NAME}
-        )
-
-install(EXPORT ${PROJECT_NAME}
-        FILE ${PROJECT_NAME}Config.cmake
-        NAMESPACE ${PROJECT_NAME}::
-        DESTINATION lib/cmake/${PROJECT_NAME}
-        )
+        install(EXPORT ${PROJECT_NAME}
+                FILE ${PROJECT_NAME}Config.cmake
+                NAMESPACE ${PROJECT_NAME}::
+                DESTINATION lib/cmake/${PROJECT_NAME}
+                )
+endif ()
