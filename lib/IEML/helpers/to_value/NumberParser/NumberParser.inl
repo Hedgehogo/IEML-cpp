@@ -117,9 +117,9 @@ namespace ieml {
 			if(*pos_ == to_char('\'')) {
 				++pos_;
 				if(integer_part_or_base.value >= 1 && integer_part_or_base.value <= 36) {
-					auto number{parse_number<R>(integer_part_or_base.value)};
-					if(number) {
-						return {add_minus(number.some(), minus), static_cast<uint8_t>(integer_part_or_base.value)};
+					auto number_opt{parse_number<R>(integer_part_or_base.value)};
+					for(auto& number: number_opt) {
+						return {add_minus(number, minus), static_cast<uint8_t>(integer_part_or_base.value)};
 					}
 				}
 				return {0, 0};
@@ -178,12 +178,12 @@ namespace ieml {
 	}
 	
 	template<typename T, typename C>
-	std::enable_if_t<std::is_arithmetic_v<T>, Option<T>> to_number(BasicStringCIter<C>&& first, BasicStringCIter<C>&& last) {
-		number::Parser<C, T> parser{std::forward<BasicStringCIter<C>>(first), std::forward<BasicStringCIter<C>>(last)};
+	std::enable_if_t<std::is_arithmetic_v<T>, Option<T> > to_number(BasicStringCIter<C>&& first, BasicStringCIter<C>&& last) {
+		number::Parser<C, T> parser{std::forward<BasicStringCIter<C> >(first), std::forward<BasicStringCIter<C>>(last)};
 		auto number{parser.parse_number_scientific()};
 		parser.skip_blank_line();
-		if(number && parser.is_complete()) {
-			return number;
+		if(number.is_some() && parser.is_complete()) {
+			return number.some();
 		}
 		return {};
 	}

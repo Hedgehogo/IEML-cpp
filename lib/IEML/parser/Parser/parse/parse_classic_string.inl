@@ -136,15 +136,15 @@ namespace ieml {
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicStringData<Char_>> BasicParser<Char_, FileInclude_>::parse_classic_string(Size indent) {
-		if(auto string_mark{is_classic_string<Char_>(pos_, end(), indent)}) {
-			BasicString<Char_> result{handle_classic_string<Char_>(pos_ + 1, string_mark.some().real_length, indent)};
-			pos_ = string_mark.some().pos;
-			if(string_mark.some().enter_count == 0) {
-				mark_.symbol += string_mark.some().last_length;
+		for(auto& string_mark: is_classic_string<Char_>(pos_, end(), indent)) {
+			BasicString<Char_> result{handle_classic_string<Char_>(pos_ + 1, string_mark.real_length, indent)};
+			pos_ = string_mark.pos;
+			if(string_mark.enter_count == 0) {
+				mark_.symbol += string_mark.last_length;
 			} else {
-				mark_.symbol = string_mark.some().last_length;
+				mark_.symbol = string_mark.last_length;
 			}
-			mark_.line += string_mark.some().enter_count;
+			mark_.line += string_mark.enter_count;
 			return {BasicStringData<Char_>{result}};
 		}
 		return {};

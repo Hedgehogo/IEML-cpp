@@ -8,20 +8,27 @@ namespace ieml {
 				except(FailedParseException::Reason::FailedDetermineType);
 			}
 		}
-		if(auto tag{parse_tag(indent)})
-			return BasicNodeData<Char_>{tag.some()};
-		if(auto take_anchor{parse_take_anchor(indent)})
-			return BasicNodeData<Char_>{take_anchor.some()};
-		if(auto get_anchor{parse_get_anchor(indent)})
-			return BasicNodeData<Char_>{get_anchor.some()};
-		if(auto file{parse_file(indent)})
-			return BasicNodeData<Char_>{file.some()};
-		if(auto list{parse_list(indent)})
-			return BasicNodeData<Char_>{list.some()};
-		if(auto short_list{parse_short_list()})
-			return BasicNodeData<Char_>{short_list.some()};
-		if(auto map{parse_map(indent)})
-			return BasicNodeData<Char_>{map.some()};
+		for(auto& tag: parse_tag(indent)) {
+			return BasicNodeData<Char_>{std::move(tag)};
+		}
+		for(auto& take_anchor: parse_take_anchor(indent)) {
+			return BasicNodeData<Char_>{std::move(take_anchor)};
+		}
+		for(auto& get_anchor: parse_get_anchor(indent)) {
+			return BasicNodeData<Char_>{std::move(get_anchor)};
+		}
+		for(auto& file: parse_file(indent)) {
+			return BasicNodeData<Char_>{std::move(file)};
+		}
+		for(auto& list: parse_list(indent)) {
+			return BasicNodeData<Char_>{std::move(list)};
+		}
+		for(auto& short_list: parse_short_list()) {
+			return BasicNodeData<Char_>{std::move(short_list)};
+		}
+		for(auto& map: parse_map(indent)) {
+			return BasicNodeData<Char_>{std::move(map)};
+		}
 		return parse_scalar(indent);
 	}
 }

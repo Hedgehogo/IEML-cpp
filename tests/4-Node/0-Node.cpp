@@ -59,8 +59,8 @@ TEST(Node, Node_3_List) {
 	ASSERT_FALSE(node.is_take_anchor());
 	ASSERT_FALSE(node.is_get_anchor());
 	
-	ASSERT_EQ(node.get_list_size(), 1);
-	ASSERT_EQ(node.get_size(), 1);
+	ASSERT_EQ(node.get_list_size().except(), 1);
+	ASSERT_EQ(node.get_size().except(), 1);
 	
 	auto item{node.at(0)};
 	ASSERT_TRUE(item.is_ok());
@@ -106,8 +106,8 @@ TEST(Node, Node_4_Map) {
 	ASSERT_FALSE(node.is_take_anchor());
 	ASSERT_FALSE(node.is_get_anchor());
 	
-	ASSERT_EQ(node.get_map_size(), 1);
-	ASSERT_EQ(node.get_size(), 1);
+	ASSERT_EQ(node.get_map_size().except(), 1);
+	ASSERT_EQ(node.get_size().except(), 1);
 	
 	auto item{node.at(ieml::String("key"))};
 	ASSERT_TRUE(item.is_ok());

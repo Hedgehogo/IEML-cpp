@@ -2,12 +2,12 @@
 #include "../../helpers/match/match.hpp"
 
 namespace ieml {
-	static constexpr auto re_whitespace = ctll::fixed_string{ R"([\t ]*)"};
+	static constexpr auto re_whitespace = ctll::fixed_string{R"([\t ]*)"};
 	static constexpr auto re_s_l_separator = ctll::fixed_string{R"(, )"};
 	static constexpr auto re_s_l_raw = ctll::fixed_string{R"(([^\n\"<>#]|#[^\n\"<>! ])*?#?(?=, |\]))"};
 	
 	template<typename Char_, typename FileInclude_>
-	Option<BasicListData<Char_>> BasicParser<Char_, FileInclude_>::parse_short_list() {
+	Option<BasicListData<Char_> > BasicParser<Char_, FileInclude_>::parse_short_list() {
 		if(pos_ != end() && *pos_ == '[') {
 			auto pos_info{get_pos_info()};
 			auto true_end{end()};
@@ -23,18 +23,22 @@ namespace ieml {
 			} else {
 				while(true) {
 					set_pos_info(pos_info);
-					BasicNodeData<Char_> node_data;
-					if(auto short_list{parse_short_list()}) {
-						node_data = {short_list.some()};
-					} else if(auto null{parse_null()}) {
-						node_data = {null.some()};
-					} else if(auto classic_string{parse_classic_string(0)}) {
-						node_data = {classic_string.some()};
-					} else if(auto raw{match_and_move<re_s_l_raw>(pos_, end(), mark_)}) {
-						node_data = {RawData{raw.str()}};
-					} else {
+					auto node_data{[this]() -> BasicNodeData<Char_> {
+						for(auto& short_list: parse_short_list()) {
+							return {std::move(short_list)};
+						}
+						for(auto& null: parse_null()) {
+							return {std::move(null)};
+						}
+						for(auto& classic_string: parse_classic_string(0)) {
+							return {std::move(classic_string)};
+						}
+						if(auto raw{match_and_move<re_s_l_raw>(pos_, end(), mark_)}) {
+							return {RawData{raw.str()}};
+						}
 						except(FailedParseException::Reason::FailedDetermineType);
-					}
+						return {};
+					}()};
 					
 					match_and_move<re_whitespace>(pos_, end(), pos_info.mark);
 					if(pos_ != end() && *pos_ == ']') {

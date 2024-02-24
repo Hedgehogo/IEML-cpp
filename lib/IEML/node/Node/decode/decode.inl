@@ -6,8 +6,8 @@ namespace ieml {
 		template<typename Char_, typename T>
 		Option<T> DecodeImpl<Char_, T>::decode(BasicNode<Char_> const& node) {
 			if constexpr(std::is_arithmetic_v<T>) {
-				if(auto raw_data{node.template as<BasicRawData<Char_> >()}) {
-					return to_number<T, Char_>(raw_data.ok().str.cbegin(), raw_data.ok().str.cend());
+				for(auto& raw_data: node.template as<BasicRawData<Char_> >().ok_or_none()) {
+					return to_number<T, Char_>(raw_data.str.cbegin(), raw_data.str.cend());
 				}
 			} else {
 				return Decode<Char_, T>::decode(node);

@@ -18,14 +18,18 @@ namespace ieml {
 		
 		stream << indent << "<" << node.get_mark().line << ":" << node.get_mark().symbol;
 		stream << ", " << get_string_from_node_type(type);
-		if(auto tag{node.get_tag()})
-			stream << ", tag: " << tag.some();
-		if(auto file_path{node.get_file_path()})
-			stream << ", file-path: " << file_path.some();
-		if(auto get_anchor_name{node.get_get_anchor_name()})
-			stream << ", get-anchor-name: " << get_anchor_name.some();
-		if(auto take_anchor_name{node.get_take_anchor_name()})
-			stream << ", take-anchor-name: " << take_anchor_name.some();
+		for(auto& tag: node.get_tag()) {
+			stream << ", tag: " << tag;
+		}
+		for(auto& file_path: node.get_file_path()) {
+			stream << ", file-path: " << file_path;
+		}
+		for(auto& get_anchor_name: node.get_get_anchor_name()) {
+			stream << ", get-anchor-name: " << get_anchor_name;
+		}
+		for(auto& take_anchor_name: node.get_take_anchor_name()) {
+			stream << ", take-anchor-name: " << take_anchor_name;
+		}
 		stream << ">\n";
 		
 		switch(type) {
