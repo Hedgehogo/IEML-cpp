@@ -5,6 +5,7 @@
 #include "../Mark/Mark.hpp"
 #include "../ListView/ListView.hpp"
 #include "../MapView/MapView.hpp"
+#include "../MapReader/MapReader.hpp"
 #include "decode/decode.hpp"
 
 namespace ieml {
@@ -231,6 +232,14 @@ namespace ieml {
 		///
 		/// @return A node map view or NodeAnotherTypeException.
 		TypeResult<BasicMapView<Char_> > get_map_view() const;
+		
+		/// @brief Allows to read a map with an error if an extra key is present.
+		///
+		/// @param f A function where queries are made to the map.
+		///
+		/// @return Result of calling `f` or NodeAnotherTypeException or MapException.
+		template<typename F>
+		ReadResult<Char_, std::invoke_result_t<F, MapReader<Char_>&> > read_map(F f) const;
 		
 		/// @brief Gets a node from the list by index.
 		///

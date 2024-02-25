@@ -1,40 +1,33 @@
 #pragma once
 
-#include "../MapReader/MapReader.hpp"
+#include <absl/container/flat_hash_set.h>
+#include "../Mark/Mark.hpp"
+#include "../NodeData/NodeData.hpp"
+#include "../exception/Map/MapException.hpp"
 
 namespace ieml {
 	template<typename Char_>
 	class BasicNode;
 	
 	template<typename Char_>
-	class BasicMapView {
+	class MapReader {
 	public:
-		BasicMapView(BasicMapData<Char_> const& map, Mark mark);
+		using RequestedContainer = absl::flat_hash_set<BasicString<Char_> const*>;
+		using KeyContainer = absl::flat_hash_set<BasicString<Char_> >;
 		
-		/// @brief Gets the map size.
-		///
-		/// @return A map size.
-		Size get_size() const;
+		MapReader(BasicMapData<Char_> const& map, Mark mark);
 		
-		/// @brief Gets the node map.
+		/// @brief Get all the extra keys.
 		///
-		/// @return A node map.
-		BasicMapData<Char_> const& get_map() const;
-		
-		/// @brief Allows to read a map with an error if an extra key is present.
-		///
-		/// @param f A function where queries are made to the map.
-		///
-		/// @return Result of calling `f` or NodeAnotherTypeException or MapException.
-		template<typename F>
-		Result<std::invoke_result_t<F, MapReader<Char_>&>, ExtraKeyException<Char_> > read(F f) const;
+		/// @return All the extra keys.
+		Option<KeyContainer> extra_keys();
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node.
-		Result<BasicNode<Char_> const&, MapException<Char_> > at(BasicString<Char_> const& key) const;
+		Result<BasicNode<Char_> const&, MapException<Char_> > at(BasicString<Char_> const& key);
 		
 		/// @brief Gets a node in the passed path or an error at any step.
 		///
@@ -42,7 +35,7 @@ namespace ieml {
 		///
 		/// @return A node or NodeAnotherTypeException.
 		template<typename... Steps>
-		GetResult<Char_, BasicNode<Char_> const&> get(BasicString<Char_> const& key, Steps&&... steps) const;
+		GetResult<Char_, BasicNode<Char_> const&> get(BasicString<Char_> const& key, Steps&&... steps);
 		
 		/// @brief Gets the T value converted from a node in the passed path or an error at any step or during conversion.
 		///
@@ -52,19 +45,18 @@ namespace ieml {
 		///
 		/// @return A T value or NodeAnotherTypeException or FailedDecodeDataException.
 		template<typename T, typename... Steps>
-		GetAsResult<Char_, T> get_as(BasicString<Char_> const& key, Steps&&... steps) const;
+		GetAsResult<Char_, T> get_as(BasicString<Char_> const& key, Steps&&... steps);
 		
 		/// @brief Gets a node from the map by key.
 		///
 		/// @param key Key of the requested node.
 		///
 		/// @return A node.
-		Result<BasicNode<Char_> const&, MapException<Char_> > operator[](BasicString<Char_> const& key) const;
+		Result<BasicNode<Char_> const&, MapException<Char_> > operator[](BasicString<Char_> const& key);
 	
 	private:
+		RequestedContainer requested_;
 		BasicMapData<Char_> const& map_;
 		Mark mark_;
 	};
-	
-	using MapView = BasicMapView<Char>;
 }
