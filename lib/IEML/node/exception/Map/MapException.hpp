@@ -13,9 +13,9 @@ namespace ieml {
 		
 		String get_description() const override;
 		
-		/// @brief Gets the index that was requested.
+		/// @brief Gets the key that was requested.
 		///
-		/// @return The index.
+		/// @return The key.
 		BasicStringView<Char_> get_requested_key() const;
 		
 		MapException* clone() const override;

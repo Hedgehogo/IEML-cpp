@@ -43,7 +43,7 @@ FetchContent_MakeAvailable(ctre option_result_cpp abseil googletest)
 file(GLOB_RECURSE src "lib/*.hpp" "lib/*.cpp")
 
 add_library(${PROJECT_NAME} ${src})
-target_link_libraries(${PROJECT_NAME} PUBLIC option_result_cpp absl::flat_hash_map)
+target_link_libraries(${PROJECT_NAME} PUBLIC option_result_cpp absl::flat_hash_map absl::flat_hash_set)
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib>

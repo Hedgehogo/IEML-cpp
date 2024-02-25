@@ -365,6 +365,24 @@ namespace ieml {
 	}
 	
 	template<typename Char_>
+	template<typename F>
+	ReadResult<Char_, std::invoke_result_t<F, MapReader<Char_>&> > BasicNode<Char_>::read_map(F f) const {
+		using Result = std::invoke_result_t<F, MapReader<Char_>&>;
+		using Return = ReadResult<Char_, Result>;
+		auto& clear_node{get_clear()};
+		auto map_result{clear_node.template get_typed_data_or_error<NodeType::Map>()};
+		for(auto& map: map_result.ok_or_none()) {
+			MapReader<Char_> reader{map, clear_node.mark_};
+			Result result{f(reader)};
+			for(auto& extra_keys: reader.extra_keys()) {
+				return Return::Error(ExtraKeyException{clear_node.mark_, std::move(extra_keys)});
+			}
+			return Return::Ok(std::forward<Result>(result));
+		}
+		return Return::Error(std::move(map_result.error()));
+	}
+	
+	template<typename Char_>
 	ListResult<BasicNode<Char_>&> BasicNode<Char_>::at(Size index) {
 		return get_clear()[index];
 	}

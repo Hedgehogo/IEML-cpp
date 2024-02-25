@@ -126,6 +126,18 @@ TEST(Node, Node_4_Map) {
 	auto incorrect_item{node.at(ieml::String("other-key"))};
 	ASSERT_FALSE(incorrect_item.is_ok());
 	
+	auto read{node.read_map([](ieml::MapReader<ieml::Char>& map) -> ieml::Node const& {
+		return map.at("key").except();
+	})};
+	ASSERT_TRUE(read.is_ok());
+	ASSERT_EQ(&read.ok(), &(node[ieml::String("key")].except()));
+	ASSERT_EQ(&read.ok(), &item.ok());
+	
+	auto incorrect_read{node.read_map([](ieml::MapReader<ieml::Char>& map) {
+		return 0;
+	})};
+	ASSERT_FALSE(incorrect_read.is_ok());
+	
 	auto view{node.get_map_view()};
 	ASSERT_TRUE(view.is_ok());
 	ASSERT_EQ(view.ok().get_size(), 1);
@@ -138,6 +150,18 @@ TEST(Node, Node_4_Map) {
 	
 	auto incorrect_view_item{view.ok().at(ieml::String("other-key"))};
 	ASSERT_FALSE(incorrect_view_item.is_ok());
+	
+	auto view_read{view.ok().read([](ieml::MapReader<ieml::Char>& map) -> ieml::Node const& {
+		return map.at("key").except();
+	})};
+	ASSERT_TRUE(view_read.is_ok());
+	ASSERT_EQ(&view_read.ok(), &(node[ieml::String("key")].except()));
+	ASSERT_EQ(&view_read.ok(), &item.ok());
+	
+	auto incorrect_view_read{node.read_map([](ieml::MapReader<ieml::Char>& map) {
+		return 0;
+	})};
+	ASSERT_FALSE(incorrect_view_read.is_ok());
 }
 
 TEST(Node, Node_5_Tag) {
