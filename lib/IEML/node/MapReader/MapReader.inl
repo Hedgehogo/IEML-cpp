@@ -11,7 +11,7 @@ namespace ieml {
 			KeyContainer extra_keys{};
 			extra_keys.reserve(map_.size() - requested_.size());
 			for(auto& item: map_) {
-				if(requested_.contains(&item.first)) {
+				if(!requested_.contains(&item.first)) {
 					extra_keys.emplace(item.first);
 				}
 			}
