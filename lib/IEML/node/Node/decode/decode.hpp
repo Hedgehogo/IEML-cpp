@@ -1,6 +1,62 @@
 #pragma once
 
 #include <map>
+#include <type-name/type-name.hpp>
+
+template<>
+struct tnl::TypeName<bool> {
+	constexpr static auto type_name = tnl::StringView{"Bool"};
+};
+
+template<>
+struct tnl::TypeName<int> {
+	constexpr static auto type_name = tnl::StringView{"Int"};
+};
+
+template<>
+struct tnl::TypeName<size_t> {
+	constexpr static auto type_name = tnl::StringView{"Size"};
+};
+
+template<>
+struct tnl::TypeName<float> {
+	constexpr static auto type_name = tnl::StringView{"Float"};
+};
+
+template<typename Char_>
+struct tnl::TypeName<ieml::BasicRawData<Char_> > {
+	constexpr static auto type_name = tnl::StringView{"RawData"};
+};
+
+template<typename Char_>
+struct tnl::TypeName<ieml::BasicStringData<Char_> > {
+	constexpr static auto type_name = tnl::StringView{"StringData"};
+};
+
+template<typename Char_>
+struct tnl::TypeName<ieml::BasicStringData<Char_> const&> {
+	constexpr static auto type_name = tnl::StringView{"StringData"};
+};
+
+template<typename Char_>
+struct tnl::TypeName<ieml::BasicListData<Char_> > {
+	constexpr static auto type_name = tnl::StringView{"ListData"};
+};
+
+template<typename Char_>
+struct tnl::TypeName<ieml::BasicListData<Char_> const&> {
+	constexpr static auto type_name = tnl::StringView{"ListData"};
+};
+
+template<typename Char_>
+struct tnl::TypeName<ieml::BasicMapData<Char_> > {
+	constexpr static auto type_name = tnl::StringView{"MapData"};
+};
+
+template<typename Char_>
+struct tnl::TypeName<ieml::BasicMapData<Char_> const&> {
+	constexpr static auto type_name = tnl::StringView{"MapData"};
+};
 
 namespace ieml {
 	template<typename Char_>
