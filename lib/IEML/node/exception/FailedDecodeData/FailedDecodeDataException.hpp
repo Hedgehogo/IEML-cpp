@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../helpers/pointers/pointers.hpp"
-#include "../../../helpers/get_type_name/TypeInfo/TypeInfo.hpp"
+#include "../../../helpers/unstable_type_name//TypeInfo/TypeInfo.hpp"
 #include "../../exception/Node/NodeException.hpp"
 
 namespace ieml {
