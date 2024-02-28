@@ -1,6 +1,6 @@
 //included into Node.hpp
 #include "IEML/helpers/read_file/read_file.hpp"
-#include "../../helpers/get_type_name/get_type_name.hpp"
+#include "../../helpers/get_type_name/TypeInfo/TypeInfo.hpp"
 #include "get/get.hpp"
 #include "get_from.inl"
 

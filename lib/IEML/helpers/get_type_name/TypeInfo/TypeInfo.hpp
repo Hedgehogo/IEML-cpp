@@ -1,45 +1,43 @@
 #pragma once
 
+#include <type-name/type-name.hpp>
 #include "../../../usings/usings.hpp"
 
 namespace ieml {
-	template<typename T>
-	struct TypeName;
-	
 	class TypeInfo {
 	public:
-		virtual String get_name() const = 0;
+		virtual StringView get_name() const = 0;
 		
-		virtual const std::type_info& get_info() const = 0;
+		virtual std::type_info const& get_info() const = 0;
 		
-		operator const std::type_info&() const;
+		operator std::type_info const&() const;
 	};
 	
 	namespace detail {
 		template<typename T>
 		class TypeInfoImpl : public TypeInfo {
 		public:
-			static const TypeInfoImpl<T> object;
+			static TypeInfoImpl<T> const object;
 			
 		private:
 			TypeInfoImpl() = default;
 			
 		public:
-			TypeInfoImpl(const TypeInfoImpl<T>& type_info) = delete;
+			TypeInfoImpl(TypeInfoImpl<T> const& type_info) = delete;
 			
 			TypeInfoImpl(TypeInfoImpl<T>&& type_info) = delete;
 			
-			String get_name() const override;
+			StringView get_name() const override;
 			
-			const std::type_info& get_info() const override;
+			std::type_info const& get_info() const override;
 		};
 		
 		template<typename T>
-		const TypeInfoImpl<T> TypeInfoImpl<T>::object{};
+		TypeInfoImpl<T> const TypeInfoImpl<T>::object{};
 	}
 	
 	template<typename T>
-	const TypeInfo& get_type_info();
+	TypeInfo const& get_type_info();
 }
 
 #include "TypeInfo.inl"

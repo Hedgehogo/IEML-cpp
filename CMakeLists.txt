@@ -12,38 +12,38 @@ set(ABSL_ENABLE_INSTALL ${IEML_ENABLE_INSTALL})
 FetchContent_Declare(
         ctre
         GIT_REPOSITORY https://github.com/hanickadot/compile-time-regular-expressions.git
-        GIT_TAG        main
+        GIT_TAG main
         FIND_PACKAGE_ARGS NAMES ctre
 )
 
 FetchContent_Declare(
         option_result_cpp
         GIT_REPOSITORY https://github.com/Hedgehogo/option-result-cpp.git
-        GIT_TAG        main
+        GIT_TAG main
         FIND_PACKAGE_ARGS NAMES option_result_cpp
 )
 
 FetchContent_Declare(
-        abseil
-        GIT_REPOSITORY https://github.com/abseil/abseil-cpp
-        GIT_TAG         "20240116.0"
-        FIND_PACKAGE_ARGS NAMES absl
+        type_name_cpp
+        GIT_REPOSITORY https://github.com/Hedgehogo/type-name-cpp
+        GIT_TAG master
+        FIND_PACKAGE_ARGS NAMES type_name_cpp
 )
 
 FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG        v1.13.0
+        GIT_TAG v1.13.0
         FIND_PACKAGE_ARGS NAMES GTest
 )
 
-FetchContent_MakeAvailable(ctre option_result_cpp abseil googletest)
+FetchContent_MakeAvailable(ctre option_result_cpp type_name_cpp googletest)
 
 
 file(GLOB_RECURSE src "lib/*.hpp" "lib/*.cpp")
 
 add_library(${PROJECT_NAME} ${src})
-target_link_libraries(${PROJECT_NAME} PUBLIC option_result_cpp absl::flat_hash_map absl::flat_hash_set)
+target_link_libraries(${PROJECT_NAME} PUBLIC option_result_cpp type_name_cpp absl::flat_hash_map)
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib>
@@ -62,17 +62,17 @@ add_executable(${PROJECT_NAME}_tests ${test_src})
 target_link_libraries(${PROJECT_NAME}_tests PRIVATE gtest gtest_main ${PROJECT_NAME})
 
 if (IEML_ENABLE_INSTALL)
-        install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/lib/IEML DESTINATION ${CMAKE_INSTALL_PREFIX}/include PATTERN "*.hpp")
+    install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/lib/IEML DESTINATION ${CMAKE_INSTALL_PREFIX}/include PATTERN "*.hpp")
 
-        install(TARGETS ${PROJECT_NAME}
-                EXPORT ${PROJECT_NAME}
-                LIBRARY DESTINATION lib
-                PUBLIC_HEADER DESTINATION include/${PROJECT_NAME}
-                )
+    install(TARGETS ${PROJECT_NAME}
+            EXPORT ${PROJECT_NAME}
+            LIBRARY DESTINATION lib
+            PUBLIC_HEADER DESTINATION include/${PROJECT_NAME}
+            )
 
-        install(EXPORT ${PROJECT_NAME}
-                FILE ${PROJECT_NAME}Config.cmake
-                NAMESPACE ${PROJECT_NAME}::
-                DESTINATION lib/cmake/${PROJECT_NAME}
-                )
+    install(EXPORT ${PROJECT_NAME}
+            FILE ${PROJECT_NAME}Config.cmake
+            NAMESPACE ${PROJECT_NAME}::
+            DESTINATION lib/cmake/${PROJECT_NAME}
+            )
 endif ()

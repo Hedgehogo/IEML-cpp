@@ -19,5 +19,6 @@ namespace ieml {
 	
 	using Char = char;
 	using String = BasicString<Char>;
+	using StringView = BasicStringView<Char>;
 	using Size = std::size_t;
 }

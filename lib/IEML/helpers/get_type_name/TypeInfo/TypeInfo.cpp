@@ -1,7 +1,7 @@
 #include "TypeInfo.hpp"
 
 namespace ieml {
-	TypeInfo::operator const std::type_info&() const {
+	TypeInfo::operator std::type_info const&() const {
 		return get_info();
 	}
 }

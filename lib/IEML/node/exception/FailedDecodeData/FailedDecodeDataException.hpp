@@ -1,29 +1,29 @@
 #pragma once
 
 #include "../../../helpers/pointers/pointers.hpp"
-#include "../../../helpers/get_type_name/get_type_name.hpp"
+#include "../../../helpers/get_type_name/TypeInfo/TypeInfo.hpp"
 #include "../../exception/Node/NodeException.hpp"
 
 namespace ieml {
 	class FailedDecodeDataException : public NodeException {
 	private:
-		const TypeInfo& type_info_;
-		const BoxPtr<NodeException> reason_;
+		TypeInfo const& type_info_;
+		BoxPtr<NodeException> const reason_;
 		
 	public:
-		FailedDecodeDataException(Mark mark, const TypeInfo& type_info, BoxPtr<NodeException> reason_ = BoxPtr<NodeException>(nullptr));
+		FailedDecodeDataException(Mark mark, TypeInfo const& type_info, BoxPtr<NodeException> reason_ = BoxPtr<NodeException>{nullptr});
 		
-		FailedDecodeDataException(const FailedDecodeDataException& other);
+		FailedDecodeDataException(FailedDecodeDataException const& other);
 		
 		String get_description() const override;
 		
-		String get_type_name() const;
+		StringView get_type_name() const;
 		
 		bool has_reason() const;
 		
-		const TypeInfo& get_type_info() const;
+		TypeInfo const& get_type_info() const;
 		
-		Option<const NodeException&> get_reason() const;
+		Option<NodeException const&> get_reason() const;
 		
 		FailedDecodeDataException* clone() const override;
 	};
