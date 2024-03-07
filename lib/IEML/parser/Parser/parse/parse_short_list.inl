@@ -5,6 +5,7 @@ namespace ieml {
 	static constexpr auto re_whitespace = ctll::fixed_string{R"([\t ]*)"};
 	static constexpr auto re_s_l_separator = ctll::fixed_string{R"(, )"};
 	static constexpr auto re_s_l_raw = ctll::fixed_string{R"(([^\n\"<>#]|#[^\n\"<>! ])*?#?(?=, |\]))"};
+	static constexpr auto re_s_l_get_anchor = ctll::fixed_string{R"(\*([^\n ]+?)(?=, |\]))"};
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicListData<Char_> > BasicParser<Char_, FileInclude_>::parse_short_list() {
@@ -24,6 +25,10 @@ namespace ieml {
 				while(true) {
 					set_pos_info(pos_info);
 					auto node_data{[this]() -> BasicNodeData<Char_> {
+						if(auto get_anchor{match_and_move<re_s_l_get_anchor>(pos_, end(), mark_)}) {
+							BasicString<Char_> name{get_anchor.template get<1>().str()};
+							return {BasicGetAnchorData<Char_>{anchor_keeper_, std::move(name)}};
+						}
 						for(auto& short_list: parse_short_list()) {
 							return {std::move(short_list)};
 						}

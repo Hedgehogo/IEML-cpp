@@ -14,4 +14,4 @@ second:
 	- >>
 		Hello
 		"IEML"!
-	- [12, yes, "Hello", Hello, null, [10, 15]]
+	- [12, yes, "Hello", Hello, null, *str, [10, 15]]
