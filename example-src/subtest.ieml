@@ -1,1 +1,1 @@
-other: *str
+other: @str

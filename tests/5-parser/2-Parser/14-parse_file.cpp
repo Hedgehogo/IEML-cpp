@@ -12,7 +12,7 @@ static auto test_files = absl::flat_hash_map<ieml::String , ieml::String>{
 	std::make_pair(
 		ieml::String{"test-2.ieml"},
 		ieml::String{
-			"*anchor"
+			"@anchor"
 		}
 	)
 };

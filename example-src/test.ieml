@@ -1,17 +1,17 @@
 # File begin
 first:
-	- *str
+	- @str
 	# File loading
 	- = File: < subtest
 		str: "\
 			Hello\n\"IEML\"!"
 second:
 	-
-		&str
+		@str:
 		= A:
 		-15
 	- > Hello "IEML"!
 	- >>
 		Hello
 		"IEML"!
-	- [12, yes, "Hello", Hello, null, *str, [10, 15]]
+	- [12, yes, "Hello", Hello, null, @str, [10, 15]]

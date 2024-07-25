@@ -116,13 +116,13 @@ namespace ieml {
 	
 	template<typename Char_, typename FileGenerate_>
 	void BasicGenerator<Char_, FileGenerate_>::generate_take_anchor(const BasicNode<Char_>& node, Size indent) {
-		stream_ << to_char<Char_>('&') << node.get_take_anchor_name().except() << to_char<Char_>(' ');
+		stream_ << to_char<Char_>('@') << node.get_take_anchor_name().except() << to_char<Char_>(':') << to_char<Char_>(' ');
 		generate(node.get_clear_take_anchor(), indent);
 	}
 	
 	template<typename Char_, typename FileGenerate_>
-	void BasicGenerator<Char_, FileGenerate_>::generate_get_anchor(const BasicNode<Char_>& node, Size indent) {
-		stream_ << to_char<Char_>('*') << node.get_get_anchor_name().except();
+	void BasicGenerator<Char_, FileGenerate_>::generate_get_anchor(const BasicNode<Char_>& node, Size) {
+		stream_ << to_char<Char_>('@') << node.get_get_anchor_name().except();
 	}
 	
 	template<typename Char_>

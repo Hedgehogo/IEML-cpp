@@ -4,7 +4,7 @@
 
 TEST(parser, Parser_parse_take_anchor) {
 	{
-		ieml::String str{"&anchor null"};
+		ieml::String str{"@anchor: null"};
 		auto keeper{ieml::make_rc_ptr<ieml::AnchorKeeper>()};
 		ieml::Parser parser{str, keeper};
 		auto take_anchor{parser.parse_take_anchor(2)};
@@ -12,15 +12,15 @@ TEST(parser, Parser_parse_take_anchor) {
 		ASSERT_TRUE(take_anchor.is_some());
 		ASSERT_EQ(take_anchor.except().name_, ieml::String{"anchor"});
 		ASSERT_EQ(take_anchor.except().keeper_.lock(), keeper);
-		ASSERT_EQ(info.pos, str.cbegin() + 12);
+		ASSERT_EQ(info.pos, str.cbegin() + 13);
 		ASSERT_EQ(info.mark.line, 0);
-		ASSERT_EQ(info.mark.symbol, 12);
+		ASSERT_EQ(info.mark.symbol, 13);
 		ASSERT_TRUE(keeper->get("anchor") != nullptr);
 		ASSERT_TRUE(keeper->get("anchor")->is_null());
 	}
 	{
 		ieml::String str{
-			R"(&anchor
+			R"(@anchor:
 		null)"
 		};
 		auto keeper{ieml::make_rc_ptr<ieml::AnchorKeeper>()};
@@ -30,21 +30,21 @@ TEST(parser, Parser_parse_take_anchor) {
 		ASSERT_TRUE(take_anchor.is_some());
 		ASSERT_EQ(take_anchor.except().name_, ieml::String{"anchor"});
 		ASSERT_EQ(take_anchor.except().keeper_.lock(), keeper);
-		ASSERT_EQ(info.pos, str.cbegin() + 14);
+		ASSERT_EQ(info.pos, str.cbegin() + 15);
 		ASSERT_EQ(info.mark.line, 1);
 		ASSERT_EQ(info.mark.symbol, 6);
 		ASSERT_TRUE(keeper->get("anchor") != nullptr);
 		ASSERT_TRUE(keeper->get("anchor")->is_null());
 	}
 	{
-		ieml::String str{"&anchor null"};
+		ieml::String str{"@anchor: null"};
 		auto keeper{ieml::make_rc_ptr<ieml::AnchorKeeper>()};
 		keeper->add(ieml::String{"anchor"}, ieml::Node{ieml::NullData{}});
 		ieml::Parser parser{str, keeper};
 		EXPECT_THROW(parser.parse_take_anchor(2), ieml::FailedParseException);
 	}
 	{
-		ieml::String str{"&\n null"};
+		ieml::String str{"@\n: null"};
 		auto keeper{ieml::make_rc_ptr<ieml::AnchorKeeper>()};
 		ieml::Parser parser{str, keeper};
 		auto take_anchor{parser.parse_take_anchor(2)};

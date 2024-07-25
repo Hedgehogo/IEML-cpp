@@ -134,18 +134,18 @@ TEST(parser, Parser_parse_node) {
 		ASSERT_EQ(info.mark.symbol, 6);
 	}
 	{
-		ieml::String str{R"(&anchor null)"};
+		ieml::String str{R"(@anchor: null)"};
 		ieml::Parser parser{str};
 		auto node{parser.parse_node(2)};
 		auto info{parser.get_pos_info()};
 		ASSERT_EQ(node.data_.index(), 7);
 		ASSERT_EQ(std::get<7>(node.data_).name_, ieml::String{"anchor"});
-		ASSERT_EQ(info.pos, str.cbegin() + 12);
+		ASSERT_EQ(info.pos, str.cbegin() + 13);
 		ASSERT_EQ(info.mark.line, 0);
-		ASSERT_EQ(info.mark.symbol, 12);
+		ASSERT_EQ(info.mark.symbol, 13);
 	}
 	{
-		ieml::String str{R"(*anchor)"};
+		ieml::String str{R"(@anchor)"};
 		ieml::Parser parser{str};
 		auto node{parser.parse_node(2)};
 		auto info{parser.get_pos_info()};

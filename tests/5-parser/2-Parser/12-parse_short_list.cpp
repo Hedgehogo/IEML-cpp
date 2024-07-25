@@ -75,7 +75,7 @@ TEST(parser, Parser_parse_short_list) {
 		ASSERT_EQ(info.mark.symbol, 9);
 	}
 	{
-		ieml::String str{R"([*anchor])"};
+		ieml::String str{R"([@anchor])"};
 		ieml::Parser parser{str};
 		auto short_list{parser.parse_short_list()};
 		auto info{parser.get_pos_info()};

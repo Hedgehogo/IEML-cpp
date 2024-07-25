@@ -5,7 +5,7 @@ namespace ieml {
 	static constexpr auto re_whitespace = ctll::fixed_string{R"([\t ]*)"};
 	static constexpr auto re_s_l_separator = ctll::fixed_string{R"(, )"};
 	static constexpr auto re_s_l_raw = ctll::fixed_string{R"(([^\n\"<>#]|#[^\n\"<>! ])*?#?(?=, |\]))"};
-	static constexpr auto re_s_l_get_anchor = ctll::fixed_string{R"(\*([^\n ]+?)(?=, |\]))"};
+	static constexpr auto re_s_l_get_anchor = ctll::fixed_string{R"(@([^\n]+?)(?=, |\]))"};
 	
 	template<typename Char_, typename FileInclude_>
 	Option<BasicListData<Char_> > BasicParser<Char_, FileInclude_>::parse_short_list() {
